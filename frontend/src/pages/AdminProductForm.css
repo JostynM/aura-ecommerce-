@@ -1,0 +1,190 @@
+.admin-product-page {
+  min-height: 100vh;
+  padding: 60px 5%;
+  background: #f8f7f4;
+}
+
+.admin-product-form-container {
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.admin-back-button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 35px;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #7c6a50;
+
+  cursor: pointer;
+}
+
+.admin-form-heading {
+  margin-bottom: 35px;
+}
+
+.admin-form-heading > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 11px;
+  letter-spacing: 2px;
+
+  color: #9b8563;
+}
+
+.admin-form-heading h1 {
+  margin-bottom: 10px;
+
+  font-size: 36px;
+}
+
+.admin-form-heading p {
+  color: #716b64;
+}
+
+.admin-product-form {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 22px;
+
+  padding: 35px;
+
+  border: 1px solid #e0dbd3;
+
+  background: white;
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.admin-field-full {
+  grid-column: 1 / -1;
+}
+
+.admin-field label {
+  font-size: 12px;
+
+  color: #554f49;
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #ddd8d0;
+
+  background: #fff;
+
+  color: #1d1c1a;
+
+  outline: none;
+}
+
+.admin-field textarea {
+  resize: vertical;
+}
+
+.admin-field input:focus,
+.admin-field select:focus,
+.admin-field textarea:focus {
+  border-color: #9b8563;
+}
+
+.admin-field small {
+  color: #948c83;
+
+  font-size: 11px;
+}
+
+.admin-active-checkbox {
+  grid-column: 1 / -1;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 13px;
+}
+
+.admin-form-actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  padding-top: 15px;
+}
+
+.admin-cancel-button {
+  padding: 12px 20px;
+
+  border: 1px solid #cfc8be;
+
+  background: transparent;
+
+  color: #665f57;
+}
+
+.admin-save-button {
+  padding: 12px 22px;
+
+  border: 1px solid #1d1c1a;
+
+  background: #1d1c1a;
+
+  color: white;
+}
+
+.admin-save-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+.admin-form-error {
+  margin-bottom: 20px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #dbc4c0;
+
+  background: #fff8f7;
+
+  color: #9a5c52;
+}
+
+@media (max-width: 700px) {
+  .admin-product-form {
+    grid-template-columns: 1fr;
+
+    padding: 22px;
+  }
+
+  .admin-field-full,
+  .admin-active-checkbox,
+  .admin-form-actions {
+    grid-column: auto;
+  }
+}

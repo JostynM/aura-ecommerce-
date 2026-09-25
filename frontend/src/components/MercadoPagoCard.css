@@ -1,0 +1,46 @@
+.mercado-pago-card {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px;
+  border: 1px solid #ded8ce;
+  background: #ffffff;
+}
+
+.mercado-pago-card-header {
+  margin-bottom: 28px;
+}
+
+.mercado-pago-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+
+  color: #8d7354;
+}
+
+.mercado-pago-card-header h2 {
+  margin: 0 0 10px;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 400;
+
+  color: #181818;
+}
+
+.mercado-pago-card-header p {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: #66615b;
+}
+
+.mercado-pago-card-content {
+  width: 100%;
+}

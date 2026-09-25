@@ -1,0 +1,497 @@
+.admin-customer-detail-page {
+  min-height: 100vh;
+  padding: 45px 20px 80px;
+
+  background: #f8f5ef;
+  color: #29251f;
+}
+
+.admin-customer-detail-container {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+
+/* ==========================================
+   VOLVER
+========================================== */
+
+.admin-customer-detail-back {
+  margin-bottom: 24px;
+}
+
+.admin-customer-detail-back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #5b5246;
+
+  text-decoration: none;
+
+  font-size: 0.88rem;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.admin-customer-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  gap: 30px;
+
+  padding-bottom: 28px;
+
+  border-bottom: 1px solid #d8d0c3;
+}
+
+.admin-customer-detail-header span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #9b8763;
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.2em;
+}
+
+.admin-customer-detail-header h1 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3rem
+    );
+
+  font-weight: 500;
+}
+
+.admin-customer-detail-header p {
+  margin: 10px 0 0;
+
+  color: #777064;
+}
+
+.admin-customer-detail-id {
+  color: #8d8374;
+
+  font-size: 0.85rem;
+}
+
+
+/* ==========================================
+   STATS
+========================================== */
+
+.admin-customer-detail-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 17px;
+
+  margin-top: 28px;
+}
+
+.admin-customer-detail-stats article {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 22px;
+
+  background: #fffdf9;
+
+  border: 1px solid #ded6c9;
+}
+
+.admin-customer-detail-stats svg {
+  color: #9f875f;
+}
+
+.admin-customer-detail-stats span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #7e7569;
+
+  font-size: 0.75rem;
+}
+
+.admin-customer-detail-stats strong {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+
+/* ==========================================
+   INFORMACIÓN
+========================================== */
+
+.admin-customer-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 20px;
+
+  margin-top: 20px;
+}
+
+.admin-customer-detail-card {
+  padding: 27px;
+
+  background: #fffdf9;
+
+  border: 1px solid #ded6c9;
+}
+
+.admin-customer-card-heading {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 23px;
+}
+
+.admin-customer-card-heading svg {
+  color: #a58c63;
+}
+
+.admin-customer-card-heading h2 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.2rem;
+
+  font-weight: 500;
+}
+
+.admin-customer-info-row {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #eee8df;
+}
+
+.admin-customer-info-row:last-child {
+  border-bottom: none;
+}
+
+.admin-customer-info-row span {
+  color: #7c7368;
+}
+
+.admin-customer-info-row strong {
+  text-align: right;
+}
+
+
+/* ==========================================
+   PEDIDOS
+========================================== */
+
+.admin-customer-orders-card {
+  margin-top: 20px;
+
+  padding: 28px;
+
+  background: #fffdf9;
+
+  border: 1px solid #ded6c9;
+}
+
+.admin-customer-orders-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+}
+
+.admin-customer-orders-heading span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #9b8763;
+
+  font-size: 0.7rem;
+
+  letter-spacing: 0.16em;
+}
+
+.admin-customer-orders-heading h2 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-weight: 500;
+}
+
+.admin-customer-orders-heading > strong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 38px;
+  height: 38px;
+
+  padding: 0 10px;
+
+  background: #f1eadf;
+
+  color: #705f43;
+}
+
+
+/* ==========================================
+   SIN PEDIDOS
+========================================== */
+
+.admin-customer-no-orders {
+  padding: 55px 20px;
+
+  text-align: center;
+
+  color: #7e7569;
+}
+
+.admin-customer-no-orders svg {
+  margin-bottom: 10px;
+
+  color: #aa9674;
+}
+
+.admin-customer-no-orders h3 {
+  margin: 5px 0;
+
+  color: #373129;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-weight: 500;
+}
+
+.admin-customer-no-orders p {
+  margin-bottom: 0;
+}
+
+
+/* ==========================================
+   TABLA
+========================================== */
+
+.admin-customer-orders-table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-customer-orders-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.admin-customer-orders-table th {
+  padding: 14px 12px;
+
+  border-bottom: 1px solid #d5ccbe;
+
+  color: #80776a;
+
+  text-align: left;
+
+  font-size: 0.7rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.admin-customer-orders-table td {
+  padding: 16px 12px;
+
+  border-bottom: 1px solid #eee8df;
+}
+
+
+/* ==========================================
+   ESTADOS
+========================================== */
+
+.admin-customer-order-status,
+.admin-customer-payment-status {
+  display: inline-flex;
+
+  padding: 6px 9px;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.admin-customer-order-status.pending {
+  background: #fff4d9;
+  color: #886719;
+}
+
+.admin-customer-order-status.processing {
+  background: #eef3f7;
+  color: #49687b;
+}
+
+.admin-customer-order-status.shipped {
+  background: #edeff7;
+  color: #555f8b;
+}
+
+.admin-customer-order-status.delivered {
+  background: #edf5ed;
+  color: #477149;
+}
+
+.admin-customer-order-status.cancelled {
+  background: #fff0ed;
+  color: #a24d41;
+}
+
+.admin-customer-payment-status.paid {
+  background: #edf5ed;
+  color: #477149;
+}
+
+.admin-customer-payment-status.pending {
+  background: #fff4d9;
+  color: #886719;
+}
+
+.admin-customer-payment-status.failed {
+  background: #fff0ed;
+  color: #a24d41;
+}
+
+.admin-customer-payment-status.refunded {
+  background: #eeeae4;
+  color: #71695e;
+}
+
+
+/* ==========================================
+   VER PEDIDO
+========================================== */
+
+.admin-customer-order-link {
+  display: inline-flex;
+
+  padding: 8px 11px;
+
+  border: 1px solid #c7b89a;
+
+  background: #faf7f1;
+
+  color: #383229;
+
+  text-decoration: none;
+
+  font-size: 0.77rem;
+}
+
+.admin-customer-order-link:hover {
+  background: #eee6d9;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.admin-customer-detail-error {
+  padding: 13px 15px;
+
+  border: 1px solid #d7b3ad;
+
+  background: #fff4f2;
+
+  color: #8f3d34;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 800px) {
+
+  .admin-customer-detail-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-customer-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .admin-customer-detail-page {
+    padding:
+      30px 14px 60px;
+  }
+
+  .admin-customer-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-customer-info-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .admin-customer-info-row strong {
+    text-align: left;
+  }
+}

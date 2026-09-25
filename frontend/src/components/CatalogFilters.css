@@ -1,0 +1,74 @@
+.catalog-filters {
+  width: 100%;
+
+  padding-right: 30px;
+
+  border-right: 1px solid #dedad4;
+}
+
+.filters-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 30px;
+}
+
+.filters-title h3 {
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.filters-title button {
+  border: none;
+
+  background: transparent;
+
+  font-size: 11px;
+
+  color: #777168;
+
+  cursor: pointer;
+
+  text-decoration: underline;
+}
+
+.filter-group {
+  padding: 25px 0;
+
+  border-top: 1px solid #e2ded8;
+}
+
+.filter-group h4 {
+  margin-bottom: 16px;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+}
+
+.filter-group label {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 11px;
+
+  font-size: 13px;
+
+  color: #57524c;
+
+  cursor: pointer;
+}
+
+.filter-group input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+
+  accent-color: #8e7b60;
+}

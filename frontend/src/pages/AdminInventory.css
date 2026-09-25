@@ -1,0 +1,643 @@
+
+.admin-inventory-page {
+  min-height: 100vh;
+  padding: 45px 20px 80px;
+
+  background: #f8f5ef;
+  color: #29251f;
+}
+
+.admin-inventory-container {
+  width: min(1250px, 100%);
+  margin: 0 auto;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.admin-inventory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+
+  padding-bottom: 28px;
+
+  border-bottom: 1px solid #d8d0c3;
+}
+
+.admin-inventory-header > div:first-child > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #9c8761;
+
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+}
+
+.admin-inventory-header h1 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3rem
+    );
+
+  font-weight: 500;
+}
+
+.admin-inventory-header p {
+  margin: 9px 0 0;
+
+  color: #777064;
+}
+
+.admin-inventory-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-inventory-new,
+.admin-inventory-back {
+  padding: 11px 15px;
+
+  border: 1px solid #c7b89a;
+
+  text-decoration: none;
+
+  font-size: 0.82rem;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.admin-inventory-new {
+  background: #29251f;
+  border-color: #29251f;
+
+  color: white;
+}
+
+.admin-inventory-back {
+  background: transparent;
+
+  color: #40392f;
+}
+
+.admin-inventory-new:hover {
+  background: #443d33;
+}
+
+.admin-inventory-back:hover {
+  background: #f0e9de;
+}
+
+
+/* ==========================================
+   KPIS
+========================================== */
+
+.admin-inventory-kpis {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 16px;
+
+  margin-top: 28px;
+}
+
+.admin-inventory-kpis article {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 22px;
+
+  background: #fffdf9;
+
+  border: 1px solid #ded6c9;
+}
+
+.admin-inventory-kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 43px;
+  height: 43px;
+
+  flex-shrink: 0;
+
+  background: #eee7db;
+
+  color: #8d7652;
+}
+
+.admin-inventory-kpi-icon.warning {
+  background: #fff5dc;
+
+  color: #9b7422;
+}
+
+.admin-inventory-kpi-icon.danger {
+  background: #fff0ed;
+
+  color: #a54b3f;
+}
+
+.admin-inventory-kpis span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #797165;
+
+  font-size: 0.75rem;
+}
+
+.admin-inventory-kpis strong {
+  display: block;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.admin-inventory-kpis small {
+  color: #9a9185;
+}
+
+
+/* ==========================================
+   FILTROS
+========================================== */
+
+.admin-inventory-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 18px;
+
+  margin: 22px 0 15px;
+
+  padding: 17px;
+
+  background: #fffdf9;
+
+  border: 1px solid #ded6c9;
+}
+
+.admin-inventory-search {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex: 1;
+
+  max-width: 500px;
+
+  padding: 0 14px;
+
+  background: #faf7f1;
+
+  border: 1px solid #d3c9bb;
+}
+
+.admin-inventory-search svg {
+  flex-shrink: 0;
+
+  color: #9c8761;
+}
+
+.admin-inventory-search input {
+  width: 100%;
+
+  padding: 12px 0;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: #29251f;
+
+  font: inherit;
+}
+
+.admin-inventory-search input::placeholder {
+  color: #9a9287;
+}
+
+.admin-inventory-filter-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.admin-inventory-filter-actions select {
+  min-width: 155px;
+
+  padding: 11px 34px 11px 12px;
+
+  border: 1px solid #d3c9bb;
+
+  background: #faf7f1;
+
+  color: #393229;
+
+  font: inherit;
+
+  cursor: pointer;
+}
+
+.admin-inventory-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 11px 14px;
+
+  background: transparent;
+
+  border: 1px solid #c7b89a;
+
+  color: #4e463d;
+
+  cursor: pointer;
+}
+
+.admin-inventory-clear:hover {
+  background: #f1ebdf;
+}
+
+
+/* ==========================================
+   RESULTADOS
+========================================== */
+
+.admin-inventory-results {
+  margin-bottom: 17px;
+
+  color: #777064;
+
+  font-size: 0.83rem;
+}
+
+.admin-inventory-results strong {
+  color: #332e27;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.admin-inventory-error {
+  padding: 13px 15px;
+
+  background: #fff4f2;
+
+  border: 1px solid #d7b3ad;
+
+  color: #8f3d34;
+}
+
+
+/* ==========================================
+   TABLA
+========================================== */
+
+.admin-inventory-table-wrapper {
+  overflow-x: auto;
+
+  background: #fffdf9;
+
+  border: 1px solid #ded6c9;
+}
+
+.admin-inventory-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.admin-inventory-table th {
+  padding: 15px 14px;
+
+  border-bottom: 1px solid #d5ccbe;
+
+  color: #80776a;
+
+  text-align: left;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.admin-inventory-table td {
+  padding: 16px 14px;
+
+  border-bottom: 1px solid #eee8df;
+
+  vertical-align: middle;
+}
+
+.admin-inventory-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-inventory-table tbody tr:hover {
+  background: #fcf9f4;
+}
+
+
+/* ==========================================
+   PRODUCTO
+========================================== */
+
+.admin-inventory-product {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 220px;
+}
+
+.admin-inventory-product img,
+.admin-inventory-no-image {
+  width: 48px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  object-fit: contain;
+
+  background: #f2ede5;
+}
+
+.admin-inventory-no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #a38e69;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 0.65rem;
+}
+
+.admin-inventory-product strong {
+  display: block;
+
+  margin-bottom: 4px;
+}
+
+.admin-inventory-product span {
+  display: block;
+
+  max-width: 180px;
+
+  overflow: hidden;
+
+  color: #938a7e;
+
+  font-size: 0.72rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* ==========================================
+   STOCK
+========================================== */
+
+.admin-inventory-stock-number {
+  font-size: 1rem;
+}
+
+.admin-inventory-stock-status,
+.admin-inventory-product-status {
+  display: inline-flex;
+
+  padding: 6px 9px;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.admin-inventory-stock-status.available {
+  background: #edf5ed;
+
+  color: #477149;
+}
+
+.admin-inventory-stock-status.low {
+  background: #fff4d9;
+
+  color: #8b6718;
+}
+
+.admin-inventory-stock-status.out {
+  background: #fff0ed;
+
+  color: #a24d41;
+}
+
+
+/* ==========================================
+   PRODUCTO ACTIVO
+========================================== */
+
+.admin-inventory-product-status.active {
+  background: #edf5ed;
+
+  color: #477149;
+}
+
+.admin-inventory-product-status.inactive {
+  background: #eeeae4;
+
+  color: #71695e;
+}
+
+
+/* ==========================================
+   EDITAR
+========================================== */
+
+.admin-inventory-edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 8px 11px;
+
+  border: 1px solid #c8b99b;
+
+  background: #faf7f1;
+
+  color: #383229;
+
+  font-size: 0.77rem;
+
+  text-decoration: none;
+}
+
+.admin-inventory-edit:hover {
+  background: #eee6d9;
+}
+
+
+/* ==========================================
+   VACÍO
+========================================== */
+
+.admin-inventory-empty {
+  padding: 60px 25px;
+
+  background: #fffdf9;
+
+  border: 1px solid #ded6c9;
+
+  text-align: center;
+}
+
+.admin-inventory-empty h2 {
+  margin-top: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-weight: 500;
+}
+
+.admin-inventory-empty p {
+  color: #7b7368;
+}
+
+.admin-inventory-empty button {
+  margin-top: 10px;
+
+  padding: 10px 15px;
+
+  border: 1px solid #b7a580;
+
+  background: #f6f0e6;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1000px) {
+
+  .admin-inventory-kpis {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .admin-inventory-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-inventory-search {
+    max-width: none;
+  }
+
+  .admin-inventory-filter-actions {
+    flex-wrap: wrap;
+  }
+
+  .admin-inventory-filter-actions select {
+    flex: 1;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .admin-inventory-page {
+    padding:
+      30px 14px 60px;
+  }
+
+  .admin-inventory-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-inventory-header-actions {
+    width: 100%;
+  }
+
+  .admin-inventory-new,
+  .admin-inventory-back {
+    flex: 1;
+
+    text-align: center;
+  }
+
+  .admin-inventory-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-inventory-filter-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-inventory-filter-actions select,
+  .admin-inventory-clear {
+    width: 100%;
+  }
+}

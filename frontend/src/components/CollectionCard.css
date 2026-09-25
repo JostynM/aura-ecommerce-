@@ -1,0 +1,92 @@
+.collection-card {
+  position: relative;
+
+  min-height: 390px;
+
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  align-items: flex-end;
+
+  cursor: pointer;
+}
+
+.collection-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: inherit;
+
+  transition: transform 0.6s ease;
+}
+
+.collection-card:hover::before {
+  transform: scale(1.05);
+}
+
+.collection-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    180deg,
+    rgba(20, 19, 17, 0.03) 25%,
+    rgba(20, 19, 17, 0.65) 100%
+  );
+
+  z-index: 1;
+}
+
+.collection-card-content {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+
+  padding: 28px;
+
+  color: #ffffff;
+}
+
+.collection-card-content span {
+  font-size: 10px;
+
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  opacity: 0.8;
+}
+
+.collection-card-content h3 {
+  margin-top: 8px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.collection-card-content button {
+  margin-top: 18px;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}

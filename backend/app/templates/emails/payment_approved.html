@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Compra confirmada - AURA
+  </title>
+
+</head>
+
+
+<body
+  style="
+    margin: 0;
+    padding: 0;
+    background-color: #f4f1ec;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2d2924;
+  "
+>
+
+  <table
+    width="100%"
+    cellspacing="0"
+    cellpadding="0"
+    border="0"
+    role="presentation"
+    style="
+      padding: 40px 15px;
+      background-color: #f4f1ec;
+    "
+  >
+
+    <tr>
+
+      <td align="center">
+
+        <table
+          width="100%"
+          cellspacing="0"
+          cellpadding="0"
+          border="0"
+          role="presentation"
+          style="
+            max-width: 600px;
+            background-color: #fffdf9;
+            border: 1px solid #e2dcd3;
+          "
+        >
+
+
+          <!-- LOGO -->
+
+          <tr>
+
+            <td
+              align="center"
+              style="
+                padding: 48px 30px 25px;
+              "
+            >
+
+              <div
+                style="
+                  font-family:
+                    Georgia,
+                    'Times New Roman',
+                    serif;
+
+                  font-size: 34px;
+                  letter-spacing: 9px;
+                  color: #1f1c18;
+                "
+              >
+                AURA
+              </div>
+
+
+              <div
+                style="
+                  margin-top: 10px;
+                  font-size: 10px;
+                  letter-spacing: 3px;
+                  color: #a18d70;
+                "
+              >
+                PERFUMERÍA
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- CONTENIDO -->
+
+          <tr>
+
+            <td
+              style="
+                padding: 20px 55px 50px;
+              "
+            >
+
+              <div
+                style="
+                  text-align: center;
+                  margin-bottom: 24px;
+                "
+              >
+
+                <span
+                  style="
+                    display: inline-block;
+
+                    padding: 8px 14px;
+
+                    background-color: #f1f5ee;
+
+                    color: #60765a;
+
+                    font-size: 10px;
+
+                    letter-spacing: 1.5px;
+                  "
+                >
+                  PAGO APROBADO
+                </span>
+
+              </div>
+
+
+              <h1
+                style="
+                  margin: 0 0 24px;
+
+                  font-family:
+                    Georgia,
+                    'Times New Roman',
+                    serif;
+
+                  font-size: 28px;
+                  font-weight: 400;
+
+                  text-align: center;
+
+                  color: #27221c;
+                "
+              >
+                Gracias por tu compra
+              </h1>
+
+
+              <p
+                style="
+                  margin: 0 0 18px;
+
+                  font-size: 15px;
+                  line-height: 1.7;
+
+                  color: #514a42;
+                "
+              >
+                Hola {{ first_name }},
+              </p>
+
+
+              <p
+                style="
+                  margin: 0 0 28px;
+
+                  font-size: 15px;
+                  line-height: 1.7;
+
+                  color: #514a42;
+                "
+              >
+                Tu pago fue aprobado correctamente.
+                Hemos recibido tu pedido y ahora
+                continuaremos con su preparación.
+              </p>
+
+
+              <!-- RESUMEN -->
+
+              <table
+                width="100%"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
+                role="presentation"
+                style="
+                  margin-bottom: 30px;
+
+                  background-color: #f8f5f0;
+
+                  border: 1px solid #e5ded5;
+                "
+              >
+
+                <tr>
+
+                  <td
+                    style="
+                      padding: 20px 22px 10px;
+
+                      color: #8c7c68;
+
+                      font-size: 10px;
+
+                      letter-spacing: 1.4px;
+                    "
+                  >
+                    PEDIDO
+                  </td>
+
+                </tr>
+
+
+                <tr>
+
+                  <td
+                    style="
+                      padding: 0 22px 20px;
+
+                      font-family:
+                        Georgia,
+                        'Times New Roman',
+                        serif;
+
+                      font-size: 19px;
+
+                      color: #29241e;
+                    "
+                  >
+                    {{ order_number }}
+                  </td>
+
+                </tr>
+
+
+                <tr>
+
+                  <td
+                    style="
+                      padding: 18px 22px 7px;
+
+                      border-top:
+                        1px solid #e5ded5;
+
+                      color: #8c7c68;
+
+                      font-size: 10px;
+
+                      letter-spacing: 1.4px;
+                    "
+                  >
+                    TOTAL PAGADO
+                  </td>
+
+                </tr>
+
+
+                <tr>
+
+                  <td
+                    style="
+                      padding: 0 22px 20px;
+
+                      font-family:
+                        Georgia,
+                        'Times New Roman',
+                        serif;
+
+                      font-size: 23px;
+
+                      color: #29241e;
+                    "
+                  >
+                    S/ {{ total }}
+                  </td>
+
+                </tr>
+
+              </table>
+
+
+              <!-- BOTÓN -->
+
+              <table
+                width="100%"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
+                role="presentation"
+              >
+
+                <tr>
+
+                  <td align="center">
+
+                    <a
+                      href="{{ account_url }}"
+                      style="
+                        display: inline-block;
+
+                        padding: 15px 32px;
+
+                        background-color: #29241e;
+
+                        color: #ffffff;
+
+                        text-decoration: none;
+
+                        font-size: 11px;
+
+                        letter-spacing: 1.5px;
+                      "
+                    >
+                      VER MIS PEDIDOS
+                    </a>
+
+                  </td>
+
+                </tr>
+
+              </table>
+
+
+              <p
+                style="
+                  margin: 30px 0 0;
+
+                  text-align: center;
+
+                  color: #91877b;
+
+                  font-size: 12px;
+
+                  line-height: 1.6;
+                "
+              >
+                Te avisaremos cuando haya novedades
+                importantes sobre tu pedido.
+              </p>
+
+            </td>
+
+          </tr>
+
+
+          <!-- FOOTER -->
+
+          <tr>
+
+            <td
+              align="center"
+              style="
+                padding: 25px 30px;
+
+                background-color: #f7f4ef;
+
+                border-top:
+                  1px solid #e5dfd7;
+
+                color: #91877b;
+
+                font-size: 11px;
+
+                line-height: 1.7;
+              "
+            >
+
+              AURA · Perfumes originales
+
+              <br>
+
+              Envíos a todo el Perú
+
+            </td>
+
+          </tr>
+
+        </table>
+
+      </td>
+
+    </tr>
+
+  </table>
+
+</body>
+
+</html>

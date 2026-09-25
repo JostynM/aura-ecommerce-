@@ -1,0 +1,544 @@
+.admin-orders-page {
+  min-height: 100vh;
+  padding: 70px 24px 100px;
+
+  background: #f7f5f1;
+  color: #1d1c1a;
+}
+
+.admin-orders-container {
+  width: min(1250px, 100%);
+  margin: 0 auto;
+}
+
+
+/* ==========================================
+   CABECERA
+========================================== */
+
+.admin-orders-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  gap: 30px;
+  margin-bottom: 35px;
+}
+
+.admin-orders-top > div > span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 10px;
+  letter-spacing: 2px;
+
+  color: #9b8563;
+}
+
+.admin-orders-top h1 {
+  margin: 0;
+
+  font-size: 42px;
+  font-weight: 500;
+}
+
+.admin-orders-top p {
+  margin-top: 8px;
+
+  color: #777068;
+}
+
+.admin-orders-back {
+  padding: 11px 16px;
+
+  border: 1px solid #292724;
+
+  color: #292724;
+
+  font-size: 12px;
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.admin-orders-back:hover {
+  background: #292724;
+  color: #ffffff;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.admin-orders-error {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+
+  border: 1px solid #d8b9b4;
+
+  background: #fbf2f0;
+
+  color: #925b53;
+}
+
+
+/* ==========================================
+   SIN PEDIDOS
+========================================== */
+
+.admin-orders-empty {
+  padding: 60px 30px;
+
+  border: 1px solid #ded9d1;
+
+  background: #ffffff;
+
+  text-align: center;
+}
+
+.admin-orders-empty h2 {
+  margin-bottom: 8px;
+
+  font-weight: 500;
+}
+
+.admin-orders-empty p {
+  color: #817970;
+}
+
+
+/* ==========================================
+   TABLA
+========================================== */
+
+.admin-orders-table-wrapper {
+  overflow-x: auto;
+
+  border: 1px solid #ded9d1;
+
+  background: #ffffff;
+}
+
+.admin-orders-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.admin-orders-table th {
+  padding: 15px 18px;
+
+  background: #f2efe9;
+
+  border-bottom: 1px solid #ded9d1;
+
+  text-align: left;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+  color: #736c63;
+}
+
+.admin-orders-table td {
+  padding: 18px;
+
+  border-bottom: 1px solid #eeeae4;
+
+  font-size: 13px;
+
+  vertical-align: middle;
+}
+
+.admin-orders-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* ==========================================
+   CLIENTE
+========================================== */
+
+.admin-order-customer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.admin-order-customer strong {
+  font-weight: 500;
+}
+
+.admin-order-customer span {
+  font-size: 11px;
+
+  color: #857d74;
+}
+
+
+/* ==========================================
+   SELECT ESTADO
+========================================== */
+
+.admin-order-select {
+  min-width: 135px;
+
+  padding: 9px 10px;
+
+  border: 1px solid #d6d0c7;
+
+  background: #ffffff;
+
+  color: #292724;
+
+  cursor: pointer;
+}
+
+.admin-order-select:focus {
+  outline: none;
+
+  border-color: #9b8563;
+}
+
+.admin-order-select:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+.admin-order-updating {
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 10px;
+
+  color: #8b7656;
+}
+
+
+/* ==========================================
+   ESTADO DE PAGO
+========================================== */
+
+.admin-payment-status {
+  display: inline-block;
+
+  padding: 5px 8px;
+
+  border-radius: 2px;
+
+  font-size: 10px;
+
+  text-transform: capitalize;
+}
+
+
+/* PENDIENTE */
+
+.admin-payment-status.pending {
+  background: #f4eee3;
+
+  color: #8c7149;
+}
+
+
+/* PAGADO */
+
+.admin-payment-status.paid {
+  background: #edf4ec;
+
+  color: #557153;
+}
+
+
+/* FALLIDO */
+
+.admin-payment-status.failed {
+  background: #f8ecea;
+
+  color: #925a52;
+}
+
+
+/* REEMBOLSADO */
+
+.admin-payment-status.refunded {
+  background: #efedf4;
+
+  color: #655c78;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 700px) {
+  .admin-orders-page {
+    padding: 45px 16px 80px;
+  }
+
+
+  .admin-orders-top {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .admin-orders-top h1 {
+    font-size: 34px;
+  }
+
+
+  .admin-orders-table {
+    min-width: 850px;
+  }
+}
+/* ==========================================
+   BOTÓN VER DETALLE
+========================================== */
+
+.admin-order-detail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 9px 14px;
+
+  border: 1px solid #c7b89a;
+  border-radius: 4px;
+
+  color: #29251f;
+  background: #faf7f1;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-order-detail-link:hover {
+  background: #f0eadf;
+  border-color: #a89470;
+  transform: translateY(-1px);
+}
+/* ==========================================
+   BUSCADOR Y FILTROS
+========================================== */
+
+.admin-orders-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+
+  margin: 30px 0 16px;
+  padding: 18px;
+
+  background: #fffdf9;
+  border: 1px solid #ded6c9;
+}
+
+
+/* ==========================================
+   BUSCADOR
+========================================== */
+
+.admin-orders-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex: 1;
+
+  max-width: 520px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d3c9bb;
+
+  background: #faf7f1;
+}
+
+.admin-orders-search svg {
+  flex-shrink: 0;
+
+  color: #9b8763;
+}
+
+.admin-orders-search input {
+  width: 100%;
+
+  padding: 12px 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #2c2822;
+
+  font: inherit;
+}
+
+.admin-orders-search input::placeholder {
+  color: #9a9287;
+}
+
+
+/* ==========================================
+   SELECTS
+========================================== */
+
+.admin-orders-filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-orders-filter-controls select {
+  min-width: 160px;
+
+  padding: 11px 35px 11px 12px;
+
+  border: 1px solid #d3c9bb;
+
+  background: #faf7f1;
+
+  color: #383229;
+
+  font: inherit;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   LIMPIAR
+========================================== */
+
+.admin-orders-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 11px 14px;
+
+  border: 1px solid #c7b89a;
+
+  background: transparent;
+
+  color: #4f473d;
+
+  font: inherit;
+  font-size: 0.82rem;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.admin-orders-clear:hover {
+  background: #f2ece1;
+  border-color: #a89470;
+}
+
+
+/* ==========================================
+   RESULTADOS
+========================================== */
+
+.admin-orders-results {
+  margin-bottom: 18px;
+
+  color: #777064;
+
+  font-size: 0.83rem;
+}
+
+.admin-orders-results strong {
+  color: #332e27;
+}
+
+.admin-orders-results span {
+  color: #9b9389;
+}
+
+
+/* ==========================================
+   SIN RESULTADOS
+========================================== */
+
+.admin-orders-empty-button {
+  margin-top: 12px;
+
+  padding: 10px 16px;
+
+  border: 1px solid #b7a580;
+
+  background: #f6f0e6;
+
+  color: #40382e;
+
+  font: inherit;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 950px) {
+
+  .admin-orders-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-orders-search {
+    max-width: none;
+  }
+
+  .admin-orders-filter-controls {
+    flex-wrap: wrap;
+  }
+
+  .admin-orders-filter-controls select {
+    flex: 1;
+    min-width: 180px;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .admin-orders-filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-orders-filter-controls select,
+  .admin-orders-clear {
+    width: 100%;
+  }
+}

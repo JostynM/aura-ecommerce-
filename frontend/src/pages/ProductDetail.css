@@ -1,0 +1,324 @@
+.product-detail-page {
+  min-height: 100vh;
+
+  background-color: #f8f7f4;
+
+  color: #1d1c1a;
+}
+
+.product-breadcrumb {
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 30px 60px;
+
+  display: flex;
+  gap: 10px;
+
+  font-size: 11px;
+
+  color: #817a70;
+}
+
+.product-breadcrumb a {
+  text-decoration: none;
+}
+
+.product-detail-main {
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 25px 60px 100px;
+
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+
+  gap: 90px;
+
+  align-items: center;
+}
+
+.product-detail-image {
+  min-height: 620px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #eeebe6;
+}
+
+.product-detail-image img {
+  max-width: 70%;
+  max-height: 520px;
+
+  object-fit: contain;
+}
+
+.product-detail-info {
+  max-width: 520px;
+}
+
+.detail-brand {
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 3px;
+
+  color: #80776c;
+}
+
+.product-detail-info h1 {
+  margin-top: 12px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 49px;
+  line-height: 1.05;
+
+  font-weight: 400;
+}
+
+.detail-rating {
+  margin-top: 18px;
+
+  font-size: 13px;
+
+  color: #776d5f;
+}
+
+.detail-rating span {
+  color: #918a80;
+}
+
+.detail-price {
+  margin-top: 24px;
+
+  font-size: 24px;
+}
+
+.detail-description {
+  margin-top: 26px;
+
+  line-height: 1.8;
+
+  font-size: 14px;
+
+  color: #625d56;
+}
+
+.detail-size {
+  margin-top: 30px;
+}
+
+.detail-size > span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+}
+
+.detail-size button {
+  padding: 11px 20px;
+
+  border: 1px solid #1d1c1a;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.detail-stock {
+  margin-top: 18px;
+
+  font-size: 12px;
+
+  color: #66705c;
+}
+
+.out-of-stock {
+  color: #9d554d;
+}
+
+.detail-purchase {
+  margin-top: 30px;
+
+  display: flex;
+
+  gap: 12px;
+}
+
+.quantity-selector {
+  height: 50px;
+
+  border: 1px solid #d0cbc4;
+
+  display: flex;
+  align-items: center;
+}
+
+.quantity-selector button {
+  width: 42px;
+  height: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.quantity-selector span {
+  width: 35px;
+
+  text-align: center;
+
+  font-size: 13px;
+}
+
+.detail-add-cart {
+  flex: 1;
+
+  border: none;
+
+  background-color: #1d1c1a;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.3px;
+
+  cursor: pointer;
+}
+
+.detail-add-cart:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+.detail-favorite {
+  margin-top: 15px;
+
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.olfactory-section {
+  padding: 100px 60px;
+
+  background-color: #ebe6df;
+}
+
+.olfactory-heading {
+  max-width: 1280px;
+
+  margin: 0 auto 50px;
+}
+
+.olfactory-heading > span {
+  font-size: 10px;
+
+  letter-spacing: 3px;
+
+  color: #81786d;
+}
+
+.olfactory-heading h2 {
+  margin-top: 10px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 44px;
+
+  font-weight: 400;
+}
+
+.olfactory-grid {
+  max-width: 1280px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 40px;
+}
+
+.olfactory-grid > div {
+  padding-top: 25px;
+
+  border-top: 1px solid #c9c2b8;
+}
+
+.note-number {
+  font-size: 10px;
+
+  color: #9a8f81;
+}
+
+.olfactory-grid h3 {
+  margin: 14px 0 18px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 24px;
+
+  font-weight: 400;
+}
+
+.olfactory-grid p {
+  margin-bottom: 7px;
+
+  font-size: 13px;
+
+  color: #645e56;
+}
+
+.product-not-found {
+  min-height: 70vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .product-detail-main {
+    grid-template-columns: 1fr;
+  }
+
+  .olfactory-grid {
+    grid-template-columns: 1fr;
+  }
+}

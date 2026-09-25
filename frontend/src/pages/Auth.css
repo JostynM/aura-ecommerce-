@@ -1,0 +1,722 @@
+.auth-page {
+  min-height: 720px;
+
+  padding: 80px 25px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ebe7e1,
+      #f7f5f2
+    );
+}
+
+
+.auth-panel {
+  width: 100%;
+
+  max-width: 1050px;
+
+  display: grid;
+
+  grid-template-columns:
+    0.85fr 1.15fr;
+
+  background-color: #f8f7f4;
+
+  box-shadow:
+    0 25px 70px
+    rgba(43, 38, 32, 0.08);
+}
+
+
+.auth-login {
+  max-width: 950px;
+}
+
+
+/* ==========================================
+   PANEL DE MARCA
+========================================== */
+
+.auth-brand {
+  padding: 70px 55px;
+
+  background-color: #1d1c1a;
+
+  color: #f5f2ed;
+}
+
+
+.auth-brand > span {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 18px;
+
+  letter-spacing: 6px;
+}
+
+
+.auth-brand h1 {
+  margin-top: 90px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 47px;
+
+  line-height: 1.05;
+
+  font-weight: 400;
+}
+
+
+.auth-brand p {
+  margin-top: 22px;
+
+  max-width: 330px;
+
+  font-size: 13px;
+
+  line-height: 1.8;
+
+  color: #c9c3ba;
+}
+
+
+/* ==========================================
+   FORMULARIO
+========================================== */
+
+.auth-form {
+  padding: 60px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+
+.auth-form-title {
+  margin-bottom: 32px;
+}
+
+
+.auth-form-title > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  color: #9b8563;
+}
+
+
+.auth-form-title h2 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 32px;
+
+  font-weight: 400;
+
+  color: #1d1c1a;
+}
+
+
+.auth-form-title p {
+  margin-top: 8px;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  color: #777068;
+}
+
+
+/* ==========================================
+   FILAS
+========================================== */
+
+.auth-row {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 18px;
+}
+
+
+/* ==========================================
+   CAMPOS
+========================================== */
+
+.auth-field {
+  margin-bottom: 22px;
+}
+
+
+.auth-field label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  color: #615b54;
+}
+
+
+.auth-field input {
+  box-sizing: border-box;
+
+  width: 100%;
+
+  height: 48px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d7d2ca;
+
+  background-color: transparent;
+
+  color: #1d1c1a;
+
+  outline: none;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.25s,
+    background-color 0.25s;
+}
+
+
+.auth-field input:focus {
+  border-color: #8e7b60;
+
+  background-color: #ffffff;
+}
+
+
+/* ==========================================
+   CONTRASEÑA
+========================================== */
+
+.password-input {
+  position: relative;
+}
+
+
+.password-input input {
+  padding-right: 50px;
+}
+
+
+.password-input button {
+  position: absolute;
+
+  top: 50%;
+
+  right: 14px;
+
+  transform: translateY(-50%);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #6f6961;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   LABEL ROW
+========================================== */
+
+.auth-label-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+.auth-label-row a {
+  margin-bottom: 9px;
+
+  font-size: 11px;
+
+  color: #746b60;
+}
+
+
+/* ==========================================
+   CHECKBOX
+========================================== */
+
+.auth-checkbox {
+  margin-top: 3px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+  color: #6d675f;
+}
+
+
+.auth-checkbox input {
+  margin-top: 2px;
+
+  accent-color: #8e7b60;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.auth-error {
+  margin-top: 18px;
+
+  padding: 12px;
+
+  background-color: #f2e5e2;
+
+  color: #8b4c45;
+
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   SUCCESS
+========================================== */
+
+.auth-success {
+  margin-top: 18px;
+
+  padding: 12px;
+
+  background-color: #e8efe5;
+
+  color: #557153;
+
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   BOTÓN
+========================================== */
+
+.auth-submit {
+  width: 100%;
+
+  height: 50px;
+
+  margin-top: 25px;
+
+  border: none;
+
+  background-color: #1d1c1a;
+
+  color: #ffffff;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.4px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
+}
+
+
+.auth-submit:hover {
+  background-color: #37332f;
+}
+
+
+.auth-submit:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   CAMBIAR LOGIN / REGISTRO
+========================================== */
+
+.auth-switch {
+  margin-top: 22px;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  color: #746e65;
+}
+
+
+.auth-switch a {
+  margin-left: 6px;
+
+  color: #1d1c1a;
+
+  font-weight: 500;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 800px) {
+
+  .auth-panel {
+    grid-template-columns: 1fr;
+  }
+
+
+  .auth-brand {
+    padding: 45px 35px;
+  }
+
+
+  .auth-brand h1 {
+    margin-top: 45px;
+
+    font-size: 38px;
+  }
+
+
+  .auth-form {
+    padding: 45px 35px;
+  }
+
+}
+
+
+@media (max-width: 550px) {
+
+  .auth-page {
+    padding:
+      40px 15px
+      70px;
+  }
+
+
+  .auth-row {
+    grid-template-columns: 1fr;
+  }
+
+
+  .auth-form {
+    padding: 35px 24px;
+  }
+
+}
+/* ==========================================
+   CONFIRMACIÓN DE REGISTRO
+========================================== */
+
+.auth-verification-panel {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    55px 50px;
+
+  text-align: center;
+}
+
+
+.auth-verification-icon {
+  width: 70px;
+  height: 70px;
+
+  margin-bottom: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    #f1f5ee;
+
+  color:
+    #66765f;
+}
+
+
+.auth-verification-label {
+  margin-bottom: 12px;
+
+  color:
+    #9a8261;
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+}
+
+
+.auth-verification-panel h2 {
+  margin:
+    0 0
+    18px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 30px;
+
+  font-weight: 400;
+
+  color:
+    #28231e;
+}
+
+
+.auth-verification-panel > p {
+  margin:
+    0 0
+    9px;
+
+  color:
+    #736b61;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+.auth-verification-email {
+  margin-bottom: 25px;
+
+  color:
+    #28231e;
+
+  font-size: 14px;
+}
+
+
+.auth-verification-note {
+  width: 100%;
+
+  margin-bottom: 25px;
+
+  padding:
+    15px 17px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  border:
+    1px solid #d8e1d4;
+
+  background:
+    #f7faf5;
+
+  color:
+    #64715f;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  text-align: left;
+}
+
+
+.auth-verification-login {
+  margin-top: 18px;
+
+  color:
+    #796b58;
+
+  font-size: 13px;
+
+  text-decoration: none;
+}
+
+
+.auth-verification-login:hover {
+  text-decoration: underline;
+}
+
+
+.auth-verification-help {
+  margin-top: 25px !important;
+
+  color:
+    #9a9185 !important;
+
+  font-size:
+    11px !important;
+}
+
+
+/* ==========================================
+   LOGIN SIN VERIFICAR
+========================================== */
+
+.auth-verification-warning {
+  margin-bottom: 20px;
+
+  padding:
+    18px;
+
+  border:
+    1px solid #dfd2b7;
+
+  background:
+    #fdfaf3;
+}
+
+
+.auth-verification-warning-title {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 9px;
+
+  color:
+    #7c6745;
+}
+
+
+.auth-verification-warning-title strong {
+  font-size: 13px;
+
+  font-weight: 500;
+}
+
+
+.auth-verification-warning p {
+  margin:
+    0 0
+    13px;
+
+  color:
+    #786f63;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+.auth-verification-warning button {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color:
+    #705b3d;
+
+  font-size: 12px;
+
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
+
+.auth-verification-warning button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+.auth-verification-warning small {
+  display: block;
+
+  margin-top: 12px;
+
+  color:
+    #62715d;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 700px) {
+
+  .auth-verification-panel {
+    padding:
+      42px 25px;
+  }
+
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pedido despachado - AURA</title>
+</head>
+
+<body
+    style="
+        margin: 0;
+        padding: 0;
+        background-color: #f4f1eb;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #26231f;
+    "
+>
+
+    <div
+        style="
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        "
+    >
+
+        <div
+            style="
+                background-color: #ffffff;
+                padding: 48px 40px;
+                border-radius: 6px;
+            "
+        >
+
+            <h1
+                style="
+                    margin: 0 0 35px;
+                    text-align: center;
+                    font-family: Georgia, serif;
+                    font-size: 32px;
+                    font-weight: normal;
+                    letter-spacing: 8px;
+                    color: #211f1c;
+                "
+            >
+                AURA
+            </h1>
+
+            <p
+                style="
+                    margin-bottom: 18px;
+                    font-size: 16px;
+                    line-height: 1.7;
+                "
+            >
+                Hola {{ first_name }},
+            </p>
+
+            <h2
+                style="
+                    margin: 0 0 20px;
+                    font-family: Georgia, serif;
+                    font-size: 25px;
+                    font-weight: normal;
+                "
+            >
+                Tu pedido fue despachado
+            </h2>
+
+            <p
+                style="
+                    font-size: 16px;
+                    line-height: 1.7;
+                "
+            >
+                Tu pedido
+                <strong>{{ order_number }}</strong>
+                ya fue preparado y despachado.
+            </p>
+
+            <p
+                style="
+                    font-size: 16px;
+                    line-height: 1.7;
+                "
+            >
+                La entrega se realizará en la dirección
+                registrada durante tu compra.
+            </p>
+
+            <div
+                style="
+                    margin: 32px 0;
+                    padding: 20px;
+                    background-color: #f7f5f1;
+                    border-left: 3px solid #8f7653;
+                "
+            >
+
+                <span
+                    style="
+                        display: block;
+                        margin-bottom: 6px;
+                        font-size: 12px;
+                        letter-spacing: 2px;
+                        color: #746d64;
+                    "
+                >
+                    PEDIDO
+                </span>
+
+                <strong
+                    style="
+                        font-size: 17px;
+                    "
+                >
+                    {{ order_number }}
+                </strong>
+
+            </div>
+
+            <div
+                style="
+                    text-align: center;
+                    margin-top: 35px;
+                "
+            >
+
+                <a
+                    href="{{ account_url }}"
+                    style="
+                        display: inline-block;
+                        padding: 14px 28px;
+                        background-color: #27231f;
+                        color: #ffffff;
+                        text-decoration: none;
+                        font-size: 14px;
+                        letter-spacing: 1px;
+                    "
+                >
+                    VER MI PEDIDO
+                </a>
+
+            </div>
+
+            <p
+                style="
+                    margin-top: 40px;
+                    font-size: 13px;
+                    line-height: 1.6;
+                    color: #777068;
+                    text-align: center;
+                "
+            >
+                Este correo confirma que tu pedido fue despachado.
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
