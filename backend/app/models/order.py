@@ -1,18 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
+from uuid import uuid4
 
-from sqlalchemy import (
-    DateTime,
-    ForeignKey,
-    Index,
-    Numeric,
-    String,
-    func,
-)
-from sqlalchemy.orm import (
-    Mapped,
-    mapped_column,
-)
+from sqlalchemy import DateTime, ForeignKey, Index, Numeric, String, func
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
 
@@ -25,6 +16,31 @@ class Order(Base):
             "ix_orders_stock_reservation",
             "stock_status",
             "stock_reserved_until",
+        ),
+        Index(
+            "ix_orders_payment_idempotency_key",
+            "payment_idempotency_key",
+            unique=True,
+        ),
+        Index(
+            "ix_orders_mercado_pago_order_id",
+            "mercado_pago_order_id",
+            unique=True,
+        ),
+        Index(
+            "ix_orders_mercado_pago_payment_id",
+            "mercado_pago_payment_id",
+            unique=True,
+        ),
+        Index(
+            "ix_orders_refund_idempotency_key",
+            "refund_idempotency_key",
+            unique=True,
+        ),
+        Index(
+            "ix_orders_mercado_pago_refund_id",
+            "mercado_pago_refund_id",
+            unique=True,
         ),
     )
 
@@ -76,7 +92,7 @@ class Order(Base):
     )
 
     # ==========================================
-    # ESTADO DEL PAGO
+    # PAGO
     # ==========================================
 
     payment_status: Mapped[str] = mapped_column(
@@ -85,19 +101,44 @@ class Order(Base):
         nullable=False,
     )
 
+    payment_idempotency_key: Mapped[str | None] = mapped_column(
+        String(100),
+        default=lambda: uuid4().hex,
+        nullable=True,
+    )
+
+    mercado_pago_order_id: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    mercado_pago_payment_id: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
     # ==========================================
-    # ESTADO DE LA RESERVA DE STOCK
+    # REEMBOLSO
     # ==========================================
-    #
-    # reserved:
-    #   El stock está separado temporalmente.
-    #
-    # committed:
-    #   El pago fue aprobado y el stock ya
-    #   representa una venta definitiva.
-    #
-    # released:
-    #   El stock ya fue devuelto.
+
+    refund_idempotency_key: Mapped[str | None] = mapped_column(
+        String(100),
+        default=lambda: uuid4().hex,
+        nullable=True,
+    )
+
+    mercado_pago_refund_id: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    refunded_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
+    # ==========================================
+    # RESERVA DE STOCK
     # ==========================================
 
     stock_status: Mapped[str] = mapped_column(
@@ -107,17 +148,7 @@ class Order(Base):
         nullable=False,
     )
 
-    # Fecha límite de la reserva.
-    #
-    # Ejemplo:
-    # pedido creado 20:00
-    # reserva hasta 20:15
-    #
-    # En pedidos antiguos puede ser NULL.
-
-    stock_reserved_until: Mapped[
-        datetime | None
-    ] = mapped_column(
+    stock_reserved_until: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
     )
@@ -125,29 +156,8 @@ class Order(Base):
     # ==========================================
     # PROCESAMIENTO PROGRAMADO
     # ==========================================
-    #
-    # Guarda la fecha y hora desde la que
-    # el pedido puede empezar a procesarse.
-    #
-    # Ejemplo:
-    #
-    # Compra:
-    # domingo 22:00
-    #
-    # scheduled_processing_at:
-    # lunes 09:00
-    #
-    # IMPORTANTE:
-    # Esto NO cambia automáticamente el pedido
-    # a "processing".
-    #
-    # El administrador seguirá iniciando
-    # manualmente la preparación.
-    # ==========================================
 
-    scheduled_processing_at: Mapped[
-        datetime | None
-    ] = mapped_column(
+    scheduled_processing_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
         index=True,

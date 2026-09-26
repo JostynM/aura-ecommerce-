@@ -1,16 +1,9 @@
 import os
-
 from pathlib import Path
 
 import resend
-
 from dotenv import load_dotenv
-
-from jinja2 import (
-    Environment,
-    FileSystemLoader,
-    select_autoescape,
-)
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 # ==========================================
@@ -19,14 +12,11 @@ from jinja2 import (
 
 load_dotenv()
 
-
 RESEND_API_KEY = os.getenv(
     "RESEND_API_KEY"
 )
 
-
 if not RESEND_API_KEY:
-
     raise ValueError(
         "RESEND_API_KEY no está configurada "
         "en el archivo .env"
@@ -60,7 +50,6 @@ BASE_DIR = (
     .parent
 )
 
-
 EMAIL_TEMPLATE_DIR = (
     BASE_DIR
     / "templates"
@@ -73,11 +62,9 @@ EMAIL_TEMPLATE_DIR = (
 # ==========================================
 
 template_environment = Environment(
-
     loader=FileSystemLoader(
         EMAIL_TEMPLATE_DIR
     ),
-
     autoescape=select_autoescape(
         [
             "html",
@@ -95,7 +82,6 @@ def render_email_template(
     template_name: str,
     **context,
 ) -> str:
-
     template = (
         template_environment
         .get_template(
@@ -117,36 +103,23 @@ def send_verification_email(
     first_name: str,
     verification_url: str,
 ):
-
     html_content = (
         render_email_template(
             "verify_email.html",
-
-            first_name=
-                first_name,
-
-            verification_url=
-                verification_url,
+            first_name=first_name,
+            verification_url=verification_url,
         )
     )
 
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject":
             "Verifica tu correo electrónico - AURA",
-
-        "html":
-            html_content,
+        "html": html_content,
     }
-
 
     return resend.Emails.send(
         params
@@ -162,36 +135,23 @@ def send_welcome_email(
     first_name: str,
     shop_url: str,
 ):
-
     html_content = (
         render_email_template(
             "welcome.html",
-
-            first_name=
-                first_name,
-
-            shop_url=
-                shop_url,
+            first_name=first_name,
+            shop_url=shop_url,
         )
     )
 
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject":
             "Bienvenido a AURA",
-
-        "html":
-            html_content,
+        "html": html_content,
     }
-
 
     return resend.Emails.send(
         params
@@ -207,36 +167,23 @@ def send_password_reset_email(
     first_name: str,
     reset_url: str,
 ):
-
     html_content = (
         render_email_template(
             "reset_password.html",
-
-            first_name=
-                first_name,
-
-            reset_url=
-                reset_url,
+            first_name=first_name,
+            reset_url=reset_url,
         )
     )
 
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject":
             "Restablece tu contraseña - AURA",
-
-        "html":
-            html_content,
+        "html": html_content,
     }
-
 
     return resend.Emails.send(
         params
@@ -251,33 +198,22 @@ def send_password_changed_email(
     recipient_email: str,
     first_name: str,
 ):
-
     html_content = (
         render_email_template(
             "password_changed.html",
-
-            first_name=
-                first_name,
+            first_name=first_name,
         )
     )
 
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject":
             "Tu contraseña fue actualizada - AURA",
-
-        "html":
-            html_content,
+        "html": html_content,
     }
-
 
     return resend.Emails.send(
         params
@@ -295,44 +231,65 @@ def send_payment_approved_email(
     total: str,
     account_url: str,
 ):
-
     html_content = (
         render_email_template(
             "payment_approved.html",
-
-            first_name=
-                first_name,
-
-            order_number=
-                order_number,
-
-            total=
-                total,
-
-            account_url=
-                account_url,
+            first_name=first_name,
+            order_number=order_number,
+            total=total,
+            account_url=account_url,
         )
     )
 
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject": (
             f"Compra confirmada "
             f"{order_number} - AURA"
         ),
-
-        "html":
-            html_content,
+        "html": html_content,
     }
 
+    return resend.Emails.send(
+        params
+    )
+
+
+# ==========================================
+# REEMBOLSO CONFIRMADO
+# ==========================================
+
+def send_payment_refunded_email(
+    recipient_email: str,
+    first_name: str,
+    order_number: str,
+    total: str,
+    account_url: str,
+):
+    html_content = (
+        render_email_template(
+            "payment_refunded.html",
+            first_name=first_name,
+            order_number=order_number,
+            total=total,
+            account_url=account_url,
+        )
+    )
+
+    params: resend.Emails.SendParams = {
+        "from": EMAIL_FROM,
+        "to": [
+            recipient_email
+        ],
+        "subject": (
+            f"Reembolso procesado "
+            f"{order_number} - AURA"
+        ),
+        "html": html_content,
+    }
 
     return resend.Emails.send(
         params
@@ -349,41 +306,26 @@ def send_order_shipped_email(
     order_number: str,
     account_url: str,
 ):
-
     html_content = (
         render_email_template(
             "order_shipped.html",
-
-            first_name=
-                first_name,
-
-            order_number=
-                order_number,
-
-            account_url=
-                account_url,
+            first_name=first_name,
+            order_number=order_number,
+            account_url=account_url,
         )
     )
 
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject": (
             f"Tu pedido {order_number} "
             f"fue despachado - AURA"
         ),
-
-        "html":
-            html_content,
+        "html": html_content,
     }
-
 
     return resend.Emails.send(
         params
@@ -400,41 +342,26 @@ def send_order_delivered_email(
     order_number: str,
     account_url: str,
 ):
-
     html_content = (
         render_email_template(
             "order_delivered.html",
-
-            first_name=
-                first_name,
-
-            order_number=
-                order_number,
-
-            account_url=
-                account_url,
+            first_name=first_name,
+            order_number=order_number,
+            account_url=account_url,
         )
     )
 
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject": (
             f"Tu pedido {order_number} "
             f"fue entregado - AURA"
         ),
-
-        "html":
-            html_content,
+        "html": html_content,
     }
-
 
     return resend.Emails.send(
         params
@@ -448,19 +375,13 @@ def send_order_delivered_email(
 def send_test_email(
     recipient_email: str,
 ):
-
     params: resend.Emails.SendParams = {
-
-        "from":
-            EMAIL_FROM,
-
+        "from": EMAIL_FROM,
         "to": [
             recipient_email
         ],
-
         "subject":
             "Prueba de correo - AURA",
-
         "html": """
         <div
             style="
@@ -471,7 +392,6 @@ def send_test_email(
                 background: #f8f7f4;
             "
         >
-
             <h1
                 style="
                     text-align: center;
@@ -487,11 +407,9 @@ def send_test_email(
                 FastAPI y Resend están
                 correctamente conectados.
             </p>
-
         </div>
         """,
     }
-
 
     return resend.Emails.send(
         params

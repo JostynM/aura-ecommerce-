@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reembolso procesado - AURA</title>
+</head>
+
+<body style="
+    margin: 0;
+    padding: 0;
+    background: #f4f1ec;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1c1b19;
+">
+
+    <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        role="presentation"
+        style="
+            width: 100%;
+            background: #f4f1ec;
+            padding: 40px 16px;
+        "
+    >
+        <tr>
+            <td align="center">
+
+                <table
+                    width="100%"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="
+                        max-width: 620px;
+                        background: #ffffff;
+                        border: 1px solid #e3ddd4;
+                    "
+                >
+
+                    <!-- LOGO -->
+                    <tr>
+                        <td
+                            align="center"
+                            style="
+                                padding: 42px 30px 20px;
+                            "
+                        >
+                            <div style="
+                                font-family: Georgia, 'Times New Roman', serif;
+                                font-size: 30px;
+                                letter-spacing: 9px;
+                                color: #1c1b19;
+                            ">
+                                AURA
+                            </div>
+
+                            <div style="
+                                margin-top: 8px;
+                                font-size: 10px;
+                                letter-spacing: 3px;
+                                text-transform: uppercase;
+                                color: #9b8b76;
+                            ">
+                                Perfumería
+                            </div>
+                        </td>
+                    </tr>
+
+
+                    <!-- LÍNEA -->
+                    <tr>
+                        <td style="padding: 0 40px;">
+                            <div style="
+                                height: 1px;
+                                background: #e5dfd6;
+                            "></div>
+                        </td>
+                    </tr>
+
+
+                    <!-- CONTENIDO -->
+                    <tr>
+                        <td style="
+                            padding: 40px;
+                        ">
+
+                            <p style="
+                                margin: 0 0 12px;
+                                font-size: 11px;
+                                letter-spacing: 2px;
+                                text-transform: uppercase;
+                                color: #b39a73;
+                            ">
+                                Reembolso confirmado
+                            </p>
+
+                            <h1 style="
+                                margin: 0 0 24px;
+                                font-family: Georgia, 'Times New Roman', serif;
+                                font-size: 28px;
+                                font-weight: normal;
+                                line-height: 1.3;
+                                color: #1c1b19;
+                            ">
+                                Tu reembolso fue procesado
+                            </h1>
+
+                            <p style="
+                                margin: 0 0 18px;
+                                font-size: 15px;
+                                line-height: 1.7;
+                                color: #514b44;
+                            ">
+                                Hola {{ first_name }},
+                            </p>
+
+                            <p style="
+                                margin: 0 0 28px;
+                                font-size: 15px;
+                                line-height: 1.7;
+                                color: #514b44;
+                            ">
+                                Hemos procesado correctamente el reembolso
+                                correspondiente a tu pedido en AURA.
+                            </p>
+
+
+                            <!-- DETALLE -->
+                            <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                role="presentation"
+                                style="
+                                    border: 1px solid #ddd6cc;
+                                    background: #faf8f4;
+                                    margin-bottom: 30px;
+                                "
+                            >
+                                <tr>
+                                    <td style="
+                                        padding: 22px;
+                                    ">
+
+                                        <table
+                                            width="100%"
+                                            cellpadding="0"
+                                            cellspacing="0"
+                                            role="presentation"
+                                        >
+
+                                            <tr>
+                                                <td style="
+                                                    padding-bottom: 14px;
+                                                    font-size: 13px;
+                                                    color: #7b7165;
+                                                ">
+                                                    Pedido
+                                                </td>
+
+                                                <td
+                                                    align="right"
+                                                    style="
+                                                        padding-bottom: 14px;
+                                                        font-size: 14px;
+                                                        font-weight: bold;
+                                                        color: #1c1b19;
+                                                    "
+                                                >
+                                                    {{ order_number }}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="
+                                                    border-top: 1px solid #e5dfd6;
+                                                    padding-top: 14px;
+                                                    font-size: 13px;
+                                                    color: #7b7165;
+                                                ">
+                                                    Monto reembolsado
+                                                </td>
+
+                                                <td
+                                                    align="right"
+                                                    style="
+                                                        border-top: 1px solid #e5dfd6;
+                                                        padding-top: 14px;
+                                                        font-family: Georgia, 'Times New Roman', serif;
+                                                        font-size: 20px;
+                                                        font-weight: bold;
+                                                        color: #1c1b19;
+                                                    "
+                                                >
+                                                    S/ {{ total }}
+                                                </td>
+                                            </tr>
+
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <p style="
+                                margin: 0 0 28px;
+                                font-size: 14px;
+                                line-height: 1.7;
+                                color: #6c6359;
+                            ">
+                                El tiempo en que el dinero vuelva a reflejarse
+                                en tu medio de pago puede depender de Mercado Pago,
+                                el banco emisor o la entidad financiera.
+                            </p>
+
+
+                            <!-- BOTÓN -->
+                            <table
+                                cellpadding="0"
+                                cellspacing="0"
+                                role="presentation"
+                                style="
+                                    margin: 0 auto 30px;
+                                "
+                            >
+                                <tr>
+                                    <td
+                                        align="center"
+                                        style="
+                                            background: #1c1b19;
+                                        "
+                                    >
+                                        <a
+                                            href="{{ account_url }}"
+                                            style="
+                                                display: inline-block;
+                                                padding: 15px 28px;
+                                                color: #ffffff;
+                                                text-decoration: none;
+                                                font-size: 12px;
+                                                font-weight: bold;
+                                                letter-spacing: 1.5px;
+                                                text-transform: uppercase;
+                                            "
+                                        >
+                                            Ver mis pedidos
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <p style="
+                                margin: 0;
+                                font-size: 12px;
+                                line-height: 1.7;
+                                text-align: center;
+                                color: #94897d;
+                            ">
+                                Si tienes alguna consulta sobre tu reembolso,
+                                puedes comunicarte con el equipo de AURA.
+                            </p>
+
+                        </td>
+                    </tr>
+
+
+                    <!-- FOOTER -->
+                    <tr>
+                        <td
+                            align="center"
+                            style="
+                                padding: 28px 30px;
+                                background: #1c1b19;
+                            "
+                        >
+                            <div style="
+                                margin-bottom: 8px;
+                                font-family: Georgia, 'Times New Roman', serif;
+                                font-size: 18px;
+                                letter-spacing: 6px;
+                                color: #ffffff;
+                            ">
+                                AURA
+                            </div>
+
+                            <p style="
+                                margin: 0;
+                                font-size: 11px;
+                                line-height: 1.6;
+                                color: #bfb8af;
+                            ">
+                                Perfumes originales · Envíos a todo el Perú
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
