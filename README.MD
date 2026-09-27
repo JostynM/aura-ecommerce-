@@ -186,4 +186,4 @@ VITE_MERCADO_PAGO_PUBLIC_KEY
 
 **Jostyn Mendoza**
 
-GitHub: https://github.com/JostynM
+
