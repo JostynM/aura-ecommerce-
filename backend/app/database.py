@@ -12,11 +12,39 @@ from sqlalchemy.pool import NullPool
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL"
+)
 
 if not DATABASE_URL:
     raise ValueError(
-        "DATABASE_URL no está configurada en el archivo .env"
+        "DATABASE_URL no está configurada."
+    )
+
+
+# ==========================================
+# NORMALIZAR DRIVER POSTGRESQL
+# ==========================================
+
+# Si Render/Supabase entrega:
+#
+# postgresql://...
+#
+# SQLAlchemy intenta usar psycopg2.
+#
+# Como AURA utiliza psycopg 3,
+# convertimos automáticamente a:
+#
+# postgresql+psycopg://...
+#
+
+if DATABASE_URL.startswith(
+    "postgresql://"
+):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgresql://",
+        "postgresql+psycopg://",
+        1,
     )
 
 
@@ -25,7 +53,7 @@ if not DATABASE_URL:
 #
 # Supabase ya utiliza un pooler.
 # NullPool evita mantener un segundo
-# QueuePool dentro de FastAPI.
+# pool dentro de FastAPI.
 # ==========================================
 
 engine = create_engine(
@@ -51,7 +79,9 @@ SessionLocal = sessionmaker(
 # BASE DE LOS MODELOS
 # ==========================================
 
-class Base(DeclarativeBase):
+class Base(
+    DeclarativeBase
+):
     pass
 
 
@@ -64,5 +94,6 @@ def get_db():
 
     try:
         yield db
+
     finally:
         db.close()
