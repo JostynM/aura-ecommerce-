@@ -1,29 +1,54 @@
 import "./CatalogFilters.css";
 
+
 type CatalogFiltersProps = {
   selectedTypes: string[];
+
   selectedGenders: string[];
+
   selectedBrands: string[];
 
-  onTypeChange: (type: string) => void;
-  onGenderChange: (gender: string) => void;
-  onBrandChange: (brand: string) => void;
+  availableBrands: string[];
+
+  onTypeChange: (
+    type: string,
+  ) => void;
+
+  onGenderChange: (
+    gender: string,
+  ) => void;
+
+  onBrandChange: (
+    brand: string,
+  ) => void;
 
   onClear: () => void;
 };
+
 
 function CatalogFilters({
   selectedTypes,
   selectedGenders,
   selectedBrands,
+  availableBrands,
   onTypeChange,
   onGenderChange,
   onBrandChange,
   onClear,
 }: CatalogFiltersProps) {
 
+  const hasActiveFilters =
+    selectedTypes.length > 0 ||
+    selectedGenders.length > 0 ||
+    selectedBrands.length > 0;
+
+
   return (
     <aside className="catalog-filters">
+
+      {/* =====================================
+          CABECERA
+      ===================================== */}
 
       <div className="filters-title">
 
@@ -31,11 +56,24 @@ function CatalogFilters({
           Filtros
         </h3>
 
-        <button onClick={onClear}>
-          Limpiar
-        </button>
+
+        {hasActiveFilters && (
+
+          <button
+            type="button"
+            onClick={onClear}
+          >
+            Limpiar
+          </button>
+
+        )}
 
       </div>
+
+
+      {/* =====================================
+          TIPO
+      ===================================== */}
 
       <div className="filter-group">
 
@@ -43,31 +81,58 @@ function CatalogFilters({
           Tipo
         </h4>
 
+
         <label>
+
           <input
             type="checkbox"
-            checked={selectedTypes.includes("arabe")}
+            checked={
+              selectedTypes.includes(
+                "arabe",
+              )
+            }
             onChange={() =>
-              onTypeChange("arabe")
+              onTypeChange(
+                "arabe",
+              )
             }
           />
 
-          Árabe
+          <span>
+            Árabe
+          </span>
+
         </label>
 
+
         <label>
+
           <input
             type="checkbox"
-            checked={selectedTypes.includes("disenador")}
+            checked={
+              selectedTypes.includes(
+                "diseñador",
+              )
+            }
             onChange={() =>
-              onTypeChange("disenador")
+              onTypeChange(
+                "diseñador",
+              )
             }
           />
 
-          Diseñador
+          <span>
+            Diseñador
+          </span>
+
         </label>
 
       </div>
+
+
+      {/* =====================================
+          GÉNERO
+      ===================================== */}
 
       <div className="filter-group">
 
@@ -75,43 +140,81 @@ function CatalogFilters({
           Género
         </h4>
 
+
         <label>
+
           <input
             type="checkbox"
-            checked={selectedGenders.includes("hombre")}
+            checked={
+              selectedGenders.includes(
+                "hombre",
+              )
+            }
             onChange={() =>
-              onGenderChange("hombre")
+              onGenderChange(
+                "hombre",
+              )
             }
           />
 
-          Hombre
+          <span>
+            Hombre
+          </span>
+
         </label>
 
+
         <label>
+
           <input
             type="checkbox"
-            checked={selectedGenders.includes("mujer")}
+            checked={
+              selectedGenders.includes(
+                "mujer",
+              )
+            }
             onChange={() =>
-              onGenderChange("mujer")
+              onGenderChange(
+                "mujer",
+              )
             }
           />
 
-          Mujer
+          <span>
+            Mujer
+          </span>
+
         </label>
 
+
         <label>
+
           <input
             type="checkbox"
-            checked={selectedGenders.includes("unisex")}
+            checked={
+              selectedGenders.includes(
+                "unisex",
+              )
+            }
             onChange={() =>
-              onGenderChange("unisex")
+              onGenderChange(
+                "unisex",
+              )
             }
           />
 
-          Unisex
+          <span>
+            Unisex
+          </span>
+
         </label>
 
       </div>
+
+
+      {/* =====================================
+          MARCAS
+      ===================================== */}
 
       <div className="filter-group">
 
@@ -119,33 +222,52 @@ function CatalogFilters({
           Marca
         </h4>
 
-        {[
-          "Lattafa",
-          "Dior",
-          "Versace",
-          "Afnan",
-        ].map((brand) => (
 
-          <label key={brand}>
+        {availableBrands.length > 0 ? (
 
-            <input
-              type="checkbox"
-              checked={selectedBrands.includes(brand)}
-              onChange={() =>
-                onBrandChange(brand)
-              }
-            />
+          availableBrands.map(
+            (brand) => (
 
-            {brand}
+              <label
+                key={brand}
+              >
 
-          </label>
+                <input
+                  type="checkbox"
+                  checked={
+                    selectedBrands.includes(
+                      brand,
+                    )
+                  }
+                  onChange={() =>
+                    onBrandChange(
+                      brand,
+                    )
+                  }
+                />
 
-        ))}
+                <span>
+                  {brand}
+                </span>
+
+              </label>
+
+            ),
+          )
+
+        ) : (
+
+          <p className="filter-empty">
+            No hay marcas disponibles.
+          </p>
+
+        )}
 
       </div>
 
     </aside>
   );
 }
+
 
 export default CatalogFilters;

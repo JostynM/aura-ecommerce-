@@ -1,41 +1,153 @@
 import {
   useEffect,
+  useMemo,
   useState,
 } from "react";
+
+import {
+  useSearchParams,
+} from "react-router-dom";
 
 import CatalogFilters from "../components/CatalogFilters";
 import ProductCard from "../components/ProductCard";
 
-import { getProducts } from "../services/productService";
-import type { Product } from "../types/Product";
+import {
+  getProducts,
+} from "../services/productService";
+
+import type {
+  Product,
+} from "../types/Product";
 
 import "./Catalog.css";
 
+/* ==========================================
+   NORMALIZAR TIPO DE PERFUME
+========================================== */
+
+const normalizeType = (
+  value: string
+) => {
+  const normalized =
+    value
+      .trim()
+      .toLowerCase();
+
+  if (
+    normalized === "disenador" ||
+    normalized === "diseñador"
+  ) {
+    return "diseñador";
+  }
+
+  if (
+    normalized === "árabe" ||
+    normalized === "árabes" ||
+    normalized === "arabes"
+  ) {
+    return "arabe";
+  }
+
+  return normalized;
+};
+
+/* ==========================================
+   CATALOG
+========================================== */
 
 function Catalog() {
-  const [products, setProducts] =
-    useState<Product[]>([]);
+  /* ========================================
+     URL
+  ======================================== */
 
-  const [loading, setLoading] =
-    useState(true);
+  const [
+    searchParams,
+    setSearchParams,
+  ] = useSearchParams();
 
-  const [error, setError] =
-    useState("");
+  /* ========================================
+     PRODUCTOS
+  ======================================== */
 
-  const [selectedTypes, setSelectedTypes] =
-    useState<string[]>([]);
+  const [
+    products,
+    setProducts,
+  ] = useState<Product[]>([]);
 
-  const [selectedGenders, setSelectedGenders] =
-    useState<string[]>([]);
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
 
-  const [selectedBrands, setSelectedBrands] =
-    useState<string[]>([]);
+  const [
+    error,
+    setError,
+  ] = useState("");
 
-  const [sortBy, setSortBy] =
-    useState("popular");
+  /* ========================================
+     FILTROS DESDE URL
+  ======================================== */
 
+  const selectedTypes =
+    searchParams
+      .getAll("tipo")
+      .map(normalizeType);
+
+  const selectedGenders =
+    searchParams
+      .getAll("genero")
+      .map((value) =>
+        value
+          .trim()
+          .toLowerCase()
+      );
+
+  const selectedBrands =
+    searchParams.getAll(
+      "marca"
+    );
+
+  /* ========================================
+     ORDEN DESDE URL
+  ======================================== */
+
+  const orderParam =
+    searchParams.get(
+      "orden"
+    );
+
+  let sortBy =
+    "popular";
+
+  if (
+    orderParam === "nuevos"
+  ) {
+    sortBy =
+      "newest";
+  } else if (
+    orderParam === "price-low"
+  ) {
+    sortBy =
+      "price-low";
+  } else if (
+    orderParam === "price-high"
+  ) {
+    sortBy =
+      "price-high";
+  } else if (
+    orderParam === "rating"
+  ) {
+    sortBy =
+      "rating";
+  }
+
+  /* ========================================
+     CARGAR PRODUCTOS
+  ======================================== */
 
   useEffect(() => {
+    let active = true;
+
     async function loadProducts() {
       try {
         setLoading(true);
@@ -44,182 +156,571 @@ function Catalog() {
         const data =
           await getProducts();
 
-        setProducts(data);
+        if (!active) {
+          return;
+        }
 
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
+        setProducts(data);
+      } catch (requestError) {
+        if (!active) {
+          return;
+        }
+
+        if (
+          requestError instanceof Error
+        ) {
+          setError(
+            requestError.message
+          );
         } else {
           setError(
             "No se pudieron cargar los productos."
           );
         }
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     }
 
-    loadProducts();
+    void loadProducts();
 
+    return () => {
+      active = false;
+    };
   }, []);
 
+  /* ========================================
+     MARCAS DISPONIBLES
+  ======================================== */
+
+  const availableBrands =
+    useMemo(() => {
+      const brands =
+        products
+          .map(
+            (product) =>
+              product.brand
+          )
+          .filter(
+            (
+              brand,
+              index,
+              array
+            ) =>
+              array.indexOf(
+                brand
+              ) === index
+          )
+          .sort(
+            (a, b) =>
+              a.localeCompare(
+                b,
+                "es"
+              )
+          );
+
+      return brands;
+    }, [products]);
+
+  /* ========================================
+     CAMBIAR FILTRO MÚLTIPLE
+  ======================================== */
+
+  const toggleSearchParam = (
+    key: string,
+    value: string
+  ) => {
+    const nextParams =
+      new URLSearchParams(
+        searchParams
+      );
+
+    const currentValues =
+      nextParams.getAll(
+        key
+      );
+
+    const exists =
+      currentValues.includes(
+        value
+      );
+
+    nextParams.delete(
+      key
+    );
+
+    let newValues:
+      string[];
+
+    if (exists) {
+      newValues =
+        currentValues.filter(
+          (item) =>
+            item !== value
+        );
+    } else {
+      newValues = [
+        ...currentValues,
+        value,
+      ];
+    }
+
+    newValues.forEach(
+      (item) => {
+        nextParams.append(
+          key,
+          item
+        );
+      }
+    );
+
+    setSearchParams(
+      nextParams
+    );
+  };
+
+  /* ========================================
+     TIPO
+  ======================================== */
 
   const toggleType = (
     type: string
   ) => {
-    setSelectedTypes((current) =>
-      current.includes(type)
-        ? current.filter(
-            (item) => item !== type
-          )
-        : [...current, type]
+    toggleSearchParam(
+      "tipo",
+      normalizeType(
+        type
+      )
     );
   };
 
+  /* ========================================
+     GÉNERO
+  ======================================== */
 
   const toggleGender = (
     gender: string
   ) => {
-    setSelectedGenders((current) =>
-      current.includes(gender)
-        ? current.filter(
-            (item) => item !== gender
-          )
-        : [...current, gender]
+    toggleSearchParam(
+      "genero",
+      gender
+        .trim()
+        .toLowerCase()
     );
   };
 
+  /* ========================================
+     MARCA
+  ======================================== */
 
   const toggleBrand = (
     brand: string
   ) => {
-    setSelectedBrands((current) =>
-      current.includes(brand)
-        ? current.filter(
-            (item) => item !== brand
-          )
-        : [...current, brand]
+    toggleSearchParam(
+      "marca",
+      brand
     );
   };
 
+  /* ========================================
+     ORDEN
+  ======================================== */
+
+  const handleSortChange = (
+    value: string
+  ) => {
+    const nextParams =
+      new URLSearchParams(
+        searchParams
+      );
+
+    if (
+      value === "popular"
+    ) {
+      nextParams.delete(
+        "orden"
+      );
+    } else if (
+      value === "newest"
+    ) {
+      nextParams.set(
+        "orden",
+        "nuevos"
+      );
+    } else {
+      nextParams.set(
+        "orden",
+        value
+      );
+    }
+
+    setSearchParams(
+      nextParams
+    );
+  };
+
+  /* ========================================
+     LIMPIAR FILTROS
+  ======================================== */
 
   const clearFilters = () => {
-    setSelectedTypes([]);
-    setSelectedGenders([]);
-    setSelectedBrands([]);
+    setSearchParams({});
   };
 
+  /* ========================================
+     FILTRAR Y ORDENAR PRODUCTOS
+  ======================================== */
 
-  let filteredProducts =
-    products.filter((product) => {
+  const filteredProducts =
+    useMemo(() => {
+      const result =
+        products.filter(
+          (product) => {
+            /* ============================
+               TIPO
+            ============================ */
 
-      const typeMatches =
-        selectedTypes.length === 0 ||
-        selectedTypes.includes(
-          product.type
+            const productType =
+              normalizeType(
+                product.type
+              );
+
+            const typeMatches =
+              selectedTypes.length ===
+                0 ||
+              selectedTypes.includes(
+                productType
+              );
+
+            /* ============================
+               GÉNERO
+            ============================ */
+
+            const productGender =
+              product.gender
+                .trim()
+                .toLowerCase();
+
+            const genderMatches =
+              selectedGenders.length ===
+                0 ||
+              selectedGenders.includes(
+                productGender
+              );
+
+            /* ============================
+               MARCA
+            ============================ */
+
+            const brandMatches =
+              selectedBrands.length ===
+                0 ||
+              selectedBrands.includes(
+                product.brand
+              );
+
+            return (
+              typeMatches &&
+              genderMatches &&
+              brandMatches
+            );
+          }
         );
 
-      const genderMatches =
-        selectedGenders.length === 0 ||
-        selectedGenders.includes(
-          product.gender
-        );
+      /* ==================================
+         ORDEN
+      ================================== */
 
-      const brandMatches =
-        selectedBrands.length === 0 ||
-        selectedBrands.includes(
-          product.brand
-        );
+      return [
+        ...result,
+      ].sort(
+        (a, b) => {
+          /* ============================
+             NOVEDADES
+          ============================ */
 
-      return (
-        typeMatches &&
-        genderMatches &&
-        brandMatches
+          if (
+            sortBy ===
+            "newest"
+          ) {
+            return (
+              b.id -
+              a.id
+            );
+          }
+
+          /* ============================
+             PRECIO MENOR
+          ============================ */
+
+          if (
+            sortBy ===
+            "price-low"
+          ) {
+            return (
+              a.price -
+              b.price
+            );
+          }
+
+          /* ============================
+             PRECIO MAYOR
+          ============================ */
+
+          if (
+            sortBy ===
+            "price-high"
+          ) {
+            return (
+              b.price -
+              a.price
+            );
+          }
+
+          /* ============================
+             RATING
+          ============================ */
+
+          if (
+            sortBy ===
+            "rating"
+          ) {
+            return (
+              b.rating -
+              a.rating
+            );
+          }
+
+          return 0;
+        }
       );
-    });
+    }, [
+      products,
+      selectedTypes,
+      selectedGenders,
+      selectedBrands,
+      sortBy,
+    ]);
 
+  /* ========================================
+     TÍTULO DINÁMICO
+  ======================================== */
 
-  filteredProducts =
-    [...filteredProducts].sort(
-      (a, b) => {
+  let heroLabel =
+    "DESCUBRE AURA";
 
-        if (sortBy === "price-low") {
-          return a.price - b.price;
-        }
+  let heroTitle =
+    "Perfumes";
 
-        if (sortBy === "price-high") {
-          return b.price - a.price;
-        }
+  let heroDescription =
+    "Encuentra una fragancia que represente tu esencia.";
 
-        if (sortBy === "rating") {
-          return b.rating - a.rating;
-        }
+  /* ========================================
+     PERFUMERÍA ÁRABE
+  ======================================== */
 
-        return 0;
-      }
-    );
+  if (
+    selectedTypes.length ===
+      1 &&
+    selectedTypes[0] ===
+      "arabe"
+  ) {
+    heroLabel =
+      "PERFUMERÍA ÁRABE";
 
+    heroTitle =
+      "Perfumes Árabes";
+
+    heroDescription =
+      "Fragancias intensas, envolventes y llenas de carácter.";
+  }
+
+  /* ========================================
+     DISEÑADOR
+  ======================================== */
+
+  if (
+    selectedTypes.length ===
+      1 &&
+    selectedTypes[0] ===
+      "diseñador"
+  ) {
+    heroLabel =
+      "CASAS DE PERFUMERÍA";
+
+    heroTitle =
+      "Perfumes de Diseñador";
+
+    heroDescription =
+      "Descubre fragancias de casas reconocidas y encuentra tu próxima firma olfativa.";
+  }
+
+  /* ========================================
+     UNISEX
+  ======================================== */
+
+  if (
+    selectedGenders.length ===
+      1 &&
+    selectedGenders[0] ===
+      "unisex" &&
+    selectedTypes.length ===
+      0 &&
+    selectedBrands.length ===
+      0
+  ) {
+    heroLabel =
+      "SIN ETIQUETAS";
+
+    heroTitle =
+      "Perfumes Unisex";
+
+    heroDescription =
+      "Fragancias creadas para trascender etiquetas y adaptarse a cualquier estilo.";
+  }
+
+  /* ========================================
+     NOVEDADES
+  ======================================== */
+
+  if (
+    sortBy ===
+      "newest" &&
+    selectedTypes.length ===
+      0 &&
+    selectedGenders.length ===
+      0 &&
+    selectedBrands.length ===
+      0
+  ) {
+    heroLabel =
+      "RECIÉN LLEGADOS";
+
+    heroTitle =
+      "Novedades";
+
+    heroDescription =
+      "Descubre las últimas fragancias incorporadas al catálogo de AURA.";
+  }
+
+  /* ========================================
+     MARCA
+  ======================================== */
+
+  if (
+    selectedBrands.length ===
+      1 &&
+    selectedTypes.length ===
+      0 &&
+    selectedGenders.length ===
+      0
+  ) {
+    heroLabel =
+      "DESCUBRE LA MARCA";
+
+    heroTitle =
+      selectedBrands[0];
+
+    heroDescription =
+      `Explora las fragancias de ${selectedBrands[0]} disponibles en AURA.`;
+  }
 
   return (
     <main className="catalog-page">
+      {/* ====================================
+          HERO
+      ==================================== */}
 
       <section className="catalog-hero">
-
         <span>
-          DESCUBRE AURA
+          {heroLabel}
         </span>
 
         <h1>
-          Perfumes
+          {heroTitle}
         </h1>
 
         <p>
-          Encuentra una fragancia que
-          represente tu esencia.
+          {heroDescription}
         </p>
-
       </section>
 
+      {/* ====================================
+          CATÁLOGO
+      ==================================== */}
 
       <section className="catalog-container">
+        {/* ==================================
+            FILTROS
+        ================================== */}
 
         <CatalogFilters
-          selectedTypes={selectedTypes}
+          selectedTypes={
+            selectedTypes
+          }
           selectedGenders={
             selectedGenders
           }
           selectedBrands={
             selectedBrands
           }
-          onTypeChange={toggleType}
-          onGenderChange={toggleGender}
-          onBrandChange={toggleBrand}
-          onClear={clearFilters}
+          availableBrands={
+            availableBrands
+          }
+          onTypeChange={
+            toggleType
+          }
+          onGenderChange={
+            toggleGender
+          }
+          onBrandChange={
+            toggleBrand
+          }
+          onClear={
+            clearFilters
+          }
         />
 
+        {/* ==================================
+            PRODUCTOS
+        ================================== */}
 
         <div className="catalog-products">
+          {/* ================================
+              TOOLBAR
+          ================================ */}
 
           <div className="catalog-toolbar">
-
             <span>
-              {filteredProducts.length}
-              {" "}
-              productos
-            </span>
+              {
+                filteredProducts.length
+              }{" "}
 
+              {filteredProducts.length ===
+              1
+                ? "producto"
+                : "productos"}
+            </span>
 
             <select
               value={sortBy}
-              onChange={(event) =>
-                setSortBy(
+              onChange={(
+                event
+              ) =>
+                handleSortChange(
                   event.target.value
                 )
               }
+              aria-label="Ordenar productos"
             >
-
               <option value="popular">
                 Más vendidos
+              </option>
+
+              <option value="newest">
+                Novedades
               </option>
 
               <option value="price-low">
@@ -233,11 +734,12 @@ function Catalog() {
               <option value="rating">
                 Mejor valorados
               </option>
-
             </select>
-
           </div>
 
+          {/* ================================
+              LOADING
+          ================================ */}
 
           {loading && (
             <p className="catalog-message">
@@ -245,6 +747,9 @@ function Catalog() {
             </p>
           )}
 
+          {/* ================================
+              ERROR
+          ================================ */}
 
           {error && (
             <p className="catalog-error">
@@ -252,49 +757,58 @@ function Catalog() {
             </p>
           )}
 
+          {/* ================================
+              GRID
+          ================================ */}
 
-          {!loading && !error && (
-
-            <div className="catalog-grid">
-
-              {filteredProducts.length > 0 ? (
-
-                filteredProducts.map(
-                  (product) => (
-
-                    <ProductCard
-                      key={product.id}
-                      slug={product.slug}
-                      brand={product.brand}
-                      name={product.name}
-                      price={product.price}
-                      rating={product.rating}
-                      image={product.image}
-                    />
-
+          {!loading &&
+            !error && (
+              <div className="catalog-grid">
+                {filteredProducts.length >
+                0 ? (
+                  filteredProducts.map(
+                    (product) => (
+                      <ProductCard
+                        key={
+                          product.id
+                        }
+                        product={
+                          product
+                        }
+                      />
+                    )
                   )
-                )
+                ) : (
+                  <div className="catalog-empty">
+                    <span>
+                      AURA
+                    </span>
 
-              ) : (
+                    <h2>
+                      No encontramos perfumes
+                    </h2>
 
-                <p className="catalog-message">
-                  No encontramos perfumes
-                  con esos filtros.
-                </p>
+                    <p>
+                      Prueba eliminando alguno
+                      de los filtros seleccionados.
+                    </p>
 
-              )}
-
-            </div>
-
-          )}
-
+                    <button
+                      type="button"
+                      onClick={
+                        clearFilters
+                      }
+                    >
+                      Ver todos los perfumes
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
         </div>
-
       </section>
-
     </main>
   );
 }
-
 
 export default Catalog;

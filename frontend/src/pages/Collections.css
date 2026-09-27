@@ -1,0 +1,801 @@
+/* ==========================================
+   PÁGINA DE COLECCIONES
+========================================== */
+
+.collections-page {
+  min-height: 100vh;
+
+  background-color: #f8f7f4;
+
+  color: #1c1b19;
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.collections-hero {
+  padding:
+    110px
+    60px
+    100px;
+
+  background-color: #ebe6df;
+}
+
+
+.collections-hero-inner {
+  max-width: 1220px;
+
+  margin: 0 auto;
+}
+
+
+.collections-eyebrow {
+  display: block;
+
+  margin-bottom: 24px;
+
+  font-size: 9px;
+
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+
+  color: #81776a;
+}
+
+
+.collections-hero h1 {
+  max-width: 780px;
+
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    52px,
+    6vw,
+    82px
+  );
+
+  line-height: 0.98;
+
+  letter-spacing: -2px;
+
+  font-weight: 400;
+
+  color: #1c1b19;
+}
+
+
+.collections-hero p {
+  max-width: 520px;
+
+  margin:
+    34px
+    0
+    0;
+
+  font-size: 14px;
+
+  line-height: 1.85;
+
+  color: #686158;
+}
+
+
+/* ==========================================
+   SECCIÓN DE COLECCIONES
+========================================== */
+
+.collections-grid-section {
+  padding:
+    100px
+    60px
+    120px;
+
+  background-color: #f8f7f4;
+}
+
+
+/* ==========================================
+   GRID
+========================================== */
+
+.collections-grid {
+  max-width: 1220px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+/* ==========================================
+   TARJETAS
+========================================== */
+
+.collection-card {
+  min-height: 430px;
+
+  padding: 35px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border:
+    1px solid #d9d3ca;
+
+  color: #1c1b19;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+.collection-card:hover {
+  transform:
+    translateY(-4px);
+
+  border-color: #b7a383;
+
+  box-shadow:
+    0 15px 40px
+    rgba(
+      41,
+      36,
+      29,
+      0.08
+    );
+}
+
+
+/* ==========================================
+   DECORACIÓN CIRCULAR
+========================================== */
+
+.collection-card::before {
+  content: "";
+
+  width: 280px;
+
+  height: 280px;
+
+  position: absolute;
+
+  top: -145px;
+
+  right: -120px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        179,
+        154,
+        115,
+        0.18
+      ),
+      rgba(
+        179,
+        154,
+        115,
+        0
+      )
+    );
+
+  pointer-events: none;
+
+  transition:
+    transform 0.5s ease;
+}
+
+
+.collection-card:hover::before {
+  transform:
+    scale(1.2);
+}
+
+
+/* ==========================================
+   COLORES DE CADA COLECCIÓN
+========================================== */
+
+.collection-arabic {
+  background-color: #ded4c6;
+}
+
+
+.collection-designer {
+  background-color: #f0ede8;
+}
+
+
+.collection-men {
+  background-color: #d9d9d5;
+}
+
+
+.collection-women {
+  background-color: #ebe0dc;
+}
+
+
+.collection-unisex {
+  background-color: #e5e1d8;
+}
+
+
+/* ==========================================
+   TARJETA OSCURA
+========================================== */
+
+.collection-all {
+  background-color: #1c1b19;
+
+  border-color: #1c1b19;
+
+  color: #f4f1ec;
+}
+
+
+.collection-all:hover {
+  border-color: #b39a73;
+
+  box-shadow:
+    0 18px 45px
+    rgba(
+      0,
+      0,
+      0,
+      0.18
+    );
+}
+
+
+/* ==========================================
+   CABECERA DE TARJETA
+========================================== */
+
+.collection-card-top {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  color: #867c6e;
+}
+
+
+.collection-card-top svg {
+  color: #9d8b70;
+
+  transition:
+    transform 0.35s ease,
+    color 0.35s ease;
+}
+
+
+.collection-card:hover
+.collection-card-top svg {
+  transform:
+    rotate(12deg)
+    scale(1.08);
+
+  color: #8c7553;
+}
+
+
+.collection-all
+.collection-card-top {
+  color: #bba581;
+}
+
+
+.collection-all
+.collection-card-top svg {
+  color: #bba581;
+}
+
+
+.collection-all:hover
+.collection-card-top svg {
+  color: #d1b98f;
+}
+
+
+/* ==========================================
+   NÚMERO
+========================================== */
+
+.collection-number {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 14px;
+
+  color: #928677;
+}
+
+
+.collection-all
+.collection-number {
+  color: #b9a47f;
+}
+
+
+/* ==========================================
+   CONTENIDO
+========================================== */
+
+.collection-card-content {
+  max-width: 470px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* ==========================================
+   EYEBROW
+========================================== */
+
+.collection-eyebrow {
+  display: block;
+
+  margin-bottom: 16px;
+
+  font-size: 8px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  color: #81776a;
+}
+
+
+.collection-all
+.collection-eyebrow {
+  color: #9f9484;
+}
+
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.collection-card h2 {
+  margin: 0;
+
+  max-width: 100%;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    36px,
+    3.2vw,
+    51px
+  );
+
+  line-height: 1;
+
+  font-weight: 400;
+
+  letter-spacing: -1px;
+
+  color: #1c1b19;
+
+  transition:
+    color 0.3s ease;
+}
+
+
+/* IMPORTANTE:
+   evita que el título oscuro
+   desaparezca sobre la tarjeta negra.
+*/
+
+.collection-all h2 {
+  color: #f4f1ec;
+}
+
+
+/* ==========================================
+   DESCRIPCIÓN
+========================================== */
+
+.collection-card p {
+  max-width: 430px;
+
+  margin:
+    22px
+    0
+    0;
+
+  font-size: 12px;
+
+  line-height: 1.75;
+
+  color: #686158;
+}
+
+
+.collection-all p {
+  color: #b0a89e;
+}
+
+
+/* ==========================================
+   FOOTER DE TARJETA
+========================================== */
+
+.collection-card-footer {
+  padding-top: 24px;
+
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border-top:
+    1px solid
+    rgba(
+      70,
+      64,
+      56,
+      0.18
+    );
+}
+
+
+.collection-card-footer span {
+  font-size: 9px;
+
+  letter-spacing: 1.7px;
+
+  text-transform: uppercase;
+
+  color: #4f4942;
+}
+
+
+.collection-card-footer svg {
+  color: #514a42;
+
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+
+.collection-card:hover
+.collection-card-footer svg {
+  transform:
+    translateX(5px);
+
+  color: #8d7450;
+}
+
+
+/* ==========================================
+   FOOTER TARJETA OSCURA
+========================================== */
+
+.collection-all
+.collection-card-footer {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+}
+
+
+.collection-all
+.collection-card-footer span {
+  color: #c4bbb0;
+}
+
+
+.collection-all
+.collection-card-footer svg {
+  color: #c8ad82;
+}
+
+
+.collection-all:hover
+.collection-card-footer svg {
+  color: #e0c69c;
+}
+
+
+/* ==========================================
+   BLOQUE EDITORIAL FINAL
+========================================== */
+
+.collections-editorial {
+  min-height: 470px;
+
+  padding:
+    90px
+    max(
+      60px,
+      calc(
+        (100vw - 1220px) / 2
+      )
+    );
+
+  display: grid;
+
+  grid-template-columns:
+    0.3fr
+    1fr;
+
+  gap: 90px;
+
+  align-items: center;
+
+  background-color: #1c1b19;
+
+  color: #f3efe9;
+}
+
+
+/* ==========================================
+   LOGO EDITORIAL
+========================================== */
+
+.collections-editorial-logo {
+  align-self: start;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 22px;
+
+  letter-spacing: 9px;
+
+  color: #bda57f;
+}
+
+
+/* ==========================================
+   CONTENIDO EDITORIAL
+========================================== */
+
+.collections-editorial-content {
+  max-width: 700px;
+}
+
+
+.collections-editorial-content
+> span {
+  display: block;
+
+  margin-bottom: 22px;
+
+  font-size: 8px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  color: #9d9487;
+}
+
+
+.collections-editorial-content h2 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    42px,
+    4.4vw,
+    64px
+  );
+
+  line-height: 1.05;
+
+  font-weight: 400;
+
+  letter-spacing: -1px;
+
+  color: #f4f0ea;
+}
+
+
+/* ==========================================
+   LINK EDITORIAL
+========================================== */
+
+.collections-editorial-link {
+  margin-top: 38px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  color: #c2a67d;
+
+  text-decoration: none;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.7px;
+
+  font-size: 9px;
+
+  transition:
+    color 0.25s ease,
+    gap 0.25s ease;
+}
+
+
+.collections-editorial-link:hover {
+  color: #dfc59a;
+
+  gap: 16px;
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (
+  max-width: 1000px
+) {
+
+  .collections-hero {
+    padding:
+      85px
+      40px;
+  }
+
+
+  .collections-grid-section {
+    padding:
+      75px
+      40px
+      100px;
+  }
+
+
+  .collections-editorial {
+    padding:
+      80px
+      40px;
+  }
+
+}
+
+
+@media (
+  max-width: 900px
+) {
+
+  .collections-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .collection-card {
+    min-height: 360px;
+  }
+
+
+  .collections-editorial {
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+  }
+
+}
+
+
+/* ==========================================
+   MÓVIL
+========================================== */
+
+@media (
+  max-width: 600px
+) {
+
+  .collections-hero {
+    padding:
+      65px
+      20px;
+  }
+
+
+  .collections-hero h1 {
+    font-size: 50px;
+  }
+
+
+  .collections-grid-section {
+    padding:
+      45px
+      20px
+      70px;
+  }
+
+
+  .collection-card {
+    min-height: 330px;
+
+    padding: 27px;
+  }
+
+
+  .collection-card h2 {
+    font-size: 36px;
+  }
+
+
+  .collections-editorial {
+    min-height: auto;
+
+    padding:
+      70px
+      20px;
+
+    grid-template-columns: 1fr;
+  }
+
+}

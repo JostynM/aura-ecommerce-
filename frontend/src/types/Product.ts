@@ -6,12 +6,24 @@ export type Product = {
   name: string;
 
   price: number;
+
+  // ======================================
+  // RESEÑAS
+  // ======================================
+
   rating: number;
+  reviewCount: number;
 
   image: string;
 
-  type: "arabe" | "disenador";
-  gender: "hombre" | "mujer" | "unisex";
+  type:
+    | "arabe"
+    | "disenador";
+
+  gender:
+    | "hombre"
+    | "mujer"
+    | "unisex";
 
   stock: number;
   size: string;

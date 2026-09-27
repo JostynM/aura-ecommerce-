@@ -1,18 +1,26 @@
 .ai-section {
   max-width: 1400px;
-
   margin: 0 auto;
-
   padding: 20px 60px 110px;
 }
 
-.ai-content {
-  min-height: 430px;
 
-  padding: 70px;
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+========================================== */
+
+.ai-content {
+  min-height: 500px;
+
+  padding: 65px;
 
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+
+  grid-template-columns:
+    minmax(0, 0.9fr)
+    minmax(0, 1.1fr);
+
+  gap: 60px;
 
   align-items: center;
 
@@ -21,9 +29,15 @@
   color: #f4f1ec;
 }
 
+
+/* ==========================================
+   TEXTO
+========================================== */
+
 .ai-text {
-  max-width: 650px;
+  max-width: 570px;
 }
+
 
 .ai-label {
   font-size: 10px;
@@ -33,29 +47,47 @@
   color: #b7aa95;
 }
 
+
 .ai-text h2 {
   margin-top: 18px;
 
-  max-width: 600px;
+  max-width: 570px;
 
-  font-family: Georgia, "Times New Roman", serif;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 
-  font-size: 52px;
+  font-size: clamp(
+    40px,
+    4vw,
+    52px
+  );
+
   line-height: 1.05;
 
   font-weight: 400;
+
+  color: #f4f1ec;
 }
 
+
 .ai-text p {
-  max-width: 540px;
+  max-width: 520px;
 
   margin-top: 24px;
 
   font-size: 14px;
+
   line-height: 1.8;
 
   color: #c8c2b9;
 }
+
+
+/* ==========================================
+   BOTÓN PRINCIPAL
+========================================== */
 
 .ai-button {
   margin-top: 30px;
@@ -63,6 +95,7 @@
   padding: 15px 24px;
 
   display: inline-flex;
+
   align-items: center;
 
   gap: 12px;
@@ -81,8 +114,11 @@
 
   cursor: pointer;
 
-  transition: all 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
+
 
 .ai-button:hover {
   background-color: #b39a73;
@@ -90,36 +126,97 @@
   color: #1c1b19;
 }
 
-.ai-visual {
-  min-height: 250px;
+
+/* ==========================================
+   ESTADO ACTIVO
+========================================== */
+
+.ai-active-label {
+  margin-top: 30px;
 
   display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+
+  color: #bdb4a7;
+}
+
+
+.ai-active-dot {
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background-color: #b39a73;
+}
+
+
+/* ==========================================
+   VISUAL ORIGINAL
+========================================== */
+
+.ai-visual {
+  min-height: 280px;
+
+  display: flex;
+
   flex-direction: column;
 
   align-items: center;
+
   justify-content: center;
 
   gap: 20px;
 }
 
+
 .ai-orb {
   width: 120px;
+
   height: 120px;
 
   border-radius: 50%;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  border: 1px solid rgba(183, 170, 149, 0.4);
+  border: 1px solid
+    rgba(
+      183,
+      170,
+      149,
+      0.4
+    );
 
-  background: radial-gradient(
-    circle,
-    rgba(183, 154, 115, 0.25),
-    rgba(183, 154, 115, 0.05)
-  );
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        183,
+        154,
+        115,
+        0.25
+      ),
+      rgba(
+        183,
+        154,
+        115,
+        0.05
+      )
+    );
 }
+
 
 .ai-visual span {
   font-size: 11px;
@@ -129,25 +226,1059 @@
   color: #bdb4a7;
 }
 
-@media (max-width: 800px) {
+
+/* ==========================================
+   CHAT
+========================================== */
+
+.ai-chat {
+  width: 100%;
+
+  min-width: 0;
+
+  height: 600px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border: 1px solid
+    rgba(
+      183,
+      170,
+      149,
+      0.25
+    );
+
+  background-color: #22211f;
+}
+
+
+/* ==========================================
+   HEADER CHAT
+========================================== */
+
+.ai-chat-header {
+  padding: 17px 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  border-bottom: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+
+.ai-chat-avatar {
+  width: 36px;
+
+  height: 36px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  border: 1px solid
+    rgba(
+      183,
+      154,
+      115,
+      0.5
+    );
+
+  color: #c7ad83;
+}
+
+
+.ai-chat-header > div:last-child {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.ai-chat-header strong {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 15px;
+
+  font-weight: 400;
+
+  color: #f4f1ec;
+}
+
+
+.ai-chat-header span {
+  font-size: 10px;
+
+  letter-spacing: 0.8px;
+
+  color: #969087;
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.ai-chat-messages {
+  flex: 1;
+
+  padding: 22px 18px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 22px;
+
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #56514a
+    transparent;
+}
+
+
+.ai-message {
+  width: 100%;
+}
+
+
+.ai-message-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+}
+
+
+.ai-message-user .ai-message-row {
+  flex-direction: row-reverse;
+}
+
+
+.ai-message-icon {
+  width: 28px;
+
+  min-width: 28px;
+
+  height: 28px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  border: 1px solid
+    rgba(
+      183,
+      154,
+      115,
+      0.25
+    );
+
+  color: #bda57f;
+}
+
+
+.ai-message-content {
+  max-width: 78%;
+
+  padding: 11px 14px;
+
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+
+  background-color: #292825;
+
+  color: #f4f1ec;
+}
+
+
+.ai-message-user .ai-message-content {
+  background-color: #b39a73;
+
+  color: #171614;
+}
+
+
+.ai-message-content p {
+  margin: 0;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  color: inherit;
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.ai-typing {
+  min-height: 42px;
+
+  padding: 10px 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: #aaa297;
+
+  font-size: 11px;
+
+  background-color: #292825;
+}
+
+
+.ai-loading-icon {
+  animation:
+    ai-spin 0.9s linear infinite;
+}
+
+
+@keyframes ai-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ==========================================
+   PRODUCTOS
+========================================== */
+
+.ai-products {
+  margin-top: 14px;
+
+  margin-left: 38px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+}
+
+
+.ai-product-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  border: 1px solid
+    rgba(
+      183,
+      154,
+      115,
+      0.2
+    );
+
+  background-color: #262522;
+}
+
+
+.ai-product-image {
+  height: 110px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  background-color: #ede9e2;
+
+  color: #807666;
+}
+
+
+.ai-product-image img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+.ai-product-info {
+  padding: 12px;
+}
+
+
+.ai-product-brand {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 8px;
+
+  letter-spacing: 1.3px;
+
+  text-transform: uppercase;
+
+  color: #a89d8c;
+}
+
+
+.ai-product-info h3 {
+  min-height: 34px;
+
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 14px;
+
+  line-height: 1.2;
+
+  font-weight: 400;
+
+  color: #f4f1ec;
+}
+
+
+.ai-product-price {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #c5aa80;
+
+  font-size: 12px;
+}
+
+
+.ai-product-reason {
+  margin-top: 9px;
+
+  display: -webkit-box;
+
+  overflow: hidden;
+
+  -webkit-box-orient: vertical;
+
+  -webkit-line-clamp: 4;
+
+  font-size: 9px;
+
+  line-height: 1.55;
+
+  color: #aaa39a;
+}
+
+
+.ai-product-button {
+  margin-top: 10px;
+
+  padding: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #c6ac84;
+
+  cursor: pointer;
+
+  font-size: 9px;
+
+  letter-spacing: 0.7px;
+
+  text-transform: uppercase;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+.ai-product-button:hover {
+  color: #f4f1ec;
+}
+
+
+/* ==========================================
+   PROMPTS RÁPIDOS
+========================================== */
+
+.ai-quick-prompts {
+  padding:
+    0 18px 12px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+
+.ai-quick-prompts button {
+  padding: 7px 10px;
+
+  border: 1px solid
+    rgba(
+      183,
+      154,
+      115,
+      0.25
+    );
+
+  background-color: transparent;
+
+  color: #a8a097;
+
+  font-size: 9px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.ai-quick-prompts button:hover {
+  border-color: #b39a73;
+
+  color: #f4f1ec;
+}
+
+
+.ai-quick-prompts button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.5;
+}
+
+
+/* ==========================================
+   INPUT
+========================================== */
+
+.ai-chat-form {
+  padding: 14px;
+
+  display: flex;
+
+  gap: 8px;
+
+  border-top: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  background-color: #1f1e1c;
+}
+
+
+.ai-chat-form input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 43px;
+
+  padding: 0 14px;
+
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  outline: none;
+
+  background-color: #292825;
+
+  color: #f1eee9;
+
+  font-family: inherit;
+
+  font-size: 11px;
+}
+
+
+.ai-chat-form input::placeholder {
+  color: #777168;
+}
+
+
+.ai-chat-form input:focus {
+  border-color: #9d8766;
+}
+
+
+.ai-chat-form input:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.7;
+}
+
+
+.ai-chat-form button {
+  width: 43px;
+
+  min-width: 43px;
+
+  height: 43px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid #b39a73;
+
+  background-color: #b39a73;
+
+  color: #1c1b19;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.ai-chat-form button:hover:not(:disabled) {
+  background-color: #c5ad88;
+}
+
+
+.ai-chat-form button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.45;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.ai-chat-error {
+  margin-left: 38px;
+
+  padding: 10px 12px;
+
+  border: 1px solid
+    rgba(
+      190,
+      100,
+      100,
+      0.35
+    );
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+  color: #d3a4a4;
+}
+
+
+/* ==========================================
+   RESPONSIVE - TABLET
+========================================== */
+
+@media (
+  max-width: 1000px
+) {
+
   .ai-content {
+    padding: 50px 35px;
+
     grid-template-columns: 1fr;
 
-    padding: 50px 30px;
-
-    text-align: center;
+    gap: 40px;
   }
+
 
   .ai-text {
-    margin: 0 auto;
+    max-width: 650px;
   }
 
-  .ai-text p {
-    margin-left: auto;
-    margin-right: auto;
+
+  .ai-chat {
+    height: 620px;
   }
 
-  .ai-visual {
-    margin-top: 40px;
+}
+
+
+/* ==========================================
+   RESPONSIVE - MÓVIL
+========================================== */
+
+@media (
+  max-width: 800px
+) {
+
+  .ai-section {
+    padding:
+      20px
+      20px
+      70px;
+  }
+
+
+  .ai-content {
+    padding:
+      40px
+      20px;
+
+    text-align: left;
+  }
+
+
+  .ai-text h2 {
+    font-size: 39px;
+  }
+
+
+  .ai-products {
+    margin-left: 0;
+
+    grid-template-columns: 1fr;
+  }
+
+
+  .ai-product-card {
+    display: grid;
+
+    grid-template-columns:
+      100px
+      1fr;
+  }
+
+
+  .ai-product-image {
+    height: 100%;
+    min-height: 150px;
+  }
+
+
+  .ai-message-content {
+    max-width: 85%;
+  }
+
+
+  .ai-chat {
+    height: 650px;
+  }
+
+}
+/* ==========================================
+   HOME POLISH - AURA AI
+========================================== */
+
+.ai-section {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto;
+  padding: 0 24px;
+
+  box-sizing: border-box;
+}
+
+.ai-content {
+  min-height: 460px;
+
+  padding: 56px;
+
+  grid-template-columns:
+    minmax(0, 0.95fr)
+    minmax(0, 1.05fr);
+
+  gap: 48px;
+
+  box-shadow:
+    0 24px 55px
+    rgba(28, 27, 25, 0.1);
+}
+
+/* ==========================================
+   TEXTO
+========================================== */
+
+.ai-text {
+  animation:
+    aiTextEnter
+    0.7s
+    ease
+    both;
+}
+
+.ai-label {
+  color: #b39a73;
+
+  font-weight: 600;
+}
+
+.ai-text h2 {
+  margin-bottom: 0;
+}
+
+.ai-text p {
+  margin-bottom: 0;
+}
+
+/* ==========================================
+   BOTÓN
+========================================== */
+
+.ai-button {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    gap 0.25s ease;
+}
+
+.ai-button:hover {
+  gap: 16px;
+
+  transform:
+    translateY(-3px);
+}
+
+/* ==========================================
+   VISUAL
+========================================== */
+
+.ai-visual {
+  min-height: 300px;
+}
+
+.ai-orb {
+  position: relative;
+
+  animation:
+    auraFloat
+    4s
+    ease-in-out
+    infinite;
+
+  box-shadow:
+    0 0 50px
+    rgba(179, 154, 115, 0.08);
+}
+
+.ai-orb::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -18px;
+
+  border-radius: 50%;
+
+  border: 1px solid
+    rgba(179, 154, 115, 0.12);
+
+  animation:
+    auraPulse
+    2.8s
+    ease-in-out
+    infinite;
+}
+
+/* ==========================================
+   CHAT
+========================================== */
+
+.ai-chat {
+  animation:
+    aiChatEnter
+    0.45s
+    ease
+    both;
+}
+
+.ai-chat-header {
+  background:
+    rgba(255, 255, 255, 0.015);
+}
+
+.ai-message-content {
+  border-radius: 2px;
+}
+
+/* ==========================================
+   ESTADO ACTIVO
+========================================== */
+
+.ai-active-dot {
+  animation:
+    auraActivePulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+/* ==========================================
+   PRODUCTOS RECOMENDADOS
+========================================== */
+
+.ai-product-card {
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.ai-product-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(183, 154, 115, 0.42);
+}
+
+.ai-product-image img {
+  transition:
+    transform 0.35s ease;
+}
+
+.ai-product-card:hover
+.ai-product-image img {
+  transform:
+    scale(1.04);
+}
+
+.ai-product-button {
+  transition:
+    color 0.2s ease,
+    gap 0.2s ease;
+}
+
+.ai-product-button:hover {
+  gap: 9px;
+}
+
+/* ==========================================
+   PROMPTS
+========================================== */
+
+.ai-quick-prompts button {
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ai-quick-prompts button:hover {
+  background:
+    rgba(179, 154, 115, 0.06);
+
+  transform:
+    translateY(-1px);
+}
+
+/* ==========================================
+   ANIMACIONES
+========================================== */
+
+@keyframes aiTextEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+@keyframes aiChatEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0);
+  }
+}
+
+@keyframes auraFloat {
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-8px);
+  }
+}
+
+@keyframes auraPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+
+    transform:
+      scale(0.94);
+  }
+
+  50% {
+    opacity: 0.85;
+
+    transform:
+      scale(1.04);
+  }
+}
+
+@keyframes auraActivePulse {
+  0%,
+  100% {
+    opacity: 0.5;
+
+    box-shadow:
+      0 0 0 0
+      rgba(179, 154, 115, 0);
+  }
+
+  50% {
+    opacity: 1;
+
+    box-shadow:
+      0 0 0 5px
+      rgba(179, 154, 115, 0.1);
+  }
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 1000px) {
+  .ai-content {
+    padding: 48px 36px;
+
+    grid-template-columns: 1fr;
+
+    gap: 38px;
+  }
+}
+
+/* ==========================================
+   MÓVIL
+========================================== */
+
+@media (max-width: 800px) {
+  .ai-section {
+    padding: 0 18px;
+  }
+
+  .ai-content {
+    padding: 40px 22px;
+
+    box-shadow: none;
+  }
+
+  .ai-text h2 {
+    font-size: 38px;
+  }
+}
+
+/* ==========================================
+   REDUCIR MOVIMIENTO
+========================================== */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .ai-text,
+  .ai-chat,
+  .ai-orb,
+  .ai-orb::after,
+  .ai-active-dot {
+    animation: none;
+  }
+
+  .ai-button,
+  .ai-product-card,
+  .ai-product-image img,
+  .ai-product-button,
+  .ai-quick-prompts button {
+    transition: none;
   }
 }

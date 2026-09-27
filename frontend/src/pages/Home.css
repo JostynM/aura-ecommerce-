@@ -1,0 +1,56 @@
+.home {
+  width: 100%;
+  overflow: hidden;
+}
+
+.home__hero {
+  width: 100%;
+}
+
+.home__section {
+  width: 100%;
+  margin-top: 80px;
+  animation: homeFadeUp 0.7s ease both;
+}
+
+.home__section--collections {
+  margin-top: 64px;
+}
+
+.home__section--ai {
+  margin-top: 96px;
+  margin-bottom: 64px;
+}
+
+@keyframes homeFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .home__section {
+    margin-top: 56px;
+  }
+
+  .home__section--collections {
+    margin-top: 48px;
+  }
+
+  .home__section--ai {
+    margin-top: 64px;
+    margin-bottom: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home__section {
+    animation: none;
+  }
+}

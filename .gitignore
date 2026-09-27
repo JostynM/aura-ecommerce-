@@ -31,3 +31,7 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Imágenes locales de productos
+backend/uploads/products/*
+!backend/uploads/products/.gitkeep

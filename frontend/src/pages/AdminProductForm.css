@@ -1,17 +1,31 @@
 .admin-product-page {
   min-height: 100vh;
-  padding: 60px 5%;
+
+  padding: 60px 5% 90px;
+
   background: #f8f7f4;
 }
 
+
+/* ==========================================
+   CONTENEDOR
+========================================== */
+
 .admin-product-form-container {
   max-width: 950px;
+
   margin: 0 auto;
 }
+
+
+/* ==========================================
+   VOLVER
+========================================== */
 
 .admin-back-button {
   display: flex;
   align-items: center;
+
   gap: 7px;
 
   margin-bottom: 35px;
@@ -19,16 +33,37 @@
   padding: 0;
 
   border: none;
+
   background: transparent;
 
   color: #7c6a50;
 
+  font: inherit;
+
   cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
+
+
+.admin-back-button:hover {
+  color: #1d1c1a;
+
+  transform:
+    translateX(-3px);
+}
+
+
+/* ==========================================
+   ENCABEZADO
+========================================== */
 
 .admin-form-heading {
   margin-bottom: 35px;
 }
+
 
 .admin-form-heading > span {
   display: block;
@@ -36,52 +71,83 @@
   margin-bottom: 7px;
 
   font-size: 11px;
+
   letter-spacing: 2px;
 
   color: #9b8563;
 }
 
+
 .admin-form-heading h1 {
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+
+  color: #1d1c1a;
 
   font-size: 36px;
+
+  font-weight: 500;
+
+  line-height: 1.1;
 }
 
+
 .admin-form-heading p {
+  margin: 0;
+
   color: #716b64;
 }
+
+
+/* ==========================================
+   FORMULARIO
+========================================== */
 
 .admin-product-form {
   display: grid;
 
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
   gap: 22px;
 
   padding: 35px;
 
-  border: 1px solid #e0dbd3;
+  border:
+    1px solid #e0dbd3;
 
-  background: white;
+  background: #ffffff;
 }
+
+
+/* ==========================================
+   CAMPOS
+========================================== */
 
 .admin-field {
   display: flex;
+
   flex-direction: column;
 
   gap: 8px;
 }
 
+
 .admin-field-full {
   grid-column: 1 / -1;
 }
 
+
 .admin-field label {
+  color: #554f49;
+
   font-size: 12px;
 
-  color: #554f49;
+  font-weight: 500;
 }
+
 
 .admin-field input,
 .admin-field select,
@@ -90,24 +156,47 @@
 
   padding: 12px 14px;
 
-  border: 1px solid #ddd8d0;
+  border:
+    1px solid #ddd8d0;
 
-  background: #fff;
+  border-radius: 0;
+
+  background: #ffffff;
 
   color: #1d1c1a;
 
+  font: inherit;
+
   outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
+
 
 .admin-field textarea {
   resize: vertical;
+
+  min-height: 125px;
 }
+
 
 .admin-field input:focus,
 .admin-field select:focus,
 .admin-field textarea:focus {
   border-color: #9b8563;
+
+  box-shadow:
+    0 0 0 1px
+    rgba(
+      155,
+      133,
+      99,
+      0.08
+    );
 }
+
 
 .admin-field small {
   color: #948c83;
@@ -115,21 +204,395 @@
   font-size: 11px;
 }
 
+
+/* ==========================================
+   IMAGEN DEL PRODUCTO
+========================================== */
+
+.admin-image-manager {
+  display: grid;
+
+  grid-template-columns:
+    minmax(220px, 290px)
+    minmax(0, 1fr);
+
+  min-height: 340px;
+
+  border:
+    1px solid #ded8cf;
+
+  background: #faf9f7;
+}
+
+
+/* ==========================================
+   PREVIEW
+========================================== */
+
+.admin-image-preview {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 340px;
+
+  padding: 25px;
+
+  overflow: hidden;
+
+  border-right:
+    1px solid #ded8cf;
+
+  background:
+    #eeeae4;
+}
+
+
+.admin-image-preview img {
+  display: block;
+
+  width: 100%;
+
+  height: 100%;
+
+  max-height: 310px;
+
+  object-fit: contain;
+
+  object-position: center;
+}
+
+
+/* ==========================================
+   PLACEHOLDER
+========================================== */
+
+.admin-image-placeholder {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  min-height: 230px;
+
+  color: #9c9287;
+}
+
+
+.admin-image-placeholder span {
+  font-size: 12px;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+/* ==========================================
+   NUEVA IMAGEN
+========================================== */
+
+.admin-image-new-badge {
+  position: absolute;
+
+  top: 14px;
+  left: 14px;
+
+  padding: 7px 9px;
+
+  background: #1d1c1a;
+
+  color: #f5f2ed;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+}
+
+
+/* ==========================================
+   CONTROLES
+========================================== */
+
+.admin-image-controls {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: center;
+
+  gap: 18px;
+
+  padding: 35px;
+}
+
+
+.admin-image-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #9b8563;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.16em;
+}
+
+
+.admin-image-controls h3 {
+  margin: 0 0 10px;
+
+  color: #1d1c1a;
+
+  font-size: 20px;
+
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  word-break: break-word;
+}
+
+
+.admin-image-controls p {
+  max-width: 440px;
+
+  margin: 0;
+
+  color: #766f67;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+}
+
+
+/* ==========================================
+   INPUT OCULTO
+========================================== */
+
+.admin-image-input {
+  position: absolute;
+
+  width: 1px !important;
+
+  height: 1px;
+
+  padding: 0 !important;
+
+  overflow: hidden;
+
+  clip: rect(
+    0,
+    0,
+    0,
+    0
+  );
+
+  white-space: nowrap;
+
+  border: 0 !important;
+}
+
+
+/* ==========================================
+   BOTÓN SELECCIONAR
+========================================== */
+
+.admin-image-select-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  min-width: 175px;
+
+  padding: 12px 18px;
+
+  border:
+    1px solid #1d1c1a;
+
+  background: #1d1c1a;
+
+  color: #f4f1ec !important;
+
+  font-size: 12px !important;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.admin-image-select-button:hover {
+  background: transparent;
+
+  color: #1d1c1a !important;
+}
+
+
+.admin-image-help {
+  margin-top: -10px;
+
+  color: #968e84 !important;
+}
+
+
+/* ==========================================
+   ARCHIVO SELECCIONADO
+========================================== */
+
+.admin-selected-file {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 13px 14px;
+
+  border:
+    1px solid #ddd7ce;
+
+  background: #ffffff;
+}
+
+
+.admin-selected-file > div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.admin-selected-file strong {
+  overflow: hidden;
+
+  color: #34302c;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.admin-selected-file span {
+  color: #989087;
+
+  font-size: 10px;
+}
+
+
+.admin-selected-file button {
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 34px;
+
+  height: 34px;
+
+  padding: 0;
+
+  border:
+    1px solid #ddd7ce;
+
+  background: transparent;
+
+  color: #6e665e;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.admin-selected-file button:hover {
+  border-color: #1d1c1a;
+
+  background: #1d1c1a;
+
+  color: #ffffff;
+}
+
+
+/* ==========================================
+   PRODUCTO ACTIVO
+========================================== */
+
 .admin-active-checkbox {
   grid-column: 1 / -1;
 
   display: flex;
+
   align-items: center;
 
-  gap: 8px;
+  gap: 9px;
+
+  color: #49443f;
 
   font-size: 13px;
 }
+
+
+.admin-active-checkbox input {
+  width: auto;
+
+  accent-color: #1d1c1a;
+}
+
+
+/* ==========================================
+   ACCIONES
+========================================== */
 
 .admin-form-actions {
   grid-column: 1 / -1;
 
   display: flex;
+
   justify-content: flex-end;
 
   gap: 12px;
@@ -137,54 +600,149 @@
   padding-top: 15px;
 }
 
-.admin-cancel-button {
+
+.admin-cancel-button,
+.admin-save-button {
+  min-width: 145px;
+
   padding: 12px 20px;
 
-  border: 1px solid #cfc8be;
+  font: inherit;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.admin-cancel-button {
+  border:
+    1px solid #cfc8be;
 
   background: transparent;
 
   color: #665f57;
 }
 
-.admin-save-button {
-  padding: 12px 22px;
 
-  border: 1px solid #1d1c1a;
+.admin-cancel-button:hover {
+  border-color: #1d1c1a;
+
+  color: #1d1c1a;
+}
+
+
+.admin-save-button {
+  border:
+    1px solid #1d1c1a;
 
   background: #1d1c1a;
 
-  color: white;
+  color: #ffffff;
 }
 
-.admin-save-button:disabled {
-  opacity: 0.6;
+
+.admin-save-button:hover:not(:disabled) {
+  background: #34312d;
+
+  border-color: #34312d;
+}
+
+
+.admin-save-button:disabled,
+.admin-cancel-button:disabled {
+  opacity: 0.55;
 
   cursor: not-allowed;
 }
+
+
+/* ==========================================
+   ERROR
+========================================== */
 
 .admin-form-error {
   margin-bottom: 20px;
 
   padding: 12px 15px;
 
-  border: 1px solid #dbc4c0;
+  border:
+    1px solid #dbc4c0;
 
   background: #fff8f7;
 
   color: #9a5c52;
+
+  font-size: 13px;
 }
 
-@media (max-width: 700px) {
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (
+  max-width: 760px
+) {
+
+  .admin-product-page {
+    padding:
+      40px 20px
+      70px;
+  }
+
+
   .admin-product-form {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
 
     padding: 22px;
   }
+
 
   .admin-field-full,
   .admin-active-checkbox,
   .admin-form-actions {
     grid-column: auto;
   }
+
+
+  .admin-image-manager {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-image-preview {
+    min-height: 300px;
+
+    border-right: none;
+
+    border-bottom:
+      1px solid #ded8cf;
+  }
+
+
+  .admin-image-controls {
+    padding: 25px;
+  }
+
+
+  .admin-form-actions {
+    flex-direction:
+      column-reverse;
+  }
+
+
+  .admin-cancel-button,
+  .admin-save-button {
+    width: 100%;
+  }
+
 }

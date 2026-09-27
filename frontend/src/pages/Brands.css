@@ -1,0 +1,638 @@
+/* ==========================================
+   PÁGINA DE MARCAS
+========================================== */
+
+.brands-page {
+  min-height: 100vh;
+
+  background-color: #f8f7f4;
+
+  color: #1c1b19;
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.brands-hero {
+  padding:
+    100px
+    60px
+    95px;
+
+  background-color: #ebe6df;
+}
+
+
+.brands-hero-inner {
+  max-width: 1220px;
+
+  margin: 0 auto;
+}
+
+
+.brands-hero-inner > span {
+  display: block;
+
+  margin-bottom: 22px;
+
+  font-size: 9px;
+
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+
+  color: #81776a;
+}
+
+
+.brands-hero h1 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    58px,
+    7vw,
+    88px
+  );
+
+  line-height: 0.95;
+
+  font-weight: 400;
+
+  letter-spacing: -2px;
+
+  color: #1c1b19;
+}
+
+
+.brands-hero p {
+  max-width: 520px;
+
+  margin:
+    30px
+    0
+    0;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+  color: #686158;
+}
+
+
+/* ==========================================
+   CONTENEDOR DE MARCAS
+========================================== */
+
+.brands-section {
+  max-width: 1220px;
+
+  margin: 0 auto;
+
+  padding:
+    90px
+    0
+    120px;
+}
+
+
+/* ==========================================
+   GRID
+========================================== */
+
+.brands-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  border-top:
+    1px solid #d4cec5;
+
+  border-left:
+    1px solid #d4cec5;
+}
+
+
+/* ==========================================
+   TARJETA
+========================================== */
+
+.brand-card {
+  min-height: 260px;
+
+  padding: 30px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-right:
+    1px solid #d4cec5;
+
+  border-bottom:
+    1px solid #d4cec5;
+
+  background-color: #f8f7f4;
+
+  color: #1c1b19;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    transform 0.35s ease;
+}
+
+
+/* ==========================================
+   DECORACIÓN SUTIL
+========================================== */
+
+.brand-card::before {
+  content: "";
+
+  width: 240px;
+  height: 240px;
+
+  position: absolute;
+
+  top: -150px;
+  right: -120px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        179,
+        154,
+        115,
+        0.14
+      ),
+      rgba(
+        179,
+        154,
+        115,
+        0
+      )
+    );
+
+  pointer-events: none;
+
+  transition:
+    transform 0.5s ease;
+}
+
+
+.brand-card:hover::before {
+  transform: scale(1.4);
+}
+
+
+/* ==========================================
+   HOVER
+========================================== */
+
+.brand-card:hover {
+  background-color: #1c1b19;
+
+  color: #f4f1ec;
+}
+
+
+/* ==========================================
+   NÚMERO
+========================================== */
+
+.brand-card-number {
+  position: relative;
+
+  z-index: 1;
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+
+  color: #998f82;
+
+  transition:
+    color 0.35s ease;
+}
+
+
+.brand-card:hover
+.brand-card-number {
+  color: #b9ab97;
+}
+
+
+/* ==========================================
+   INFORMACIÓN PRINCIPAL
+========================================== */
+
+.brand-card-main {
+  position: relative;
+
+  z-index: 1;
+}
+
+
+.brand-card-main > span {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 8px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  color: #978d7f;
+
+  transition:
+    color 0.35s ease;
+}
+
+
+.brand-card:hover
+.brand-card-main > span {
+  color: #a99b89;
+}
+
+
+/* IMPORTANTE:
+   definimos el color explícitamente
+   para evitar estilos globales de h2
+*/
+
+.brand-card-main h2 {
+  margin: 0;
+
+  max-width: 100%;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    32px,
+    3vw,
+    46px
+  );
+
+  line-height: 1.05;
+
+  font-weight: 400;
+
+  letter-spacing: -1px;
+
+  color: #1c1b19;
+
+  transition:
+    color 0.35s ease;
+}
+
+
+.brand-card:hover
+.brand-card-main h2 {
+  color: #f4f1ec;
+}
+
+
+/* ==========================================
+   FOOTER DE TARJETA
+========================================== */
+
+.brand-card-footer {
+  padding-top: 18px;
+
+  position: relative;
+
+  z-index: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-top:
+    1px solid
+    rgba(
+      100,
+      92,
+      80,
+      0.2
+    );
+
+  transition:
+    border-color 0.35s ease;
+}
+
+
+.brand-card:hover
+.brand-card-footer {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+}
+
+
+.brand-card-footer span {
+  font-size: 9px;
+
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+
+  color: #81796f;
+
+  transition:
+    color 0.35s ease;
+}
+
+
+.brand-card-footer svg {
+  color: #504a43;
+
+  transition:
+    color 0.35s ease,
+    transform 0.35s ease;
+}
+
+
+.brand-card:hover
+.brand-card-footer span {
+  color: #b5ab9f;
+}
+
+
+.brand-card:hover
+.brand-card-footer svg {
+  color: #d1b98f;
+
+  transform: translateX(
+    4px
+  );
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.brands-message,
+.brands-error {
+  min-height: 240px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  color: #777066;
+}
+
+
+.brands-error {
+  color: #9c5b52;
+}
+
+
+/* ==========================================
+   SECCIÓN FINAL
+========================================== */
+
+.brands-closing {
+  padding:
+    115px
+    max(
+      60px,
+      calc(
+        (100vw - 1220px) / 2
+      )
+    );
+
+  background-color: #1c1b19;
+
+  color: #f3efe9;
+}
+
+
+.brands-closing > span {
+  display: block;
+
+  margin-bottom: 25px;
+
+  font-size: 8px;
+
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+
+  color: #9d9385;
+}
+
+
+.brands-closing h2 {
+  max-width: 850px;
+
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    43px,
+    5vw,
+    69px
+  );
+
+  line-height: 1;
+
+  font-weight: 400;
+
+  letter-spacing: -1px;
+
+  color: #f3efe9;
+}
+
+
+.brands-closing p {
+  max-width: 500px;
+
+  margin:
+    32px
+    0
+    0;
+
+  font-size: 12px;
+
+  line-height: 1.8;
+
+  color: #aaa298;
+}
+
+
+.brands-closing-link {
+  margin-top: 38px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: #c6aa80;
+
+  text-decoration: none;
+
+  font-size: 9px;
+
+  letter-spacing: 1.7px;
+
+  text-transform: uppercase;
+
+  transition:
+    color 0.25s ease,
+    gap 0.25s ease;
+}
+
+
+.brands-closing-link:hover {
+  color: #e0c79e;
+
+  gap: 15px;
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (
+  max-width: 1100px
+) {
+
+  .brands-section {
+    padding:
+      75px
+      40px
+      100px;
+  }
+
+}
+
+
+@media (
+  max-width: 900px
+) {
+
+  .brands-hero {
+    padding:
+      80px
+      30px;
+  }
+
+
+  .brands-section {
+    padding:
+      65px
+      30px
+      90px;
+  }
+
+
+  .brands-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .brand-card {
+    min-height: 230px;
+  }
+
+}
+
+
+/* ==========================================
+   MÓVIL
+========================================== */
+
+@media (
+  max-width: 600px
+) {
+
+  .brands-hero {
+    padding:
+      65px
+      20px;
+  }
+
+
+  .brands-hero h1 {
+    font-size: 54px;
+  }
+
+
+  .brands-section {
+    padding:
+      45px
+      20px
+      70px;
+  }
+
+
+  .brand-card {
+    min-height: 220px;
+
+    padding: 25px;
+  }
+
+
+  .brand-card-main h2 {
+    font-size: 34px;
+  }
+
+
+  .brands-closing {
+    padding:
+      75px
+      20px;
+  }
+
+}

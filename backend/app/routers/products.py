@@ -1,5 +1,5 @@
 import re
-
+from io import BytesIO
 from pathlib import Path
 from uuid import uuid4
 
@@ -14,6 +14,14 @@ from fastapi import (
     status,
 )
 
+from PIL import (
+    Image,
+    ImageChops,
+    ImageFilter,
+    ImageOps,
+    UnidentifiedImageError,
+)
+
 from sqlalchemy import (
     func,
     select,
@@ -22,10 +30,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-
-from app.dependencies.auth import (
-    get_current_admin,
-)
+from app.dependencies.auth import get_current_admin
 
 from app.models.product import Product
 from app.models.review import Review
@@ -36,6 +41,11 @@ from app.schemas.product import (
     ProductResponse,
     ProductStatusUpdate,
     ProductUpdate,
+)
+
+from app.services.storage_service import (
+    delete_product_image as delete_product_image_from_storage,
+    upload_product_image as upload_product_image_to_storage,
 )
 
 
@@ -59,13 +69,11 @@ BACKEND_DIR = (
     .parents[2]
 )
 
-
 PRODUCT_UPLOAD_DIR = (
     BACKEND_DIR
     / "uploads"
     / "products"
 )
-
 
 PRODUCT_UPLOAD_DIR.mkdir(
     parents=True,
@@ -77,12 +85,31 @@ MAX_IMAGE_SIZE = (
     5 * 1024 * 1024
 )
 
+MAX_IMAGE_DIMENSION = 6000
+
 
 ALLOWED_IMAGE_TYPES = {
     "image/jpeg": ".jpg",
     "image/png": ".png",
     "image/webp": ".webp",
 }
+
+
+# ==========================================
+# NORMALIZACIÓN VISUAL
+# ==========================================
+
+PRODUCT_IMAGE_CANVAS = (
+    1200,
+    1200,
+)
+
+PRODUCT_IMAGE_MAX_OBJECT = (
+    1000,
+    1000,
+)
+
+BACKGROUND_DIFFERENCE_THRESHOLD = 32
 
 
 # ==========================================
@@ -98,11 +125,10 @@ def get_product_or_404(
     product = db.scalar(
         select(Product)
         .where(
-            Product.id ==
-            product_id
+            Product.id
+            == product_id
         )
     )
-
 
     if not product:
 
@@ -113,7 +139,6 @@ def get_product_or_404(
             detail=
                 "Producto no encontrado",
         )
-
 
     return product
 
@@ -136,26 +161,27 @@ def build_product_response(
         )
     )
 
-
     return response.model_copy(
         update={
-            "rating": round(
-                float(
-                    rating or 0
+            "rating":
+                round(
+                    float(
+                        rating or 0
+                    ),
+                    1,
                 ),
-                1,
-            ),
 
-            "review_count": int(
-                review_count or 0
-            ),
+            "review_count":
+                int(
+                    review_count or 0
+                ),
         }
     )
 
 
 # ==========================================
 # FUNCIÓN AUXILIAR
-# OBTENER RATING DE UN PRODUCTO
+# OBTENER RATING
 # ==========================================
 
 def get_product_review_stats(
@@ -178,13 +204,12 @@ def get_product_review_stats(
                 ),
             )
             .where(
-                Review.product_id ==
-                product_id
+                Review.product_id
+                == product_id
             )
         )
         .one()
     )
-
 
     rating = (
         round(
@@ -193,16 +218,16 @@ def get_product_review_stats(
             ),
             1,
         )
+
         if average_rating
         is not None
+
         else 0.0
     )
-
 
     review_count = int(
         total_reviews or 0
     )
-
 
     return (
         rating,
@@ -212,33 +237,34 @@ def get_product_review_stats(
 
 # ==========================================
 # FUNCIÓN AUXILIAR
-# OBTENER PRODUCTOS CON RATING
+# PRODUCTOS + RATING
 # ==========================================
 
 def get_products_with_reviews(
     db: Session,
     only_active: bool,
-) -> list[ProductResponse]:
-
-    # ======================================
-    # SUBCONSULTA DE RESEÑAS
-    # ======================================
+) -> list[
+    ProductResponse
+]:
 
     review_stats = (
         select(
-            Review.product_id.label(
+            Review.product_id
+            .label(
                 "product_id"
             ),
 
             func.avg(
                 Review.rating
-            ).label(
+            )
+            .label(
                 "average_rating"
             ),
 
             func.count(
                 Review.id
-            ).label(
+            )
+            .label(
                 "review_count"
             ),
         )
@@ -247,11 +273,6 @@ def get_products_with_reviews(
         )
         .subquery()
     )
-
-
-    # ======================================
-    # PRODUCTOS + RATING
-    # ======================================
 
     query = (
         select(
@@ -268,17 +289,13 @@ def get_products_with_reviews(
         .outerjoin(
             review_stats,
 
-            Product.id ==
+            Product.id
+            ==
             review_stats
             .c
             .product_id,
         )
     )
-
-
-    # ======================================
-    # SOLO ACTIVOS
-    # ======================================
 
     if only_active:
 
@@ -288,23 +305,15 @@ def get_products_with_reviews(
             )
         )
 
-
     query = query.order_by(
         Product.id.desc()
     )
-
 
     rows = db.execute(
         query
     ).all()
 
-
-    # ======================================
-    # CONVERTIR A RESPONSE
-    # ======================================
-
     return [
-
         build_product_response(
             product,
             average_rating,
@@ -317,42 +326,42 @@ def get_products_with_reviews(
             review_count,
         )
         in rows
-
     ]
 
 
 # ==========================================
 # FUNCIÓN AUXILIAR
-# VALIDAR SLUG DUPLICADO
+# VALIDAR SLUG
 # ==========================================
 
 def validate_unique_slug(
     slug: str,
     db: Session,
-    exclude_product_id: int | None = None,
+    exclude_product_id:
+        int | None = None,
 ) -> None:
 
     query = (
         select(Product)
         .where(
-            Product.slug ==
-            slug
+            Product.slug
+            == slug
         )
     )
 
-
-    if exclude_product_id is not None:
+    if (
+        exclude_product_id
+        is not None
+    ):
 
         query = query.where(
-            Product.id !=
-            exclude_product_id
+            Product.id
+            != exclude_product_id
         )
-
 
     existing_product = db.scalar(
         query
     )
-
 
     if existing_product:
 
@@ -368,7 +377,6 @@ def validate_unique_slug(
 
 
 # ==========================================
-# FUNCIÓN AUXILIAR
 # NORMALIZAR SLUG PARA ARCHIVO
 # ==========================================
 
@@ -382,18 +390,15 @@ def normalize_file_slug(
         .lower()
     )
 
-
     value = re.sub(
         r"[^a-z0-9_-]+",
         "-",
         value,
     )
 
-
     value = value.strip(
         "-"
     )
-
 
     return (
         value
@@ -402,61 +407,723 @@ def normalize_file_slug(
 
 
 # ==========================================
-# FUNCIÓN AUXILIAR
-# ELIMINAR IMAGEN LOCAL
+# BORRAR IMAGEN LOCAL ANTIGUA
 # ==========================================
 
 def delete_local_product_image(
-    image_url: str | None,
+    image_url:
+        str | None,
 ) -> None:
 
     if not image_url:
         return
 
-
     local_prefix = (
         "/uploads/products/"
     )
 
-
-    # No intentamos borrar imágenes
-    # externas.
-
     if not image_url.startswith(
         local_prefix
     ):
-
         return
 
-
-    filename = Path(
-        image_url
-    ).name
-
+    filename = (
+        Path(
+            image_url
+        )
+        .name
+    )
 
     file_path = (
         PRODUCT_UPLOAD_DIR
         / filename
     )
 
-
     try:
 
         if file_path.exists():
-
             file_path.unlink()
-
 
     except OSError as error:
 
-        # El producto no debe fallar
-        # solamente porque no pudimos
-        # borrar una imagen antigua.
-
         print(
-            "ERROR BORRANDO IMAGEN:",
+            "ERROR BORRANDO IMAGEN LOCAL:",
             repr(error),
         )
+
+
+# ==========================================
+# BORRAR IMAGEN ANTIGUA
+# LOCAL O SUPABASE
+# ==========================================
+
+def delete_old_product_image(
+    image_url:
+        str | None,
+) -> None:
+
+    if not image_url:
+        return
+
+    if image_url.startswith(
+        "/uploads/products/"
+    ):
+
+        delete_local_product_image(
+            image_url
+        )
+
+        return
+
+    try:
+
+        delete_product_image_from_storage(
+            image_url
+        )
+
+    except Exception as error:
+
+        print(
+            "ERROR BORRANDO IMAGEN "
+            "DE STORAGE:",
+            repr(error),
+        )
+
+
+# ==========================================
+# DETECTAR COLOR DE FONDO
+# ==========================================
+
+def get_background_color(
+    image: Image.Image,
+) -> tuple[
+    int,
+    int,
+    int,
+]:
+
+    rgb = image.convert(
+        "RGB"
+    )
+
+    width, height = (
+        rgb.size
+    )
+
+    sample_size = max(
+        8,
+        min(
+            width,
+            height,
+        ) // 40,
+    )
+
+    areas = [
+        (
+            0,
+            0,
+            sample_size,
+            sample_size,
+        ),
+
+        (
+            width
+            - sample_size,
+            0,
+            width,
+            sample_size,
+        ),
+
+        (
+            0,
+            height
+            - sample_size,
+            sample_size,
+            height,
+        ),
+
+        (
+            width
+            - sample_size,
+            height
+            - sample_size,
+            width,
+            height,
+        ),
+    ]
+
+    samples: list[
+        tuple[
+            int,
+            int,
+            int,
+        ]
+    ] = []
+
+    for area in areas:
+
+        crop = rgb.crop(
+            area
+        )
+
+        samples.extend(
+            list(
+                crop.getdata()
+            )
+        )
+
+    if not samples:
+
+        return (
+            255,
+            255,
+            255,
+        )
+
+    red = sorted(
+        pixel[0]
+        for pixel in samples
+    )
+
+    green = sorted(
+        pixel[1]
+        for pixel in samples
+    )
+
+    blue = sorted(
+        pixel[2]
+        for pixel in samples
+    )
+
+    middle = (
+        len(samples)
+        // 2
+    )
+
+    return (
+        red[middle],
+        green[middle],
+        blue[middle],
+    )
+
+
+# ==========================================
+# QUITAR FONDO DE JPG / IMAGEN SIN ALPHA
+# ==========================================
+
+def extract_product_from_background(
+    image: Image.Image,
+) -> Image.Image:
+
+    rgba = image.convert(
+        "RGBA"
+    )
+
+    rgb = rgba.convert(
+        "RGB"
+    )
+
+    background_color = (
+        get_background_color(
+            rgb
+        )
+    )
+
+    background = Image.new(
+        "RGB",
+        rgb.size,
+        background_color,
+    )
+
+    difference = (
+        ImageChops.difference(
+            rgb,
+            background,
+        )
+    )
+
+    red, green, blue = (
+        difference.split()
+    )
+
+    difference_mask = (
+        ImageChops.lighter(
+            ImageChops.lighter(
+                red,
+                green,
+            ),
+            blue,
+        )
+    )
+
+    object_mask = (
+        difference_mask.point(
+            lambda value:
+                255
+                if value
+                >=
+                BACKGROUND_DIFFERENCE_THRESHOLD
+                else 0
+        )
+    )
+
+    object_mask = (
+        object_mask.filter(
+            ImageFilter
+            .MedianFilter(
+                size=5
+            )
+        )
+    )
+
+    object_mask = (
+        object_mask.filter(
+            ImageFilter
+            .MaxFilter(
+                size=7
+            )
+        )
+    )
+
+    bbox = (
+        object_mask.getbbox()
+    )
+
+    if not bbox:
+
+        return rgba
+
+    (
+        left,
+        top,
+        right,
+        bottom,
+    ) = bbox
+
+    object_width = (
+        right
+        - left
+    )
+
+    object_height = (
+        bottom
+        - top
+    )
+
+    padding_x = max(
+        12,
+        int(
+            object_width
+            * 0.06
+        ),
+    )
+
+    padding_y = max(
+        12,
+        int(
+            object_height
+            * 0.06
+        ),
+    )
+
+    left = max(
+        0,
+        left
+        - padding_x,
+    )
+
+    top = max(
+        0,
+        top
+        - padding_y,
+    )
+
+    right = min(
+        rgba.width,
+        right
+        + padding_x,
+    )
+
+    bottom = min(
+        rgba.height,
+        bottom
+        + padding_y,
+    )
+
+    cropped_rgba = (
+        rgba.crop(
+            (
+                left,
+                top,
+                right,
+                bottom,
+            )
+        )
+    )
+
+    cropped_difference = (
+        difference_mask.crop(
+            (
+                left,
+                top,
+                right,
+                bottom,
+            )
+        )
+    )
+
+    alpha = (
+        cropped_difference.point(
+            lambda value: (
+                0
+                if value <= 18
+                else
+                255
+                if value >= 70
+                else
+                int(
+                    (
+                        value
+                        - 18
+                    )
+                    * 255
+                    / 52
+                )
+            )
+        )
+    )
+
+    alpha = alpha.filter(
+        ImageFilter
+        .GaussianBlur(
+            radius=0.8
+        )
+    )
+
+    original_alpha = (
+        cropped_rgba
+        .getchannel(
+            "A"
+        )
+    )
+
+    alpha = (
+        ImageChops.multiply(
+            alpha,
+            original_alpha,
+        )
+    )
+
+    cropped_rgba.putalpha(
+        alpha
+    )
+
+    return cropped_rgba
+
+
+# ==========================================
+# RECORTAR TRANSPARENCIA
+# ==========================================
+
+def crop_transparent_bounds(
+    image: Image.Image,
+) -> Image.Image:
+
+    rgba = image.convert(
+        "RGBA"
+    )
+
+    alpha = rgba.getchannel(
+        "A"
+    )
+
+    bbox = alpha.getbbox()
+
+    if not bbox:
+
+        raise ValueError(
+            "La imagen quedó "
+            "completamente transparente."
+        )
+
+    (
+        left,
+        top,
+        right,
+        bottom,
+    ) = bbox
+
+    object_width = (
+        right
+        - left
+    )
+
+    object_height = (
+        bottom
+        - top
+    )
+
+    padding_x = max(
+        12,
+        int(
+            object_width
+            * 0.06
+        ),
+    )
+
+    padding_y = max(
+        12,
+        int(
+            object_height
+            * 0.06
+        ),
+    )
+
+    left = max(
+        0,
+        left
+        - padding_x,
+    )
+
+    top = max(
+        0,
+        top
+        - padding_y,
+    )
+
+    right = min(
+        rgba.width,
+        right
+        + padding_x,
+    )
+
+    bottom = min(
+        rgba.height,
+        bottom
+        + padding_y,
+    )
+
+    return rgba.crop(
+        (
+            left,
+            top,
+            right,
+            bottom,
+        )
+    )
+
+
+# ==========================================
+# REDIMENSIONAR PRODUCTO
+# TAMBIÉN AGRANDA IMÁGENES PEQUEÑAS
+# ==========================================
+
+def resize_product_to_target(
+    image: Image.Image,
+    target_size:
+        tuple[
+            int,
+            int,
+        ],
+) -> Image.Image:
+
+    if (
+        image.width <= 0
+        or
+        image.height <= 0
+    ):
+
+        raise ValueError(
+            "La imagen procesada "
+            "no tiene dimensiones válidas."
+        )
+
+    (
+        target_width,
+        target_height,
+    ) = target_size
+
+    scale = min(
+        target_width
+        / image.width,
+
+        target_height
+        / image.height,
+    )
+
+    new_width = max(
+        1,
+        round(
+            image.width
+            * scale
+        ),
+    )
+
+    new_height = max(
+        1,
+        round(
+            image.height
+            * scale
+        ),
+    )
+
+    if (
+        new_width,
+        new_height,
+    ) == image.size:
+
+        return image
+
+    return image.resize(
+        (
+            new_width,
+            new_height,
+        ),
+        Image.Resampling.LANCZOS,
+    )
+
+
+# ==========================================
+# PROCESAR IMAGEN
+# ==========================================
+
+def process_product_image(
+    contents: bytes,
+) -> bytes:
+
+    try:
+
+        with Image.open(
+            BytesIO(
+                contents
+            )
+        ) as original_image:
+
+            image = (
+                ImageOps
+                .exif_transpose(
+                    original_image
+                )
+            )
+
+            image.load()
+
+            if (
+                image.width
+                >
+                MAX_IMAGE_DIMENSION
+
+                or
+
+                image.height
+                >
+                MAX_IMAGE_DIMENSION
+            ):
+
+                raise ValueError(
+                    "La imagen tiene "
+                    "dimensiones demasiado grandes."
+                )
+
+            if (
+                image.width < 100
+                or
+                image.height < 100
+            ):
+
+                raise ValueError(
+                    "La imagen es "
+                    "demasiado pequeña."
+                )
+
+            image = image.convert(
+                "RGBA"
+            )
+
+            (
+                alpha_min,
+                _alpha_max,
+            ) = (
+                image.getchannel(
+                    "A"
+                )
+                .getextrema()
+            )
+
+            if alpha_min < 255:
+
+                image = (
+                    crop_transparent_bounds(
+                        image
+                    )
+                )
+
+            else:
+
+                image = (
+                    extract_product_from_background(
+                        image
+                    )
+                )
+
+            image = (
+                resize_product_to_target(
+                    image,
+                    PRODUCT_IMAGE_MAX_OBJECT,
+                )
+            )
+
+            canvas = Image.new(
+                "RGBA",
+                PRODUCT_IMAGE_CANVAS,
+                (
+                    0,
+                    0,
+                    0,
+                    0,
+                ),
+            )
+
+            x = (
+                PRODUCT_IMAGE_CANVAS[0]
+                - image.width
+            ) // 2
+
+            y = (
+                PRODUCT_IMAGE_CANVAS[1]
+                - image.height
+            ) // 2
+
+            canvas.alpha_composite(
+                image,
+                (
+                    x,
+                    y,
+                ),
+            )
+
+            output = BytesIO()
+
+            canvas.save(
+                output,
+                format="WEBP",
+                quality=92,
+                method=6,
+            )
+
+            return (
+                output.getvalue()
+            )
+
+    except (
+        UnidentifiedImageError,
+        OSError,
+    ) as error:
+
+        raise ValueError(
+            "El archivo no contiene "
+            "una imagen válida."
+        ) from error
 
 
 # ==========================================
@@ -473,14 +1140,19 @@ def delete_local_product_image(
     ],
 )
 def get_products(
-    db: Session = Depends(
-        get_db
-    ),
+
+    db:
+        Session = Depends(
+            get_db
+        ),
+
 ):
 
-    return get_products_with_reviews(
-        db=db,
-        only_active=True,
+    return (
+        get_products_with_reviews(
+            db=db,
+            only_active=True,
+        )
     )
 
 
@@ -493,25 +1165,30 @@ def get_products(
 
 @router.get(
     "/admin/all",
+
     response_model=list[
         ProductResponse
     ],
 )
 def get_admin_products(
 
-    _current_admin: User = Depends(
-        get_current_admin
-    ),
+    _current_admin:
+        User = Depends(
+            get_current_admin
+        ),
 
-    db: Session = Depends(
-        get_db
-    ),
+    db:
+        Session = Depends(
+            get_db
+        ),
 
 ):
 
-    return get_products_with_reviews(
-        db=db,
-        only_active=False,
+    return (
+        get_products_with_reviews(
+            db=db,
+            only_active=False,
+        )
     )
 
 
@@ -524,6 +1201,7 @@ def get_admin_products(
 
 @router.get(
     "/admin/{product_id}",
+
     response_model=
         ProductResponse,
 )
@@ -531,13 +1209,15 @@ def get_admin_product(
 
     product_id: int,
 
-    _current_admin: User = Depends(
-        get_current_admin
-    ),
+    _current_admin:
+        User = Depends(
+            get_current_admin
+        ),
 
-    db: Session = Depends(
-        get_db
-    ),
+    db:
+        Session = Depends(
+            get_db
+        ),
 
 ):
 
@@ -548,7 +1228,6 @@ def get_admin_product(
         )
     )
 
-
     rating, review_count = (
         get_product_review_stats(
             product.id,
@@ -556,17 +1235,19 @@ def get_admin_product(
         )
     )
 
-
-    return build_product_response(
-        product,
-        rating,
-        review_count,
+    return (
+        build_product_response(
+            product,
+            rating,
+            review_count,
+        )
     )
 
 
 # ==========================================
 # ADMIN
-# SUBIR IMAGEN DE PRODUCTO
+# SUBIR IMAGEN
+# PILLOW → SUPABASE STORAGE
 #
 # POST /products/upload-image
 # ==========================================
@@ -579,38 +1260,33 @@ def get_admin_product(
 )
 async def upload_product_image(
 
-    file: UploadFile = File(
-        ...
-    ),
+    file:
+        UploadFile = File(
+            ...
+        ),
 
-    product_slug: str = Form(
-        ...
-    ),
+    product_slug:
+        str = Form(
+            ...
+        ),
 
-    _current_admin: User = Depends(
-        get_current_admin
-    ),
+    _current_admin:
+        User = Depends(
+            get_current_admin
+        ),
 
 ):
-
-    # ======================================
-    # VALIDAR TIPO DE IMAGEN
-    # ======================================
 
     content_type = (
         file.content_type
         or ""
     )
 
-
-    extension = (
-        ALLOWED_IMAGE_TYPES.get(
-            content_type
-        )
-    )
-
-
-    if not extension:
+    if (
+        content_type
+        not in
+        ALLOWED_IMAGE_TYPES
+    ):
 
         raise HTTPException(
             status_code=
@@ -622,17 +1298,9 @@ async def upload_product_image(
             ),
         )
 
-
-    # ======================================
-    # LEER ARCHIVO
-    # ======================================
-
-    contents = await file.read()
-
-
-    # ======================================
-    # VALIDAR ARCHIVO VACÍO
-    # ======================================
+    contents = (
+        await file.read()
+    )
 
     if not contents:
 
@@ -644,14 +1312,10 @@ async def upload_product_image(
                 "La imagen está vacía.",
         )
 
-
-    # ======================================
-    # VALIDAR TAMAÑO
-    # ======================================
-
     if (
         len(contents)
-        > MAX_IMAGE_SIZE
+        >
+        MAX_IMAGE_SIZE
     ):
 
         raise HTTPException(
@@ -659,15 +1323,28 @@ async def upload_product_image(
                 status.HTTP_413_CONTENT_TOO_LARGE,
 
             detail=(
-                "La imagen no puede superar "
-                "los 5 MB."
+                "La imagen no puede "
+                "superar los 5 MB."
             ),
         )
 
+    try:
 
-    # ======================================
-    # GENERAR NOMBRE SEGURO
-    # ======================================
+        processed_contents = (
+            process_product_image(
+                contents
+            )
+        )
+
+    except ValueError as error:
+
+        raise HTTPException(
+            status_code=
+                status.HTTP_400_BAD_REQUEST,
+
+            detail=
+                str(error),
+        ) from error
 
     safe_slug = (
         normalize_file_slug(
@@ -675,58 +1352,41 @@ async def upload_product_image(
         )
     )
 
-
     unique_id = (
         uuid4().hex[:12]
     )
 
-
     filename = (
         f"{safe_slug}-"
         f"{unique_id}"
-        f"{extension}"
+        ".webp"
     )
-
-
-    file_path = (
-        PRODUCT_UPLOAD_DIR
-        / filename
-    )
-
-
-    # ======================================
-    # GUARDAR IMAGEN
-    # ======================================
 
     try:
 
-        file_path.write_bytes(
-            contents
+        image_url = (
+            upload_product_image_to_storage(
+                filename=
+                    filename,
+
+                contents=
+                    processed_contents,
+            )
         )
 
-
-    except OSError as error:
+    except RuntimeError as error:
 
         raise HTTPException(
             status_code=
-                status.HTTP_500_INTERNAL_SERVER_ERROR,
+                status.HTTP_502_BAD_GATEWAY,
 
-            detail=(
-                "No fue posible guardar "
-                "la imagen."
-            ),
+            detail=
+                str(error),
         ) from error
 
-
-    # ======================================
-    # DEVOLVER URL
-    # ======================================
-
     return {
-        "image_url": (
-            "/uploads/products/"
-            f"{filename}"
-        )
+        "image_url":
+            image_url
     }
 
 
@@ -748,36 +1408,30 @@ async def upload_product_image(
 )
 def create_product(
 
-    product_data: ProductCreate,
+    product_data:
+        ProductCreate,
 
-    _current_admin: User = Depends(
-        get_current_admin
-    ),
+    _current_admin:
+        User = Depends(
+            get_current_admin
+        ),
 
-    db: Session = Depends(
-        get_db
-    ),
+    db:
+        Session = Depends(
+            get_db
+        ),
 
 ):
-
-    # ======================================
-    # VALIDAR SLUG
-    # ======================================
 
     validate_unique_slug(
         product_data.slug,
         db,
     )
 
-
-    # ======================================
-    # CREAR PRODUCTO
-    # ======================================
-
     product = Product(
-        **product_data.model_dump()
+        **product_data
+        .model_dump()
     )
-
 
     try:
 
@@ -791,10 +1445,6 @@ def create_product(
             product
         )
 
-
-        # Producto nuevo:
-        # rating 0 y 0 reseñas.
-
         rating, review_count = (
             get_product_review_stats(
                 product.id,
@@ -802,13 +1452,13 @@ def create_product(
             )
         )
 
-
-        return build_product_response(
-            product,
-            rating,
-            review_count,
+        return (
+            build_product_response(
+                product,
+                rating,
+                review_count,
+            )
         )
-
 
     except Exception:
 
@@ -834,21 +1484,20 @@ def update_product(
 
     product_id: int,
 
-    product_data: ProductUpdate,
+    product_data:
+        ProductUpdate,
 
-    _current_admin: User = Depends(
-        get_current_admin
-    ),
+    _current_admin:
+        User = Depends(
+            get_current_admin
+        ),
 
-    db: Session = Depends(
-        get_db
-    ),
+    db:
+        Session = Depends(
+            get_db
+        ),
 
 ):
-
-    # ======================================
-    # BUSCAR PRODUCTO
-    # ======================================
 
     product = (
         get_product_or_404(
@@ -857,35 +1506,22 @@ def update_product(
         )
     )
 
-
-    # Guardamos la URL anterior.
-
     old_image_url = (
         product.image_url
     )
 
-
-    # ======================================
-    # DATOS RECIBIDOS
-    # ======================================
-
     update_data = (
-        product_data.model_dump(
+        product_data
+        .model_dump(
             exclude_unset=True
         )
     )
-
-
-    # ======================================
-    # VALIDAR SLUG
-    # ======================================
 
     new_slug = (
         update_data.get(
             "slug"
         )
     )
-
 
     if new_slug:
 
@@ -900,11 +1536,6 @@ def update_product(
                 product.id,
         )
 
-
-    # ======================================
-    # ACTUALIZAR CAMPOS
-    # ======================================
-
     for (
         field,
         value,
@@ -916,7 +1547,6 @@ def update_product(
             value,
         )
 
-
     try:
 
         db.commit()
@@ -925,33 +1555,23 @@ def update_product(
             product
         )
 
-
     except Exception:
 
         db.rollback()
 
         raise
 
-
-    # ======================================
-    # ELIMINAR IMAGEN ANTIGUA
-    # ======================================
-
     if (
         old_image_url
         and
-        old_image_url !=
+        old_image_url
+        !=
         product.image_url
     ):
 
-        delete_local_product_image(
+        delete_old_product_image(
             old_image_url
         )
-
-
-    # ======================================
-    # RATING ACTUAL
-    # ======================================
 
     rating, review_count = (
         get_product_review_stats(
@@ -960,11 +1580,12 @@ def update_product(
         )
     )
 
-
-    return build_product_response(
-        product,
-        rating,
-        review_count,
+    return (
+        build_product_response(
+            product,
+            rating,
+            review_count,
+        )
     )
 
 
@@ -988,13 +1609,15 @@ def change_product_status(
     status_data:
         ProductStatusUpdate,
 
-    _current_admin: User = Depends(
-        get_current_admin
-    ),
+    _current_admin:
+        User = Depends(
+            get_current_admin
+        ),
 
-    db: Session = Depends(
-        get_db
-    ),
+    db:
+        Session = Depends(
+            get_db
+        ),
 
 ):
 
@@ -1005,11 +1628,9 @@ def change_product_status(
         )
     )
 
-
     product.is_active = (
         status_data.is_active
     )
-
 
     try:
 
@@ -1019,7 +1640,6 @@ def change_product_status(
             product
         )
 
-
         rating, review_count = (
             get_product_review_stats(
                 product.id,
@@ -1027,13 +1647,13 @@ def change_product_status(
             )
         )
 
-
-        return build_product_response(
-            product,
-            rating,
-            review_count,
+        return (
+            build_product_response(
+                product,
+                rating,
+                review_count,
+            )
         )
-
 
     except Exception:
 
@@ -1059,13 +1679,15 @@ def delete_product(
 
     product_id: int,
 
-    _current_admin: User = Depends(
-        get_current_admin
-    ),
+    _current_admin:
+        User = Depends(
+            get_current_admin
+        ),
 
-    db: Session = Depends(
-        get_db
-    ),
+    db:
+        Session = Depends(
+            get_db
+        ),
 
 ):
 
@@ -1076,26 +1698,17 @@ def delete_product(
         )
     )
 
-
-    # No borramos físicamente
-    # ni el producto ni su imagen.
-    #
-    # Puede reactivarse después.
-
     product.is_active = False
-
 
     try:
 
         db.commit()
-
 
     except Exception:
 
         db.rollback()
 
         raise
-
 
     return Response(
         status_code=
@@ -1105,10 +1718,11 @@ def delete_product(
 
 # ==========================================
 # PÚBLICO
-# OBTENER PRODUCTO POR SLUG
+# PRODUCTO POR SLUG
 #
 # GET /products/{slug}
 #
+# IMPORTANTE:
 # ESTA RUTA DEBE IR AL FINAL
 # ==========================================
 
@@ -1122,24 +1736,25 @@ def get_product_by_slug(
 
     slug: str,
 
-    db: Session = Depends(
-        get_db
-    ),
+    db:
+        Session = Depends(
+            get_db
+        ),
 
 ):
 
     product = db.scalar(
         select(Product)
         .where(
-            Product.slug ==
-            slug,
+            Product.slug
+            == slug,
 
-            Product.is_active.is_(
+            Product.is_active
+            .is_(
                 True
             ),
         )
     )
-
 
     if not product:
 
@@ -1151,11 +1766,6 @@ def get_product_by_slug(
                 "Producto no encontrado",
         )
 
-
-    # ======================================
-    # OBTENER RATING REAL
-    # ======================================
-
     rating, review_count = (
         get_product_review_stats(
             product.id,
@@ -1163,9 +1773,10 @@ def get_product_by_slug(
         )
     )
 
-
-    return build_product_response(
-        product,
-        rating,
-        review_count,
+    return (
+        build_product_response(
+            product,
+            rating,
+            review_count,
+        )
     )

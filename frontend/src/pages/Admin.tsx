@@ -1,13 +1,5 @@
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import {
-  Link,
-  Navigate,
-} from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import {
   AlertTriangle,
   Banknote,
@@ -26,12 +18,13 @@ import { useAuth } from "../context/useAuth";
 import {
   changeProductStatus,
   getAdminProducts,
+  getProductImageUrl,
   type ApiProduct,
 } from "../services/productService";
 
 import {
-  getAdminOrders,
-  type OrderResponse,
+  getAdminOrderStats,
+  type AdminOrderStatsResponse,
 } from "../services/orderService";
 
 import {
@@ -41,20 +34,10 @@ import {
 
 import "./Admin.css";
 
-
-// ==========================================
-// CONFIGURACIÓN DE INVENTARIO
-// ==========================================
-
 const LOW_STOCK_LIMIT = 5;
-
-
-// ==========================================
-// COMPONENTE
-// ==========================================
+const DASHBOARD_REFRESH_INTERVAL = 30_000;
 
 function Admin() {
-
   const {
     user,
     token,
@@ -62,415 +45,210 @@ function Admin() {
     loading,
   } = useAuth();
 
-
   // ==========================================
   // PRODUCTOS
   // ==========================================
 
-  const [
-    products,
-    setProducts,
-  ] = useState<ApiProduct[]>([]);
+  const [products, setProducts] =
+    useState<ApiProduct[]>([]);
 
-  const [
-    productsLoading,
-    setProductsLoading,
-  ] = useState(true);
+  const [productsLoading, setProductsLoading] =
+    useState(true);
 
-  const [
-    updatingProductId,
-    setUpdatingProductId,
-  ] = useState<number | null>(
-    null
-  );
-
+  const [updatingProductId, setUpdatingProductId] =
+    useState<number | null>(null);
 
   // ==========================================
-  // PEDIDOS
+  // ESTADÍSTICAS DE PEDIDOS
   // ==========================================
 
-  const [
-    orders,
-    setOrders,
-  ] = useState<OrderResponse[]>([]);
+  const [orderStats, setOrderStats] =
+    useState<AdminOrderStatsResponse | null>(null);
 
-  const [
-    ordersLoading,
-    setOrdersLoading,
-  ] = useState(true);
-
+  const [ordersLoading, setOrdersLoading] =
+    useState(true);
 
   // ==========================================
   // CLIENTES
   // ==========================================
 
-  const [
-    customers,
-    setCustomers,
-  ] = useState<
-    AdminUserResponse[]
-  >([]);
+  const [customers, setCustomers] =
+    useState<AdminUserResponse[]>([]);
 
-  const [
-    customersLoading,
-    setCustomersLoading,
-  ] = useState(true);
-
+  const [customersLoading, setCustomersLoading] =
+    useState(true);
 
   // ==========================================
-  // ERROR GENERAL
+  // ERROR
   // ==========================================
 
-  const [
-    error,
-    setError,
-  ] = useState("");
-
+  const [error, setError] = useState("");
 
   // ==========================================
-  // CARGAR INFORMACIÓN DEL ADMIN
+  // CARGAR DASHBOARD
   // ==========================================
 
   useEffect(() => {
-
-    if (
-      user?.role !== "admin" ||
-      !token
-    ) {
+    if (user?.role !== "admin" || !token) {
       return;
     }
 
+    const adminToken = token;
+    let requestInProgress = false;
+    let active = true;
 
-    const adminToken =
-      token;
-
-    let requestInProgress =
-      false;
-
-
-    async function loadAdminData(
-      showLoading = false
-    ) {
-
-      if (
-        requestInProgress
-      ) {
+    async function loadAdminData(showLoading = false) {
+      if (requestInProgress) {
         return;
       }
 
-
-      requestInProgress =
-        true;
-
+      requestInProgress = true;
 
       if (showLoading) {
-
-        setProductsLoading(
-          true
-        );
-
-        setOrdersLoading(
-          true
-        );
-
-        setCustomersLoading(
-          true
-        );
+        setProductsLoading(true);
+        setOrdersLoading(true);
+        setCustomersLoading(true);
       }
-
 
       const [
         productsResult,
-        ordersResult,
+        orderStatsResult,
         customersResult,
-      ] =
-        await Promise.allSettled([
-          getAdminProducts(
-            adminToken
-          ),
+      ] = await Promise.allSettled([
+        getAdminProducts(adminToken),
+        getAdminOrderStats(adminToken),
+        getAdminUsers(adminToken),
+      ]);
 
-          getAdminOrders(
-            adminToken
-          ),
+      if (!active) {
+        return;
+      }
 
-          getAdminUsers(
-            adminToken
-          ),
-        ]);
+      const errors: string[] = [];
 
-
-      const errors: string[] =
-        [];
-
-
-      // ======================================
       // PRODUCTOS
-      // ======================================
-
-      if (
-        productsResult.status ===
-        "fulfilled"
-      ) {
-
-        setProducts(
-          productsResult.value
-        );
-
+      if (productsResult.status === "fulfilled") {
+        setProducts(productsResult.value);
       } else {
-
         errors.push(
           "No se pudieron actualizar los productos."
         );
       }
 
-
-      // ======================================
       // PEDIDOS
-      // ======================================
-
-      if (
-        ordersResult.status ===
-        "fulfilled"
-      ) {
-
-        setOrders(
-          ordersResult.value
-        );
-
+      if (orderStatsResult.status === "fulfilled") {
+        setOrderStats(orderStatsResult.value);
       } else {
-
         errors.push(
-          "No se pudieron actualizar los pedidos."
+          "No se pudieron actualizar las estadísticas de pedidos."
         );
       }
 
-
-      // ======================================
       // CLIENTES
-      // ======================================
-
-      if (
-        customersResult.status ===
-        "fulfilled"
-      ) {
-
-        setCustomers(
-          customersResult.value
-        );
-
+      if (customersResult.status === "fulfilled") {
+        setCustomers(customersResult.value);
       } else {
-
         errors.push(
           "No se pudieron actualizar los clientes."
         );
       }
 
-
-      // ======================================
-      // ERRORES
-      // ======================================
-
-      if (
+      setError(
         errors.length > 0
-      ) {
-
-        setError(
-          errors.join(" ")
-        );
-
-      } else {
-
-        setError("");
-      }
-
-
-      // ======================================
-      // LOADING
-      // ======================================
+          ? errors.join(" ")
+          : ""
+      );
 
       if (showLoading) {
-
-        setProductsLoading(
-          false
-        );
-
-        setOrdersLoading(
-          false
-        );
-
-        setCustomersLoading(
-          false
-        );
+        setProductsLoading(false);
+        setOrdersLoading(false);
+        setCustomersLoading(false);
       }
 
-
-      requestInProgress =
-        false;
+      requestInProgress = false;
     }
 
+    void loadAdminData(true);
 
-    // ======================================
-    // PRIMERA CARGA
-    // ======================================
-
-    loadAdminData(true);
-
-
-    // ======================================
-    // ACTUALIZACIÓN AUTOMÁTICA
-    // CADA 3 SEGUNDOS
-    // ======================================
-
-    const intervalId =
-      window.setInterval(
-        () => {
-
-          loadAdminData(
-            false
-          );
-
-        },
-        3000
-      );
-
-
-    // ======================================
-    // LIMPIAR INTERVALO
-    // ======================================
+    const intervalId = window.setInterval(() => {
+      void loadAdminData(false);
+    }, DASHBOARD_REFRESH_INTERVAL);
 
     return () => {
-
-      window.clearInterval(
-        intervalId
-      );
+      active = false;
+      window.clearInterval(intervalId);
     };
-
-  }, [
-    user?.role,
-    token,
-  ]);
-
+  }, [user?.role, token]);
 
   // ==========================================
   // ACTIVAR / DESACTIVAR PRODUCTO
   // ==========================================
 
-  const handleStatusChange =
-    async (
-      product: ApiProduct
-    ) => {
+  const handleStatusChange = async (
+    product: ApiProduct
+  ) => {
+    if (!token) {
+      return;
+    }
 
-      if (!token) {
-        return;
-      }
+    const newStatus = !product.is_active;
 
+    const action = product.is_active
+      ? "desactivar"
+      : "reactivar";
 
-      const newStatus =
-        !product.is_active;
+    const confirmed = window.confirm(
+      `¿Deseas ${action} ${product.name}?`
+    );
 
+    if (!confirmed) {
+      return;
+    }
 
-      const action =
-        product.is_active
-          ? "desactivar"
-          : "reactivar";
+    try {
+      setUpdatingProductId(product.id);
+      setError("");
 
-
-      const confirmed =
-        window.confirm(
-          `¿Deseas ${action} ${product.name}?`
+      const updatedProduct =
+        await changeProductStatus(
+          token,
+          product.id,
+          newStatus
         );
 
-
-      if (!confirmed) {
-        return;
-      }
-
-
-      try {
-
-        setUpdatingProductId(
-          product.id
-        );
-
-        setError("");
-
-
-        const updatedProduct =
-          await changeProductStatus(
-            token,
-            product.id,
-            newStatus
-          );
-
-
-        setProducts(
-          (
-            currentProducts
-          ) =>
-            currentProducts.map(
-              (
-                currentProduct
-              ) =>
-                currentProduct.id ===
-                product.id
-                  ? updatedProduct
-                  : currentProduct
-            )
-        );
-
-      } catch (error) {
-
-        if (
-          error instanceof Error
-        ) {
-
-          setError(
-            error.message
-          );
-
-        } else {
-
-          setError(
-            "No se pudo cambiar el estado del producto."
-          );
-        }
-
-      } finally {
-
-        setUpdatingProductId(
-          null
+      setProducts((currentProducts) =>
+        currentProducts.map((currentProduct) =>
+          currentProduct.id === product.id
+            ? updatedProduct
+            : currentProduct
+        )
+      );
+    } catch (requestError) {
+      if (requestError instanceof Error) {
+        setError(requestError.message);
+      } else {
+        setError(
+          "No se pudo cambiar el estado del producto."
         );
       }
-    };
-
+    } finally {
+      setUpdatingProductId(null);
+    }
+  };
 
   // ==========================================
-  // CARGANDO AUTENTICACIÓN
+  // AUTENTICACIÓN
   // ==========================================
 
   if (loading) {
-
     return (
       <main className="admin-page">
-
-        <p>
-          Cargando panel...
-        </p>
-
+        <p>Cargando panel...</p>
       </main>
     );
   }
 
-
-  // ==========================================
-  // SIN SESIÓN
-  // ==========================================
-
-  if (
-    !isAuthenticated ||
-    !user
-  ) {
-
+  if (!isAuthenticated || !user) {
     return (
       <Navigate
         to="/login"
@@ -479,15 +257,7 @@ function Admin() {
     );
   }
 
-
-  // ==========================================
-  // NO ES ADMIN
-  // ==========================================
-
-  if (
-    user.role !== "admin"
-  ) {
-
+  if (user.role !== "admin") {
     return (
       <Navigate
         to="/"
@@ -496,542 +266,273 @@ function Admin() {
     );
   }
 
-
   // ==========================================
-  // PRODUCTOS ACTIVOS
-  // ==========================================
-
-  const activeProducts =
-    products.filter(
-      (product) =>
-        product.is_active
-    );
-
-
-  // ==========================================
-  // STOCK TOTAL
+  // ESTADÍSTICAS DE PRODUCTOS
   // ==========================================
 
-  const totalStock =
-    activeProducts.reduce(
-      (
-        total,
-        product
-      ) =>
-        total +
-        product.stock,
-      0
-    );
+  const activeProducts = products.filter(
+    (product) => product.is_active
+  );
 
+  const totalStock = activeProducts.reduce(
+    (total, product) =>
+      total + product.stock,
+    0
+  );
 
-  // ==========================================
-  // STOCK BAJO
-  // ==========================================
-
-  const lowStockProducts =
-    activeProducts.filter(
-      (product) =>
-        product.stock > 0 &&
-        product.stock <=
-          LOW_STOCK_LIMIT
-    );
-
-
-  // ==========================================
-  // PRODUCTOS AGOTADOS
-  // ==========================================
+  const lowStockProducts = activeProducts.filter(
+    (product) =>
+      product.stock > 0 &&
+      product.stock <= LOW_STOCK_LIMIT
+  );
 
   const outOfStockProducts =
     activeProducts.filter(
-      (product) =>
-        product.stock === 0
+      (product) => product.stock === 0
     );
 
-
   // ==========================================
-  // PEDIDOS TOTALES
+  // ESTADÍSTICAS DE PEDIDOS
   // ==========================================
 
   const totalOrders =
-    orders.length;
-
-
-  // ==========================================
-  // PEDIDOS PENDIENTES
-  // ==========================================
+    orderStats?.total_orders ?? 0;
 
   const pendingOrders =
-    orders.filter(
-      (order) =>
-        order.status ===
-          "pending"
-    ).length;
-
-
-  // ==========================================
-  // PEDIDOS PAGADOS
-  // ==========================================
+    orderStats?.pending_orders ?? 0;
 
   const paidOrders =
-    orders.filter(
-      (order) =>
-        order.payment_status ===
-          "paid"
-    ).length;
-
-
-  // ==========================================
-  // PAGOS PENDIENTES
-  // ==========================================
+    orderStats?.paid_orders ?? 0;
 
   const pendingPayments =
-    orders.filter(
-      (order) =>
-        order.payment_status ===
-          "pending" &&
-        order.status !==
-          "cancelled"
-    ).length;
+    orderStats?.pending_payments ?? 0;
 
-
-  // ==========================================
-  // VENTAS PAGADAS
-  // ==========================================
-
-  const paidOrderValue =
-    orders
-      .filter(
-        (order) =>
-          order.payment_status ===
-            "paid" &&
-          order.status !==
-            "cancelled"
-      )
-      .reduce(
-        (
-          total,
-          order
-        ) =>
-          total +
-          Number(
-            order.total
-          ),
-        0
-      );
-
+  const paidOrderValue = Number(
+    orderStats?.paid_revenue ?? 0
+  );
 
   // ==========================================
   // CLIENTES
   // ==========================================
 
-  const totalCustomers =
-    customers.length;
-
-
-  // ==========================================
-  // VISTA
-  // ==========================================
+  const totalCustomers = customers.length;
 
   return (
-
     <main className="admin-page">
-
       <section className="admin-container">
 
-
-        {/* ================================= */}
-        {/* CABECERA */}
-        {/* ================================= */}
+        {/* =====================================
+            CABECERA
+        ===================================== */}
 
         <div className="admin-header">
-
           <div>
+            <span>PANEL ADMINISTRATIVO</span>
 
-            <span>
-              PANEL ADMINISTRATIVO
-            </span>
-
-
-            <h1>
-              Administración AURA
-            </h1>
-
+            <h1>Administración AURA</h1>
 
             <p>
-              Gestiona productos,
-              inventario, pedidos
-              y clientes.
+              Gestiona productos, inventario,
+              pedidos y clientes.
             </p>
-
           </div>
 
-
           <div className="admin-header-actions">
-
-
-            {/* INVENTARIO */}
-
             <Link
               to="/admin/inventario"
               className="admin-secondary-button"
             >
-
-              <Boxes
-                size={17}
-              />
-
+              <Boxes size={17} />
               Inventario
-
             </Link>
-
-
-            {/* PEDIDOS */}
 
             <Link
               to="/admin/pedidos"
               className="admin-secondary-button"
             >
-
-              <ShoppingBag
-                size={17}
-              />
-
+              <ShoppingBag size={17} />
               Pedidos
-
             </Link>
-
-
-            {/* CLIENTES */}
 
             <Link
               to="/admin/clientes"
               className="admin-secondary-button"
             >
-
-              <Users
-                size={17}
-              />
-
+              <Users size={17} />
               Clientes
-
             </Link>
-
-
-            {/* NUEVO PRODUCTO */}
 
             <Link
               to="/admin/productos/nuevo"
               className="admin-new-product"
             >
-
-              <Plus
-                size={17}
-              />
-
+              <Plus size={17} />
               Agregar producto
-
             </Link>
-
           </div>
-
         </div>
 
-
-        {/* ================================= */}
-        {/* ERROR */}
-        {/* ================================= */}
+        {/* =====================================
+            ERROR
+        ===================================== */}
 
         {error && (
-
           <p className="admin-error">
             {error}
           </p>
-
         )}
 
-
-        {/* ================================= */}
-        {/* KPIs */}
-        {/* ================================= */}
+        {/* =====================================
+            KPIs
+        ===================================== */}
 
         <div className="admin-stats">
 
-
-          {/* PRODUCTOS ACTIVOS */}
-
           <article className="admin-stat-card">
-
-            <Package
-              size={22}
-            />
+            <Package size={22} />
 
             <div>
-
-              <span>
-                Productos activos
-              </span>
+              <span>Productos activos</span>
 
               <strong>
-
                 {productsLoading
                   ? "..."
                   : activeProducts.length}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* STOCK TOTAL */}
-
           <article className="admin-stat-card">
-
-            <Boxes
-              size={22}
-            />
+            <Boxes size={22} />
 
             <div>
-
-              <span>
-                Stock total
-              </span>
+              <span>Stock total</span>
 
               <strong>
-
                 {productsLoading
                   ? "..."
                   : totalStock}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* STOCK BAJO */}
-
           <article className="admin-stat-card">
-
-            <AlertTriangle
-              size={22}
-            />
+            <AlertTriangle size={22} />
 
             <div>
-
-              <span>
-                Stock bajo
-              </span>
+              <span>Stock bajo</span>
 
               <strong>
-
                 {productsLoading
                   ? "..."
                   : lowStockProducts.length}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* AGOTADOS */}
-
           <article className="admin-stat-card">
-
-            <CircleOff
-              size={22}
-            />
+            <CircleOff size={22} />
 
             <div>
-
-              <span>
-                Agotados
-              </span>
+              <span>Agotados</span>
 
               <strong>
-
                 {productsLoading
                   ? "..."
                   : outOfStockProducts.length}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* CLIENTES */}
-
           <article className="admin-stat-card">
-
-            <Users
-              size={22}
-            />
+            <Users size={22} />
 
             <div>
-
-              <span>
-                Clientes
-              </span>
+              <span>Clientes</span>
 
               <strong>
-
                 {customersLoading
                   ? "..."
                   : totalCustomers}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* PEDIDOS */}
-
           <article className="admin-stat-card">
-
-            <ShoppingBag
-              size={22}
-            />
+            <ShoppingBag size={22} />
 
             <div>
-
-              <span>
-                Pedidos totales
-              </span>
+              <span>Pedidos totales</span>
 
               <strong>
-
                 {ordersLoading
                   ? "..."
                   : totalOrders}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* PEDIDOS PENDIENTES */}
-
           <article className="admin-stat-card">
-
-            <Clock
-              size={22}
-            />
+            <Clock size={22} />
 
             <div>
-
-              <span>
-                Pedidos pendientes
-              </span>
+              <span>Pedidos pendientes</span>
 
               <strong>
-
                 {ordersLoading
                   ? "..."
                   : pendingOrders}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* PEDIDOS PAGADOS */}
-
           <article className="admin-stat-card">
-
-            <WalletCards
-              size={22}
-            />
+            <WalletCards size={22} />
 
             <div>
-
-              <span>
-                Pedidos pagados
-              </span>
+              <span>Pedidos pagados</span>
 
               <strong>
-
                 {ordersLoading
                   ? "..."
                   : paidOrders}
-
               </strong>
-
             </div>
-
           </article>
 
-
-          {/* VENTAS PAGADAS */}
-
           <article className="admin-stat-card">
-
-            <Banknote
-              size={22}
-            />
+            <Banknote size={22} />
 
             <div>
-
-              <span>
-                Ventas pagadas
-              </span>
+              <span>Ventas pagadas</span>
 
               <strong>
-
                 {ordersLoading
                   ? "..."
-                  : `S/ ${paidOrderValue.toFixed(
-                      2
-                    )}`}
-
+                  : `S/ ${paidOrderValue.toFixed(2)}`}
               </strong>
-
             </div>
-
           </article>
 
         </div>
 
-
-        {/* ================================= */}
-        {/* ATENCIÓN REQUERIDA */}
-        {/* ================================= */}
+        {/* =====================================
+            ATENCIÓN REQUERIDA
+        ===================================== */}
 
         <section className="admin-alerts-section">
-
           <div className="admin-section-heading">
+            <span>MONITOREO</span>
 
-            <span>
-              MONITOREO
-            </span>
-
-            <h2>
-              Atención requerida
-            </h2>
+            <h2>Atención requerida</h2>
 
             <p>
               Situaciones que podrían requerir
               revisión del administrador.
             </p>
-
           </div>
 
-
           <div className="admin-alerts-grid">
-
-
-            {/* STOCK BAJO */}
 
             <Link
               to="/admin/inventario"
@@ -1041,38 +542,23 @@ function Admin() {
                   : "admin-alert-card ok"
               }
             >
-
-              <AlertTriangle
-                size={21}
-              />
+              <AlertTriangle size={21} />
 
               <div>
-
-                <span>
-                  Stock bajo
-                </span>
+                <span>Stock bajo</span>
 
                 <strong>
-
-                  {lowStockProducts.length}
-                  {" "}
-
+                  {lowStockProducts.length}{" "}
                   {lowStockProducts.length === 1
                     ? "producto"
                     : "productos"}
-
                 </strong>
 
                 <small>
                   5 unidades o menos
                 </small>
-
               </div>
-
             </Link>
-
-
-            {/* PRODUCTOS AGOTADOS */}
 
             <Link
               to="/admin/inventario"
@@ -1082,38 +568,25 @@ function Admin() {
                   : "admin-alert-card ok"
               }
             >
-
-              <CircleOff
-                size={21}
-              />
+              <CircleOff size={21} />
 
               <div>
-
                 <span>
                   Productos agotados
                 </span>
 
                 <strong>
-
-                  {outOfStockProducts.length}
-                  {" "}
-
+                  {outOfStockProducts.length}{" "}
                   {outOfStockProducts.length === 1
                     ? "producto"
                     : "productos"}
-
                 </strong>
 
                 <small>
                   Sin unidades disponibles
                 </small>
-
               </div>
-
             </Link>
-
-
-            {/* PEDIDOS PENDIENTES */}
 
             <Link
               to="/admin/pedidos"
@@ -1123,38 +596,25 @@ function Admin() {
                   : "admin-alert-card ok"
               }
             >
-
-              <Clock
-                size={21}
-              />
+              <Clock size={21} />
 
               <div>
-
                 <span>
                   Pedidos pendientes
                 </span>
 
                 <strong>
-
-                  {pendingOrders}
-                  {" "}
-
+                  {pendingOrders}{" "}
                   {pendingOrders === 1
                     ? "pedido"
                     : "pedidos"}
-
                 </strong>
 
                 <small>
                   Requieren seguimiento
                 </small>
-
               </div>
-
             </Link>
-
-
-            {/* PAGOS PENDIENTES */}
 
             <Link
               to="/admin/pedidos"
@@ -1164,150 +624,101 @@ function Admin() {
                   : "admin-alert-card ok"
               }
             >
-
-              <WalletCards
-                size={21}
-              />
+              <WalletCards size={21} />
 
               <div>
-
                 <span>
                   Pagos pendientes
                 </span>
 
                 <strong>
-
-                  {pendingPayments}
-                  {" "}
-
+                  {pendingPayments}{" "}
                   {pendingPayments === 1
                     ? "pago"
                     : "pagos"}
-
                 </strong>
 
                 <small>
                   Pendientes de confirmación
                 </small>
-
               </div>
-
             </Link>
 
           </div>
-
         </section>
 
-
-        {/* ================================= */}
-        {/* ACCESOS RÁPIDOS */}
-        {/* ================================= */}
+        {/* =====================================
+            ACCESOS RÁPIDOS
+        ===================================== */}
 
         <section className="admin-quick-section">
-
           <div className="admin-section-heading">
+            <span>GESTIÓN</span>
 
-            <span>
-              GESTIÓN
-            </span>
-
-            <h2>
-              Accesos rápidos
-            </h2>
+            <h2>Accesos rápidos</h2>
 
             <p>
               Ingresa directamente a las
               principales áreas administrativas
               de AURA.
             </p>
-
           </div>
 
-
           <div className="admin-main-actions">
-
-
-            {/* PEDIDOS */}
 
             <Link
               to="/admin/pedidos"
               className="admin-main-action"
             >
-
-              <span>
-                PEDIDOS
-              </span>
+              <span>PEDIDOS</span>
 
               <strong>
                 Gestionar pedidos
               </strong>
 
               <small>
-                Revisa las compras,
-                pagos, entregas y estados
-                de los pedidos.
+                Revisa las compras, pagos,
+                entregas y estados de los pedidos.
               </small>
-
             </Link>
-
-
-            {/* INVENTARIO */}
 
             <Link
               to="/admin/inventario"
               className="admin-main-action"
             >
-
-              <span>
-                INVENTARIO
-              </span>
+              <span>INVENTARIO</span>
 
               <strong>
                 Controlar stock
               </strong>
 
               <small>
-                Revisa existencias,
-                productos con stock bajo
-                y perfumes agotados.
+                Revisa existencias, productos
+                con stock bajo y perfumes agotados.
               </small>
-
             </Link>
-
-
-            {/* CLIENTES */}
 
             <Link
               to="/admin/clientes"
               className="admin-main-action"
             >
-
-              <span>
-                CLIENTES
-              </span>
+              <span>CLIENTES</span>
 
               <strong>
                 Ver clientes
               </strong>
 
               <small>
-                Consulta las cuentas
-                registradas y sus pedidos.
+                Consulta las cuentas registradas
+                y sus pedidos.
               </small>
-
             </Link>
-
-
-            {/* NUEVO PRODUCTO */}
 
             <Link
               to="/admin/productos/nuevo"
               className="admin-main-action"
             >
-
-              <span>
-                CATÁLOGO
-              </span>
+              <span>CATÁLOGO</span>
 
               <strong>
                 Nuevo producto
@@ -1317,105 +728,53 @@ function Admin() {
                 Agrega un nuevo perfume
                 al catálogo de AURA.
               </small>
-
             </Link>
 
           </div>
-
         </section>
 
-
-        {/* ================================= */}
-        {/* PRODUCTOS */}
-        {/* ================================= */}
+        {/* =====================================
+            PRODUCTOS
+        ===================================== */}
 
         <section className="admin-products-section">
-
           <div className="admin-section-heading">
-
-            <span>
-              CATÁLOGO
-            </span>
-
-            <h2>
-              Productos
-            </h2>
-
+            <span>CATÁLOGO</span>
+            <h2>Productos</h2>
           </div>
 
-
-          {/* CARGANDO */}
-
           {productsLoading && (
-
-            <p>
-              Cargando productos...
-            </p>
-
+            <p>Cargando productos...</p>
           )}
-
-
-          {/* SIN PRODUCTOS */}
 
           {!productsLoading &&
             products.length === 0 && (
-
-            <p>
-              No hay productos registrados.
-            </p>
-
-          )}
-
-
-          {/* TABLA DE PRODUCTOS */}
+              <p>
+                No hay productos registrados.
+              </p>
+            )}
 
           {!productsLoading &&
             products.length > 0 && (
 
-            <div className="admin-product-table">
+              <div className="admin-product-table">
 
+                {/* CABECERA */}
 
-              {/* CABECERA */}
+                <div className="admin-product-row admin-product-header-row">
+                  <span>Producto</span>
+                  <span>Marca</span>
+                  <span>Precio</span>
+                  <span>Existencias</span>
+                  <span>Estado</span>
+                  <span>Acciones</span>
+                </div>
 
-              <div className="admin-product-row admin-product-header-row">
+                {/* PRODUCTOS */}
 
-                <span>
-                  Producto
-                </span>
-
-                <span>
-                  Marca
-                </span>
-
-                <span>
-                  Precio
-                </span>
-
-                <span>
-                  Existencias
-                </span>
-
-                <span>
-                  Estado
-                </span>
-
-                <span>
-                  Acciones
-                </span>
-
-              </div>
-
-
-              {/* PRODUCTOS */}
-
-              {products.map(
-                (product) => (
-
+                {products.map((product) => (
                   <div
-                    key={
-                      product.id
-                    }
-
+                    key={product.id}
                     className={
                       product.is_active
                         ? "admin-product-row"
@@ -1423,107 +782,61 @@ function Admin() {
                     }
                   >
 
-
-                    {/* PRODUCTO */}
-
                     <div className="admin-product-name">
-
                       <div className="admin-product-image">
 
                         {product.image_url ? (
-
                           <img
-                            src={
+                            src={getProductImageUrl(
                               product.image_url
-                            }
-
-                            alt={
-                              product.name
-                            }
+                            )}
+                            alt={product.name}
                           />
-
                         ) : (
-
-                          <span>
-                            AURA
-                          </span>
-
+                          <span>AURA</span>
                         )}
 
                       </div>
 
-
                       <div>
-
                         <strong>
                           {product.name}
                         </strong>
 
                         <small>
-
-                          {product.size_ml}
-                          {" "}
-                          ml
-
+                          {product.size_ml} ml
                         </small>
-
                       </div>
-
                     </div>
-
-
-                    {/* MARCA */}
 
                     <span>
                       {product.brand}
                     </span>
 
-
-                    {/* PRECIO */}
-
                     <span>
-
                       S/{" "}
-
                       {Number(
                         product.price
                       ).toFixed(2)}
-
                     </span>
 
-
-                    {/* STOCK */}
-
                     <span>
-
                       {product.stock}
 
-
                       {product.stock === 0 && (
-
                         <>
-                          {" "}
-                          · Agotado
+                          {" "}· Agotado
                         </>
-
                       )}
-
 
                       {product.stock > 0 &&
                         product.stock <=
                           LOW_STOCK_LIMIT && (
-
-                        <>
-                          {" "}
-                          · Stock bajo
-                        </>
-
-                      )}
-
+                          <>
+                            {" "}· Stock bajo
+                          </>
+                        )}
                     </span>
-
-
-                    {/* ESTADO */}
 
                     <span
                       className={
@@ -1532,71 +845,52 @@ function Admin() {
                           : "admin-status-inactive"
                       }
                     >
-
                       {product.is_active
                         ? "Activo"
                         : "Inactivo"}
-
                     </span>
 
-
-                    {/* ACCIONES */}
-
                     <div className="admin-product-actions">
-
                       <Link
-                        to={
-                          `/admin/productos/${product.id}`
-                        }
-
+                        to={`/admin/productos/${product.id}`}
                         className="admin-edit-link"
                       >
                         Editar
                       </Link>
 
-
                       <button
                         type="button"
-
                         disabled={
                           updatingProductId ===
                           product.id
                         }
-
                         onClick={() =>
                           handleStatusChange(
                             product
                           )
                         }
                       >
-
                         {updatingProductId ===
                         product.id
                           ? "Procesando..."
                           : product.is_active
                             ? "Desactivar"
                             : "Reactivar"}
-
                       </button>
-
                     </div>
 
                   </div>
+                ))}
 
-                )
-              )}
+              </div>
 
-            </div>
-
-          )}
+            )}
 
         </section>
 
       </section>
-
     </main>
   );
 }
-
 
 export default Admin;

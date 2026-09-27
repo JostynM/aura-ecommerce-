@@ -1,77 +1,157 @@
 .best-sellers {
-  max-width: 1400px;
+  width: 100%;
+  max-width: 1200px;
 
   margin: 0 auto;
+  padding: 0 24px;
 
-  padding: 40px 60px 110px;
+  box-sizing: border-box;
 }
 
-.best-sellers-header {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
+/* ================================
+   ENCABEZADO
+================================ */
 
-  margin-bottom: 42px;
+.best-sellers-heading {
+  max-width: 620px;
+
+  margin-bottom: 38px;
 }
 
-.best-sellers-header span {
-  font-size: 10px;
+.best-sellers-heading span {
+  display: block;
 
-  letter-spacing: 3px;
+  margin-bottom: 12px;
 
-  color: #847b70;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+
+  color: #b39a73;
 }
 
-.best-sellers-header h2 {
-  margin-top: 10px;
+.best-sellers-heading h2 {
+  margin: 0;
 
   font-family: Georgia, "Times New Roman", serif;
 
-  font-size: 46px;
-
+  font-size: clamp(34px, 4vw, 50px);
   font-weight: 400;
+  line-height: 1.08;
 
-  color: #1d1b18;
+  color: #1c1b19;
 }
 
-.view-all {
-  border: none;
+.best-sellers-heading p {
+  max-width: 480px;
 
-  border-bottom: 1px solid #1d1c1a;
+  margin: 16px 0 0;
 
-  padding: 0 0 5px;
+  font-size: 14px;
+  line-height: 1.7;
 
-  background: transparent;
-
-  font-size: 12px;
-
-  cursor: pointer;
+  color: #6d665f;
 }
 
-.products-grid {
+/* ================================
+   GRID
+================================ */
+
+.best-sellers-grid {
   display: grid;
 
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
 
-  gap: 22px;
+  gap: 24px;
 }
 
-@media (max-width: 1000px) {
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
+/* ================================
+   ANIMACIÓN DE ENTRADA
+================================ */
+
+.best-sellers-grid > * {
+  opacity: 0;
+
+  animation:
+    productFadeUp
+    0.65s
+    ease
+    forwards;
+}
+
+.best-sellers-grid > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.best-sellers-grid > *:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.best-sellers-grid > *:nth-child(3) {
+  animation-delay: 0.19s;
+}
+
+.best-sellers-grid > *:nth-child(4) {
+  animation-delay: 0.26s;
+}
+
+@keyframes productFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 1000px) {
+  .best-sellers-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ================================
+   MÓVIL
+================================ */
 
 @media (max-width: 600px) {
   .best-sellers {
-    padding: 40px 25px 80px;
+    padding: 0 18px;
   }
 
-  .products-grid {
+  .best-sellers-heading {
+    margin-bottom: 28px;
+  }
+
+  .best-sellers-heading h2 {
+    font-size: 34px;
+  }
+
+  .best-sellers-grid {
     grid-template-columns: 1fr;
-  }
 
-  .best-sellers-header h2 {
-    font-size: 38px;
+    gap: 20px;
+  }
+}
+
+/* ================================
+   ACCESIBILIDAD
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .best-sellers-grid > * {
+    opacity: 1;
+
+    animation: none;
   }
 }

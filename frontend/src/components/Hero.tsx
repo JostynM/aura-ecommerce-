@@ -1,139 +1,175 @@
 import { useEffect, useState } from "react";
-import {
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import "./Hero.css";
 
-type HeroSlide = {
+type FeaturedProduct = {
   id: number;
+  brand: string;
+  name: string;
+  slug: string;
+  image: string;
   label: string;
   title: string;
   description: string;
-  buttonText: string;
-  image: string;
 };
 
-const slides: HeroSlide[] = [
+const featuredProducts: FeaturedProduct[] = [
   {
     id: 1,
+    brand: "Lattafa",
+    name: "Khamrah Qahwa",
+    slug: "lattafa-khamrah-qahwa",
+    image: "/images/hero/khamrah-main.jpg",
     label: "ESENCIAS DE ORIENTE",
     title: "Intensidad que deja una huella.",
     description:
       "Descubre Khamrah Qahwa, una fragancia cálida, intensa y envolvente con el carácter de la perfumería árabe.",
-    buttonText: "Descubrir fragancia",
-    image: "/images/hero/khamrah-qahwa.webp",
   },
   {
     id: 2,
-    label: "ELEGANCIA ATEMPORAL",
-    title: "Una presencia imposible de ignorar.",
-    description:
-      "Fragancias de diseñador seleccionadas por su personalidad, sofisticación y carácter.",
-    buttonText: "Ver diseñador",
-    image: "/images/hero/sauvage.webp",
-  },
-  {
-    id: 3,
+    brand: "Versace",
+    name: "Eros Eau de Toilette",
+    slug: "versace-eros-edt",
+    image: "/images/hero/eros-main.jpg",
     label: "CARÁCTER Y SEDUCCIÓN",
     title: "Deja que tu esencia hable por ti.",
     description:
-      "Perfumes intensos y memorables creados para acompañar momentos que merecen ser recordados.",
-    buttonText: "Explorar perfumes",
-    image: "/images/hero/eros.webp",
+      "Versace Eros combina frescura, intensidad y seducción en una fragancia creada para dejar presencia.",
+  },
+  {
+    id: 3,
+    brand: "Dior",
+    name: "Sauvage Eau de Parfum",
+    slug: "dior-sauvage-edp",
+    image: "/images/hero/sauvage-main.jpg",
+    label: "ELEGANCIA ATEMPORAL",
+    title: "Una presencia imposible de ignorar.",
+    description:
+      "Dior Sauvage Eau de Parfum ofrece un carácter intenso y sofisticado para quienes buscan una fragancia memorable.",
   },
 ];
 
 function Hero() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const nextSlide = () => {
-    setCurrentSlide((current) =>
-      current === slides.length - 1 ? 0 : current + 1
-    );
-  };
-
-  const previousSlide = () => {
-    setCurrentSlide((current) =>
-      current === 0 ? slides.length - 1 : current - 1
-    );
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((current) =>
-        current === slides.length - 1 ? 0 : current + 1
+    const interval = window.setInterval(() => {
+      setCurrentIndex((current) =>
+        current === featuredProducts.length - 1
+          ? 0
+          : current + 1
       );
     }, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      window.clearInterval(interval);
+    };
   }, []);
 
-  const slide = slides[currentSlide];
+  const currentProduct = featuredProducts[currentIndex];
+
+  const getPosition = (index: number) => {
+    if (index === currentIndex) {
+      return "main";
+    }
+
+    const nextIndex =
+      (currentIndex + 1) % featuredProducts.length;
+
+    if (index === nextIndex) {
+      return "right";
+    }
+
+    return "left";
+  };
 
   return (
     <section className="hero">
       <div className="hero-content">
 
-        <div className="hero-text">
+        <div
+          key={currentProduct.id}
+          className="hero-text"
+        >
           <span className="hero-label">
-            {slide.label}
+            {currentProduct.label}
           </span>
 
           <h1>
-            {slide.title}
+            {currentProduct.title}
           </h1>
 
           <p>
-            {slide.description}
+            {currentProduct.description}
           </p>
 
-          <button className="hero-button">
-            {slide.buttonText}
-            <ArrowRight size={17} strokeWidth={1.5} />
-          </button>
+          <div className="hero-actions">
+            <Link
+              to={`/producto/${currentProduct.slug}`}
+              className="hero-button"
+            >
+              Descubrir fragancia
+
+              <ArrowRight
+                size={17}
+                strokeWidth={1.5}
+              />
+            </Link>
+
+            <Link
+              to="/perfumes"
+              className="hero-secondary"
+            >
+              Ver colección
+            </Link>
+          </div>
+
+          <div className="hero-brands">
+            {featuredProducts.map((product, index) => (
+              <button
+                key={product.id}
+                type="button"
+                className={
+                  index === currentIndex
+                    ? "hero-brand hero-brand-active"
+                    : "hero-brand"
+                }
+                onClick={() => setCurrentIndex(index)}
+              >
+                {product.brand}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="hero-image-container">
-          <img
-            key={slide.id}
-            src={slide.image}
-            alt={slide.title}
-            className="hero-image"
-          />
+        <div className="hero-showcase">
+          <div className="hero-showcase-light" />
+
+          {featuredProducts.map((product, index) => {
+            const position = getPosition(index);
+
+            return (
+              <Link
+                key={product.id}
+                to={`/producto/${product.slug}`}
+                className={`hero-product hero-product-${position}`}
+              >
+                <img
+                  src={product.image}
+                  alt={`${product.brand} ${product.name}`}
+                />
+
+                <div className="hero-product-info">
+                  <span>{product.brand}</span>
+                  <strong>{product.name}</strong>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
-      </div>
-
-      <button
-        className="hero-arrow hero-arrow-left"
-        onClick={previousSlide}
-        aria-label="Perfume anterior"
-      >
-        <ChevronLeft size={22} />
-      </button>
-
-      <button
-        className="hero-arrow hero-arrow-right"
-        onClick={nextSlide}
-        aria-label="Perfume siguiente"
-      >
-        <ChevronRight size={22} />
-      </button>
-
-      <div className="hero-dots">
-        {slides.map((item, index) => (
-          <button
-            key={item.id}
-            className={`hero-dot ${
-              currentSlide === index ? "hero-dot-active" : ""
-            }`}
-            onClick={() => setCurrentSlide(index)}
-            aria-label={`Ir al perfume ${index + 1}`}
-          />
-        ))}
       </div>
     </section>
   );

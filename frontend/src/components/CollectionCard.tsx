@@ -1,19 +1,24 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import "./CollectionCard.css";
 
 type CollectionCardProps = {
   title: string;
   subtitle: string;
   image: string;
+  link: string;
 };
 
 function CollectionCard({
   title,
   subtitle,
   image,
+  link,
 }: CollectionCardProps) {
   return (
-    <article
+    <Link
+      to={link}
       className="collection-card"
       style={{
         backgroundImage: `url(${image})`,
@@ -26,12 +31,16 @@ function CollectionCard({
 
         <h3>{title}</h3>
 
-        <button>
+        <div className="collection-card-action">
           Explorar
-          <ArrowRight size={15} strokeWidth={1.5} />
-        </button>
+
+          <ArrowRight
+            size={15}
+            strokeWidth={1.5}
+          />
+        </div>
       </div>
-    </article>
+    </Link>
   );
 }
 

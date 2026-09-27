@@ -1,3 +1,7 @@
+/* ==========================================
+   PÁGINA
+========================================== */
+
 .product-detail-page {
   min-height: 100vh;
 
@@ -6,319 +10,1253 @@
   color: #1d1c1a;
 }
 
+
+/* ==========================================
+   BREADCRUMB
+========================================== */
+
 .product-breadcrumb {
-  max-width: 1400px;
+  max-width: 1320px;
 
   margin: 0 auto;
 
-  padding: 30px 60px;
+  padding:
+    28px
+    50px
+    20px;
 
   display: flex;
+
+  align-items: center;
+
   gap: 10px;
 
-  font-size: 11px;
+  font-size: 10px;
 
-  color: #817a70;
+  letter-spacing: 0.4px;
+
+  color: #8a8379;
 }
+
 
 .product-breadcrumb a {
+  color: inherit;
+
   text-decoration: none;
+
+  transition:
+    color 0.2s ease;
 }
 
-.product-detail-main {
-  max-width: 1400px;
+
+.product-breadcrumb a:hover {
+  color: #1d1c1a;
+}
+
+
+.product-breadcrumb-current {
+  color: #393530;
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.product-hero {
+  max-width: 1320px;
 
   margin: 0 auto;
 
-  padding: 25px 60px 100px;
+  padding:
+    30px
+    50px
+    110px;
 
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
 
-  gap: 90px;
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(380px, 0.95fr);
 
-  align-items: center;
+  gap: 100px;
+
+  align-items: start;
 }
 
-.product-detail-image {
-  min-height: 620px;
+
+/* ==========================================
+   IMAGEN
+========================================== */
+
+.product-gallery {
+  position: sticky;
+
+  top: 30px;
+}
+
+
+.product-image-frame {
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  min-height: 560px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  background-color: #eeebe6;
+  overflow: hidden;
+
+  background-color: #ece8e1;
 }
 
-.product-detail-image img {
-  max-width: 70%;
-  max-height: 520px;
+
+.product-image-frame img {
+  width: 78%;
+
+  height: 78%;
 
   object-fit: contain;
+
+  display: block;
+
+  transition:
+    transform 0.5s ease;
 }
+
+
+.product-image-frame:hover img {
+  transform: scale(1.025);
+}
+
+
+/* ==========================================
+   PLACEHOLDER
+========================================== */
+
+.product-image-placeholder {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 14px;
+
+  color: #958b7c;
+}
+
+
+.product-image-placeholder > span {
+  margin-top: 10px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 27px;
+
+  letter-spacing: 7px;
+
+  color: #4b463f;
+}
+
+
+.product-image-placeholder p {
+  margin: 0;
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+
+/* ==========================================
+   INFORMACIÓN DEL PRODUCTO
+========================================== */
 
 .product-detail-info {
-  max-width: 520px;
+  padding-top: 35px;
 }
 
+
+.product-detail-top {
+  padding-bottom: 36px;
+
+  border-bottom:
+    1px solid #d7d2ca;
+}
+
+
 .detail-brand {
+  display: block;
+
+  margin-bottom: 18px;
+
   font-size: 10px;
+
+  line-height: 1;
+
+  letter-spacing: 3.5px;
 
   text-transform: uppercase;
 
-  letter-spacing: 3px;
-
-  color: #80776c;
+  color: #7e7568;
 }
+
 
 .product-detail-info h1 {
-  margin-top: 12px;
+  max-width: 550px;
 
-  font-family: Georgia, "Times New Roman", serif;
+  margin: 0;
 
-  font-size: 49px;
-  line-height: 1.05;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    45px,
+    4.4vw,
+    64px
+  );
+
+  line-height: 0.98;
+
+  letter-spacing: -1.4px;
 
   font-weight: 400;
+
+  color: #181714;
 }
+
+
+/* ==========================================
+   RATING
+========================================== */
 
 .detail-rating {
-  margin-top: 18px;
+  margin-top: 20px;
 
-  font-size: 13px;
+  display: flex;
 
-  color: #776d5f;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 10px;
+
+  color: #80786c;
 }
 
-.detail-rating span {
-  color: #918a80;
+
+.detail-stars {
+  letter-spacing: 3px;
+
+  color: #aa8e64;
 }
+
+
+/* ==========================================
+   PRECIO
+========================================== */
 
 .detail-price {
-  margin-top: 24px;
+  margin:
+    30px
+    0
+    0;
 
-  font-size: 24px;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  color: #24211d;
 }
 
-.detail-description {
-  margin-top: 26px;
 
-  line-height: 1.8;
+/* ==========================================
+   TAGS DE NOTAS
+========================================== */
+
+.detail-note-tags {
+  margin-top: 27px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+
+.detail-note-tags span {
+  padding:
+    7px
+    11px;
+
+  border:
+    1px solid #d5d0c8;
+
+  font-size: 9px;
+
+  letter-spacing: 0.7px;
+
+  text-transform: capitalize;
+
+  color: #686158;
+}
+
+
+/* ==========================================
+   DESCRIPCIÓN
+========================================== */
+
+.detail-description {
+  max-width: 510px;
+
+  margin:
+    28px
+    0
+    0;
 
   font-size: 14px;
 
-  color: #625d56;
+  line-height: 1.85;
+
+  color: #686158;
 }
 
-.detail-size {
-  margin-top: 30px;
+
+/* ==========================================
+   COMPRA
+========================================== */
+
+.detail-purchase-area {
+  padding-top: 32px;
 }
 
-.detail-size > span {
+
+.detail-field-label {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: #71695e;
+}
+
+
+.detail-size-option {
+  min-width: 82px;
+
+  padding:
+    12px
+    18px;
+
+  border:
+    1px solid #292621;
+
+  background: transparent;
+
+  color: #292621;
+
+  font-family: inherit;
+
+  font-size: 11px;
+}
+
+
+/* ==========================================
+   STOCK
+========================================== */
+
+.detail-stock {
+  margin-top: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 11px;
+
+  color: #5d6a54;
+}
+
+
+.detail-stock-muted {
+  color: #8b857b;
+}
+
+
+.out-of-stock {
+  color: #985a51;
+}
+
+
+/* ==========================================
+   BOTONES COMPRA
+========================================== */
+
+.detail-buy-row {
+  margin-top: 26px;
+
+  display: grid;
+
+  grid-template-columns:
+    125px
+    minmax(0, 1fr);
+
+  gap: 10px;
+}
+
+
+.quantity-selector {
+  height: 54px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    34px
+    1fr;
+
+  align-items: center;
+
+  border:
+    1px solid #d0cbc3;
+}
+
+
+.quantity-selector button {
+  height: 100%;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #36322d;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+.quantity-selector button:hover:not(:disabled) {
+  background-color: #efede8;
+}
+
+
+.quantity-selector button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.3;
+}
+
+
+.quantity-selector span {
+  text-align: center;
+
+  font-size: 12px;
+}
+
+
+.detail-add-cart {
+  min-height: 54px;
+
+  padding:
+    0
+    24px;
+
+  border: 1px solid #1c1b19;
+
+  background-color: #1c1b19;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 11px;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+
+.detail-add-cart:hover:not(:disabled) {
+  background-color: #b39a73;
+
+  border-color: #b39a73;
+
+  color: #1c1b19;
+}
+
+
+.detail-add-cart:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.35;
+}
+
+
+/* ==========================================
+   FAVORITOS
+========================================== */
+
+.detail-favorite {
+  margin-top: 16px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #5d574e;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+
+.detail-favorite:hover {
+  color: #1c1b19;
+}
+
+
+/* ==========================================
+   SERVICIOS
+========================================== */
+
+.detail-services {
+  margin-top: 42px;
+
+  padding-top: 25px;
+
+  border-top:
+    1px solid #d7d2ca;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+.detail-services > div {
+  min-width: 0;
+}
+
+
+.detail-services span {
+  display: block;
+
+  margin-bottom: 9px;
+
+  font-size: 8px;
+
+  letter-spacing: 1.3px;
+
+  color: #aaa095;
+}
+
+
+.detail-services p {
+  margin: 0;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+  color: #5e574f;
+}
+
+
+/* ==========================================
+   PERFIL OLFATIVO
+========================================== */
+
+.olfactory-section {
+  padding:
+    115px
+    60px
+    125px;
+
+  background-color: #e9e4dc;
+}
+
+
+.olfactory-heading {
+  max-width: 1200px;
+
+  margin:
+    0
+    auto
+    70px;
+}
+
+
+.olfactory-heading > span {
+  display: block;
+
+  margin-bottom: 17px;
+
+  font-size: 9px;
+
+  letter-spacing: 3px;
+
+  color: #8a8072;
+}
+
+
+.olfactory-heading h2 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    42px,
+    4vw,
+    58px
+  );
+
+  line-height: 1;
+
+  font-weight: 400;
+
+  letter-spacing: -1px;
+
+  color: #1d1b18;
+}
+
+
+.olfactory-heading p {
+  max-width: 450px;
+
+  margin:
+    24px
+    0
+    0;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+
+  color: #756d62;
+}
+
+
+/* ==========================================
+   COLUMNAS DE NOTAS
+========================================== */
+
+.olfactory-grid {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 50px;
+}
+
+
+.olfactory-card {
+  min-height: 300px;
+
+  padding:
+    28px
+    0
+    0;
+
+  border-top:
+    1px solid #bcb4a8;
+
+  position: relative;
+}
+
+
+.note-number {
+  display: block;
+
+  margin-bottom: 48px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 15px;
+
+  color: #a09586;
+}
+
+
+.olfactory-card-heading > span {
   display: block;
 
   margin-bottom: 10px;
 
-  font-size: 11px;
+  font-size: 8px;
 
-  text-transform: uppercase;
+  letter-spacing: 2px;
 
-  letter-spacing: 1.5px;
+  color: #948979;
 }
 
-.detail-size button {
-  padding: 11px 20px;
 
-  border: 1px solid #1d1c1a;
+.olfactory-card h3 {
+  margin: 0;
 
-  background: transparent;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 
-  cursor: pointer;
+  font-size: 26px;
+
+  line-height: 1.15;
+
+  font-weight: 400;
+
+  color: #26231f;
 }
 
-.detail-stock {
-  margin-top: 18px;
+
+.olfactory-notes {
+  margin-top: 28px;
+}
+
+
+.olfactory-notes p {
+  margin:
+    0
+    0
+    10px;
 
   font-size: 12px;
 
-  color: #66705c;
+  text-transform: capitalize;
+
+  color: #625c53;
 }
 
-.out-of-stock {
-  color: #9d554d;
-}
 
-.detail-purchase {
-  margin-top: 30px;
+/* ==========================================
+   BLOQUE EDITORIAL
+========================================== */
 
-  display: flex;
+.product-editorial {
+  min-height: 440px;
 
-  gap: 12px;
-}
+  padding:
+    85px
+    max(
+      60px,
+      calc(
+        (100vw - 1200px) / 2
+      )
+    );
 
-.quantity-selector {
-  height: 50px;
+  display: grid;
 
-  border: 1px solid #d0cbc4;
+  grid-template-columns:
+    0.35fr
+    1fr;
 
-  display: flex;
+  gap: 80px;
+
   align-items: center;
+
+  background-color: #1c1b19;
+
+  color: #f1ede7;
 }
 
-.quantity-selector button {
-  width: 42px;
-  height: 100%;
 
-  border: none;
+.product-editorial-label {
+  align-self: start;
 
-  background: transparent;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 
-  cursor: pointer;
+  font-size: 20px;
+
+  letter-spacing: 8px;
+
+  color: #baa783;
 }
 
-.quantity-selector span {
-  width: 35px;
 
-  text-align: center;
-
-  font-size: 13px;
+.product-editorial-content {
+  max-width: 660px;
 }
 
-.detail-add-cart {
-  flex: 1;
 
-  border: none;
+.product-editorial-content > span {
+  display: block;
 
-  background-color: #1d1c1a;
-  color: #ffffff;
+  margin-bottom: 20px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 8px;
 
-  gap: 10px;
+  letter-spacing: 3px;
 
-  font-size: 11px;
-
-  text-transform: uppercase;
-
-  letter-spacing: 1.3px;
-
-  cursor: pointer;
+  color: #9f9588;
 }
 
-.detail-add-cart:disabled {
-  opacity: 0.4;
 
-  cursor: not-allowed;
+.product-editorial-content h2 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(
+    38px,
+    4vw,
+    55px
+  );
+
+  line-height: 1.08;
+
+  font-weight: 400;
+
+  color: #f3efe9;
 }
 
-.detail-favorite {
-  margin-top: 15px;
 
-  border: none;
-  background: transparent;
+.product-editorial-link {
+  margin-top: 35px;
 
-  display: flex;
+  display: inline-flex;
+
   align-items: center;
 
   gap: 9px;
 
-  font-size: 12px;
+  color: #c6ab82;
 
-  cursor: pointer;
+  text-decoration: none;
+
+  font-size: 9px;
+
+  letter-spacing: 1.6px;
+
+  text-transform: uppercase;
 }
 
-.olfactory-section {
-  padding: 100px 60px;
 
-  background-color: #ebe6df;
+.editorial-arrow {
+  transform: rotate(
+    180deg
+  );
 }
 
-.olfactory-heading {
-  max-width: 1280px;
 
-  margin: 0 auto 50px;
-}
+/* ==========================================
+   ESTADOS
+========================================== */
 
-.olfactory-heading > span {
-  font-size: 10px;
+.product-state-page {
+  min-height: 75vh;
 
-  letter-spacing: 3px;
-
-  color: #81786d;
-}
-
-.olfactory-heading h2 {
-  margin-top: 10px;
-
-  font-family: Georgia, "Times New Roman", serif;
-
-  font-size: 44px;
-
-  font-weight: 400;
-}
-
-.olfactory-grid {
-  max-width: 1280px;
-
-  margin: 0 auto;
-
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 40px;
-}
-
-.olfactory-grid > div {
-  padding-top: 25px;
-
-  border-top: 1px solid #c9c2b8;
-}
-
-.note-number {
-  font-size: 10px;
-
-  color: #9a8f81;
-}
-
-.olfactory-grid h3 {
-  margin: 14px 0 18px;
-
-  font-family: Georgia, "Times New Roman", serif;
-
-  font-size: 24px;
-
-  font-weight: 400;
-}
-
-.olfactory-grid p {
-  margin-bottom: 7px;
-
-  font-size: 13px;
-
-  color: #645e56;
-}
-
-.product-not-found {
-  min-height: 70vh;
+  padding: 50px;
 
   display: flex;
+
   flex-direction: column;
 
   align-items: center;
+
   justify-content: center;
 
-  gap: 20px;
+  text-align: center;
+
+  background-color: #f8f7f4;
+
+  color: #1c1b19;
 }
 
-@media (max-width: 900px) {
-  .product-detail-main {
+
+.product-state-icon {
+  width: 55px;
+
+  height: 55px;
+
+  margin-bottom: 18px;
+
+  border:
+    1px solid #b7a27e;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #a38c67;
+}
+
+
+.product-state-page > span {
+  font-size: 9px;
+
+  letter-spacing: 4px;
+
+  color: #9d8b6f;
+}
+
+
+.product-state-page h1 {
+  margin:
+    20px
+    0
+    0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 40px;
+
+  font-weight: 400;
+}
+
+
+.product-state-page p {
+  color: #736c63;
+}
+
+
+.product-state-link {
+  margin-top: 25px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #1c1b19;
+
+  text-decoration: none;
+
+  font-size: 10px;
+
+  letter-spacing: 1px;
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (
+  max-width: 1000px
+) {
+
+  .product-hero {
     grid-template-columns: 1fr;
+
+    gap: 55px;
+
+    padding:
+      20px
+      35px
+      80px;
   }
+
+
+  .product-gallery {
+    position: static;
+  }
+
+
+  .product-image-frame {
+    max-width: 700px;
+
+    min-height: auto;
+
+    margin: 0 auto;
+  }
+
+
+  .product-detail-info {
+    max-width: 700px;
+
+    padding-top: 0;
+
+    margin: 0 auto;
+
+    width: 100%;
+  }
+
+
+  .product-editorial {
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+  }
+
+}
+
+
+/* ==========================================
+   MÓVIL
+========================================== */
+
+@media (
+  max-width: 700px
+) {
+
+  .product-breadcrumb {
+    padding:
+      22px
+      20px;
+
+    overflow-x: auto;
+
+    white-space: nowrap;
+  }
+
+
+  .product-hero {
+    padding:
+      10px
+      20px
+      65px;
+
+    gap: 40px;
+  }
+
+
+  .product-image-frame {
+    min-height: 390px;
+  }
+
+
+  .product-detail-info h1 {
+    font-size: 43px;
+  }
+
+
+  .detail-buy-row {
+    grid-template-columns:
+      110px
+      1fr;
+  }
+
+
+  .detail-services {
+    grid-template-columns: 1fr;
+
+    gap: 14px;
+  }
+
+
+  .olfactory-section {
+    padding:
+      75px
+      20px
+      80px;
+  }
+
+
+  .olfactory-heading {
+    margin-bottom: 50px;
+  }
+
 
   .olfactory-grid {
     grid-template-columns: 1fr;
+
+    gap: 45px;
   }
+
+
+  .olfactory-card {
+    min-height: auto;
+  }
+
+
+  .note-number {
+    margin-bottom: 30px;
+  }
+
+
+  .product-editorial {
+    min-height: auto;
+
+    padding:
+      70px
+      20px;
+
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+}
+
+
+/* ==========================================
+   MÓVIL PEQUEÑO
+========================================== */
+
+@media (
+  max-width: 460px
+) {
+
+  .detail-buy-row {
+    grid-template-columns: 1fr;
+  }
+
+
+  .quantity-selector {
+    width: 130px;
+  }
+
+
+  .product-detail-info h1 {
+    font-size: 38px;
+  }
+
+}
+/* ==========================================
+   FAVORITO ACTIVO
+========================================== */
+
+.detail-favorite-active {
+  color: #8f7450;
+}
+
+
+.detail-favorite-active svg {
+  color: #8f7450;
+}
+
+
+/* ==========================================
+   FAVORITO CARGANDO
+========================================== */
+
+.detail-favorite:disabled {
+  opacity: 0.55;
+
+  cursor: wait;
+}
+/* ==========================================
+   RATING REAL PRODUCT DETAIL
+========================================== */
+
+.detail-rating {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.detail-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.detail-star {
+  color: #c8c1b7;
+  font-size: 13px;
+}
+
+.detail-star-active {
+  color: #a68d68;
+}
+
+.detail-rating-value {
+  color: #4f4942;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.detail-rating-count {
+  color: #8e877e;
+  font-size: 10px;
+}
+
+.detail-no-reviews {
+  color: #9b948b;
+  font-size: 10px;
+  letter-spacing: 0.03em;
 }

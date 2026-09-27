@@ -8,28 +8,28 @@ import {
 
 import "./MercadoPagoCard.css";
 
-
 type CardPaymentOnSubmit = NonNullable<
   ComponentProps<typeof CardPayment>["onSubmit"]
 >;
-
 
 type MercadoPagoCardProps = {
   orderId: number;
   amount: number;
   accessToken: string;
-
   onPaymentResult: (
     payment: PaymentResponse
   ) => void;
+  onPaymentError: (
+    error: unknown
+  ) => void;
 };
-
 
 function MercadoPagoCard({
   orderId,
   amount,
   accessToken,
   onPaymentResult,
+  onPaymentError,
 }: MercadoPagoCardProps) {
   const handleSubmit: CardPaymentOnSubmit = async (
     formData,
@@ -46,7 +46,6 @@ function MercadoPagoCard({
         );
       }
 
-
       // =====================================
       // VALIDAR MÉTODO DE PAGO
       // =====================================
@@ -57,7 +56,6 @@ function MercadoPagoCard({
         );
       }
 
-
       // =====================================
       // VALIDAR TIPO DE PAGO
       // =====================================
@@ -65,13 +63,11 @@ function MercadoPagoCard({
       const paymentTypeId =
         additionalData?.paymentTypeId;
 
-
       if (!paymentTypeId) {
         throw new Error(
           "No se pudo identificar el tipo de tarjeta."
         );
       }
-
 
       // =====================================
       // VALIDAR CORREO
@@ -80,13 +76,11 @@ function MercadoPagoCard({
       const payerEmail =
         formData.payer?.email;
 
-
       if (!payerEmail) {
         throw new Error(
           "Ingresa un correo válido para realizar el pago."
         );
       }
-
 
       // =====================================
       // DOCUMENTO DEL PAGADOR
@@ -98,15 +92,13 @@ function MercadoPagoCard({
           ? {
               type:
                 formData.payer.identification.type,
-
               number:
                 formData.payer.identification.number,
             }
           : null;
 
-
       // =====================================
-      // MOSTRAR DATOS DE PRUEBA
+      // LOG DE DESARROLLO
       // =====================================
 
       console.log(
@@ -119,7 +111,6 @@ function MercadoPagoCard({
         paymentTypeId
       );
 
-
       // =====================================
       // ENVIAR PAGO A FASTAPI
       // =====================================
@@ -128,49 +119,37 @@ function MercadoPagoCard({
         accessToken,
         {
           order_id: orderId,
-
-          token:
-            formData.token,
-
+          token: formData.token,
           payment_method_id:
             formData.payment_method_id,
-
           payment_type_id:
             paymentTypeId,
-
           installments:
             formData.installments ?? 1,
-
           issuer_id:
             formData.issuer_id || null,
-
           payer_email:
             payerEmail,
-
           identification,
-
-          idempotency_key:
-            crypto.randomUUID(),
         }
       );
 
-
       // =====================================
-      // ENVIAR RESULTADO AL CHECKOUT
+      // RESULTADO AL CHECKOUT
       // =====================================
 
       onPaymentResult(payment);
-
     } catch (error) {
       console.error(
         "Error procesando pago:",
         error
       );
 
+      onPaymentError(error);
+
       throw error;
     }
   };
-
 
   // =====================================
   // MERCADO PAGO LISTO
@@ -181,7 +160,6 @@ function MercadoPagoCard({
       "Formulario de Mercado Pago listo."
     );
   };
-
 
   // =====================================
   // ERROR DEL BRICK
@@ -196,12 +174,9 @@ function MercadoPagoCard({
     );
   };
 
-
   return (
     <section className="mercado-pago-card">
-
       <div className="mercado-pago-card-header">
-
         <span className="mercado-pago-eyebrow">
           PAGO SEGURO
         </span>
@@ -214,12 +189,9 @@ function MercadoPagoCard({
           Completa los datos de tu tarjeta
           para finalizar tu compra.
         </p>
-
       </div>
 
-
       <div className="mercado-pago-card-content">
-
         <CardPayment
           initialization={{
             amount,
@@ -228,12 +200,9 @@ function MercadoPagoCard({
           onReady={handleReady}
           onError={handleError}
         />
-
       </div>
-
     </section>
   );
 }
-
 
 export default MercadoPagoCard;

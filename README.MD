@@ -55,4 +55,4 @@ React + TypeScript
         ↓
      FastAPI
         ↓
-   PostgreSQL
+   PostgreSQL 

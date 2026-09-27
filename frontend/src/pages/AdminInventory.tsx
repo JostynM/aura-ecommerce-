@@ -23,6 +23,7 @@ import { useAuth } from "../context/useAuth";
 
 import {
   getAdminProducts,
+  getProductImageUrl,
   type ApiProduct,
 } from "../services/productService";
 
@@ -54,26 +55,21 @@ const LOW_STOCK_LIMIT = 5;
 function getStockStatus(
   stock: number
 ) {
-
   if (stock === 0) {
-
     return {
       key: "out",
       label: "Agotado",
     };
   }
 
-
   if (
     stock <= LOW_STOCK_LIMIT
   ) {
-
     return {
       key: "low",
       label: "Stock bajo",
     };
   }
-
 
   return {
     key: "available",
@@ -87,7 +83,6 @@ function getStockStatus(
 // ==========================================
 
 function AdminInventory() {
-
   const {
     user,
     token,
@@ -96,19 +91,21 @@ function AdminInventory() {
   } = useAuth();
 
 
-  // ==========================================
+  // ========================================
   // DATOS
-  // ==========================================
+  // ========================================
 
   const [
     products,
     setProducts,
   ] = useState<ApiProduct[]>([]);
 
+
   const [
     productsLoading,
     setProductsLoading,
   ] = useState(true);
+
 
   const [
     error,
@@ -116,14 +113,15 @@ function AdminInventory() {
   ] = useState("");
 
 
-  // ==========================================
+  // ========================================
   // FILTROS
-  // ==========================================
+  // ========================================
 
   const [
     searchTerm,
     setSearchTerm,
   ] = useState("");
+
 
   const [
     stockFilter,
@@ -131,6 +129,7 @@ function AdminInventory() {
   ] = useState<StockFilter>(
     "all"
   );
+
 
   const [
     activeFilter,
@@ -142,56 +141,43 @@ function AdminInventory() {
   >("all");
 
 
-  // ==========================================
+  // ========================================
   // CARGAR PRODUCTOS
-  // ==========================================
+  // ========================================
 
   useEffect(() => {
-
     async function loadProducts() {
-
       if (!token) {
         return;
       }
 
-
       try {
-
         setProductsLoading(true);
 
         setError("");
-
 
         const data =
           await getAdminProducts(
             token
           );
 
-
         setProducts(data);
 
       } catch (error) {
-
         if (
           error instanceof Error
         ) {
-
           setError(
             error.message
           );
-
         } else {
-
           setError(
             "No se pudo cargar el inventario."
           );
-
         }
 
       } finally {
-
         setProductsLoading(false);
-
       }
     }
 
@@ -200,9 +186,7 @@ function AdminInventory() {
       isAuthenticated &&
       user?.role === "admin"
     ) {
-
       loadProducts();
-
     }
 
   }, [
@@ -212,13 +196,12 @@ function AdminInventory() {
   ]);
 
 
-  // ==========================================
+  // ========================================
   // MÉTRICAS
-  // ==========================================
+  // ========================================
 
   const metrics =
     useMemo(() => {
-
       const totalProducts =
         products.length;
 
@@ -263,13 +246,12 @@ function AdminInventory() {
     ]);
 
 
-  // ==========================================
+  // ========================================
   // PRODUCTOS FILTRADOS
-  // ==========================================
+  // ========================================
 
   const filteredProducts =
     useMemo(() => {
-
       const normalizedSearch =
         searchTerm
           .trim()
@@ -278,10 +260,9 @@ function AdminInventory() {
 
       return products.filter(
         (product) => {
-
-          // ==============================
+          // ================================
           // BÚSQUEDA
-          // ==============================
+          // ================================
 
           const matchesSearch =
             normalizedSearch === "" ||
@@ -305,9 +286,9 @@ function AdminInventory() {
               );
 
 
-          // ==============================
+          // ================================
           // STOCK
-          // ==============================
+          // ================================
 
           const stockStatus =
             getStockStatus(
@@ -321,9 +302,9 @@ function AdminInventory() {
               stockFilter;
 
 
-          // ==============================
-          // ACTIVO / INACTIVO
-          // ==============================
+          // ================================
+          // PUBLICACIÓN
+          // ================================
 
           const matchesActive =
             activeFilter === "all" ||
@@ -357,12 +338,11 @@ function AdminInventory() {
     ]);
 
 
-  // ==========================================
+  // ========================================
   // LIMPIAR FILTROS
-  // ==========================================
+  // ========================================
 
   const clearFilters = () => {
-
     setSearchTerm("");
 
     setStockFilter(
@@ -375,30 +355,26 @@ function AdminInventory() {
   };
 
 
-  // ==========================================
-  // AUTH CARGANDO
-  // ==========================================
+  // ========================================
+  // CARGANDO AUTENTICACIÓN
+  // ========================================
 
   if (loading) {
-
     return (
       <main className="admin-inventory-page">
-
         <p>
           Cargando panel...
         </p>
-
       </main>
     );
   }
 
 
-  // ==========================================
+  // ========================================
   // SIN SESIÓN
-  // ==========================================
+  // ========================================
 
   if (!isAuthenticated) {
-
     return (
       <Navigate
         to="/login"
@@ -408,14 +384,13 @@ function AdminInventory() {
   }
 
 
-  // ==========================================
+  // ========================================
   // NO ADMIN
-  // ==========================================
+  // ========================================
 
   if (
     user?.role !== "admin"
   ) {
-
     return (
       <Navigate
         to="/"
@@ -425,20 +400,19 @@ function AdminInventory() {
   }
 
 
-  // ==========================================
+  // ========================================
   // VISTA
-  // ==========================================
+  // ========================================
 
   return (
-
     <main className="admin-inventory-page">
 
       <section className="admin-inventory-container">
 
 
-        {/* ================================= */}
-        {/* CABECERA */}
-        {/* ================================= */}
+        {/* =================================
+            CABECERA
+        ================================= */}
 
         <header className="admin-inventory-header">
 
@@ -481,22 +455,19 @@ function AdminInventory() {
         </header>
 
 
-        {/* ================================= */}
-        {/* KPIS */}
-        {/* ================================= */}
+        {/* =================================
+            KPIS
+        ================================= */}
 
         <section className="admin-inventory-kpis">
 
           <article>
 
             <div className="admin-inventory-kpi-icon">
-
               <Boxes
                 size={21}
               />
-
             </div>
-
 
             <div>
 
@@ -527,7 +498,6 @@ function AdminInventory() {
 
             </div>
 
-
             <div>
 
               <span>
@@ -556,7 +526,6 @@ function AdminInventory() {
               />
 
             </div>
-
 
             <div>
 
@@ -587,7 +556,6 @@ function AdminInventory() {
 
             </div>
 
-
             <div>
 
               <span>
@@ -609,9 +577,9 @@ function AdminInventory() {
         </section>
 
 
-        {/* ================================= */}
-        {/* FILTROS */}
-        {/* ================================= */}
+        {/* =================================
+            FILTROS
+        ================================= */}
 
         <section className="admin-inventory-filters">
 
@@ -623,17 +591,18 @@ function AdminInventory() {
 
             <input
               type="text"
+
               placeholder="Buscar producto, marca o slug..."
+
               value={
                 searchTerm
               }
-              onChange={(event) => {
 
+              onChange={(event) =>
                 setSearchTerm(
                   event.target.value
-                );
-
-              }}
+                )
+              }
             />
 
           </div>
@@ -645,14 +614,13 @@ function AdminInventory() {
               value={
                 stockFilter
               }
-              onChange={(event) => {
 
+              onChange={(event) =>
                 setStockFilter(
-                  event.target.value as
-                    StockFilter
-                );
-
-              }}
+                  event.target
+                    .value as StockFilter
+                )
+              }
             >
 
               <option value="all">
@@ -678,29 +646,23 @@ function AdminInventory() {
               value={
                 activeFilter
               }
-              onChange={(event) => {
 
+              onChange={(event) => {
                 const value =
                   event.target.value;
-
 
                 if (
                   value === "active" ||
                   value === "inactive"
                 ) {
-
                   setActiveFilter(
                     value
                   );
-
                 } else {
-
                   setActiveFilter(
                     "all"
                   );
-
                 }
-
               }}
             >
 
@@ -721,9 +683,11 @@ function AdminInventory() {
 
             <button
               type="button"
+
               onClick={
                 clearFilters
               }
+
               className="admin-inventory-clear"
             >
 
@@ -740,9 +704,9 @@ function AdminInventory() {
         </section>
 
 
-        {/* ================================= */}
-        {/* RESULTADOS */}
-        {/* ================================= */}
+        {/* =================================
+            RESULTADOS
+        ================================= */}
 
         {!productsLoading && (
 
@@ -773,9 +737,9 @@ function AdminInventory() {
         )}
 
 
-        {/* ================================= */}
-        {/* ERROR */}
-        {/* ================================= */}
+        {/* =================================
+            ERROR
+        ================================= */}
 
         {error && (
 
@@ -786,9 +750,9 @@ function AdminInventory() {
         )}
 
 
-        {/* ================================= */}
-        {/* CONTENIDO */}
-        {/* ================================= */}
+        {/* =================================
+            CONTENIDO
+        ================================= */}
 
         {productsLoading ? (
 
@@ -900,7 +864,9 @@ function AdminInventory() {
                         }
                       >
 
-                        {/* PRODUCTO */}
+                        {/* =====================
+                            PRODUCTO
+                        ===================== */}
 
                         <td>
 
@@ -910,8 +876,11 @@ function AdminInventory() {
 
                               <img
                                 src={
-                                  product.image_url
+                                  getProductImageUrl(
+                                    product.image_url
+                                  )
                                 }
+
                                 alt={
                                   product.name
                                 }
@@ -943,14 +912,18 @@ function AdminInventory() {
                         </td>
 
 
-                        {/* MARCA */}
+                        {/* =====================
+                            MARCA
+                        ===================== */}
 
                         <td>
                           {product.brand}
                         </td>
 
 
-                        {/* TAMAÑO */}
+                        {/* =====================
+                            TAMAÑO
+                        ===================== */}
 
                         <td>
 
@@ -961,7 +934,9 @@ function AdminInventory() {
                         </td>
 
 
-                        {/* PRECIO */}
+                        {/* =====================
+                            PRECIO
+                        ===================== */}
 
                         <td>
 
@@ -974,20 +949,22 @@ function AdminInventory() {
                         </td>
 
 
-                        {/* STOCK */}
+                        {/* =====================
+                            STOCK
+                        ===================== */}
 
                         <td>
 
                           <strong className="admin-inventory-stock-number">
-
                             {product.stock}
-
                           </strong>
 
                         </td>
 
 
-                        {/* ESTADO STOCK */}
+                        {/* =====================
+                            ESTADO STOCK
+                        ===================== */}
 
                         <td>
 
@@ -1004,7 +981,9 @@ function AdminInventory() {
                         </td>
 
 
-                        {/* ACTIVO */}
+                        {/* =====================
+                            PUBLICACIÓN
+                        ===================== */}
 
                         <td>
 
@@ -1025,7 +1004,9 @@ function AdminInventory() {
                         </td>
 
 
-                        {/* EDITAR */}
+                        {/* =====================
+                            EDITAR
+                        ===================== */}
 
                         <td>
 
@@ -1033,6 +1014,7 @@ function AdminInventory() {
                             to={
                               `/admin/productos/${product.id}`
                             }
+
                             className="admin-inventory-edit"
                           >
 

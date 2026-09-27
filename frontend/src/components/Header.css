@@ -26,7 +26,8 @@
 
   background-color: #ede9e3;
 
-  border-bottom: 1px solid #ddd8d0;
+  border-bottom:
+    1px solid #ddd8d0;
 
   font-size: 11px;
 
@@ -98,6 +99,7 @@
   white-space: nowrap;
 }
 
+
 .nav-menu a {
   position: relative;
 
@@ -110,6 +112,7 @@
   transition:
     opacity 0.25s ease;
 }
+
 
 .nav-menu a::after {
   content: "";
@@ -127,6 +130,7 @@
   transition:
     width 0.25s ease;
 }
+
 
 .nav-menu a:hover::after {
   width: 100%;
@@ -150,10 +154,10 @@
 
 
 /* ==========================================
-   BOTONES DE ICONOS
+   BOTÓN BUSCAR
 ========================================== */
 
-.nav-actions > button {
+.nav-icon-button {
   position: relative;
 
   display: flex;
@@ -174,8 +178,63 @@
     opacity 0.25s ease;
 }
 
-.nav-actions > button:hover {
+
+.nav-icon-button:hover {
   opacity: 0.55;
+}
+
+
+/* ==========================================
+   FAVORITOS HEADER
+========================================== */
+
+.favorites-button {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px;
+
+  color: #1d1c1a;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.25s ease;
+}
+
+
+.favorites-button:hover {
+  opacity: 0.55;
+}
+
+
+.favorites-count {
+  position: absolute;
+
+  top: -5px;
+  right: -7px;
+
+  width: 16px;
+  height: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background-color: #9b8563;
+
+  color: #ffffff;
+
+  font-size: 9px;
+
+  line-height: 1;
 }
 
 
@@ -202,6 +261,7 @@
     opacity 0.25s ease;
 }
 
+
 .cart-button:hover {
   opacity: 0.55;
 }
@@ -216,17 +276,19 @@
   width: 16px;
   height: 16px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-radius: 50%;
 
   background-color: #9b8563;
 
   color: #ffffff;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   font-size: 9px;
+
+  line-height: 1;
 }
 
 
@@ -249,13 +311,14 @@
     opacity 0.25s ease;
 }
 
+
 .account-button:hover {
   opacity: 0.55;
 }
 
 
 /* ==========================================
-   USUARIO AUTENTICADO
+   USUARIO
 ========================================== */
 
 .header-user {
@@ -265,10 +328,6 @@
   gap: 12px;
 }
 
-
-/* ==========================================
-   NOMBRE DEL USUARIO
-========================================== */
 
 .header-user-info {
   display: flex;
@@ -286,13 +345,14 @@
     opacity 0.25s ease;
 }
 
+
 .header-user-info:hover {
   opacity: 0.6;
 }
 
 
 /* ==========================================
-   ADMINISTRACIÓN
+   ADMIN
 ========================================== */
 
 .header-admin-link {
@@ -303,7 +363,8 @@
 
   padding: 7px 10px;
 
-  border: 1px solid #d8cdbd;
+  border:
+    1px solid #d8cdbd;
 
   background-color: #f4f0e9;
 
@@ -320,6 +381,7 @@
     border-color 0.2s ease,
     color 0.2s ease;
 }
+
 
 .header-admin-link:hover {
   background-color: #ebe4da;
@@ -353,6 +415,7 @@
     color 0.2s ease;
 }
 
+
 .logout-button:hover {
   color: #4b4237;
 
@@ -361,13 +424,588 @@
 
 
 /* ==========================================
+   OVERLAY DE BÚSQUEDA
+========================================== */
+
+.search-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding:
+    72px 24px;
+
+  overflow-y: auto;
+
+  background:
+    rgba(
+      20,
+      19,
+      17,
+      0.58
+    );
+
+  backdrop-filter:
+    blur(5px);
+}
+
+
+/* ==========================================
+   PANEL DEL BUSCADOR
+========================================== */
+
+.search-panel {
+  width: min(
+    820px,
+    100%
+  );
+
+  padding:
+    38px
+    42px
+    42px;
+
+  border:
+    1px solid #d8d1c7;
+
+  background: #f8f7f4;
+
+  box-shadow:
+    0 28px 80px
+    rgba(
+      0,
+      0,
+      0,
+      0.2
+    );
+}
+
+
+/* ==========================================
+   HEADER DEL BUSCADOR
+========================================== */
+
+.search-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  padding-bottom: 28px;
+}
+
+
+.search-panel-header span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #9b8563;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.2em;
+}
+
+
+.search-panel-header h2 {
+  margin: 0;
+
+  color: #1d1c1a;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 31px;
+
+  font-weight: 400;
+}
+
+
+.search-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  border:
+    1px solid #d9d3ca;
+
+  background: transparent;
+
+  color: #1d1c1a;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.search-close:hover {
+  background: #1d1c1a;
+
+  color: #ffffff;
+}
+
+
+/* ==========================================
+   INPUT BUSCADOR
+========================================== */
+
+.search-input-wrapper {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding:
+    0 4px;
+
+  border-bottom:
+    1px solid #a79c8c;
+}
+
+
+.search-input-wrapper > svg {
+  flex-shrink: 0;
+
+  color: #756957;
+}
+
+
+.search-input-wrapper input {
+  width: 100%;
+
+  height: 58px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #1d1c1a;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 20px;
+
+  outline: none;
+}
+
+
+.search-input-wrapper input::placeholder {
+  color: #a49c91;
+}
+
+
+.search-input-wrapper
+input::-webkit-search-cancel-button {
+  display: none;
+}
+
+
+.search-clear {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #756f67;
+
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   SUGERENCIAS
+========================================== */
+
+.search-empty-intro {
+  padding-top: 30px;
+}
+
+
+.search-empty-intro > span {
+  display: block;
+
+  margin-bottom: 14px;
+
+  color: #91887d;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.18em;
+}
+
+
+.search-examples {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 9px;
+}
+
+
+.search-examples button {
+  padding:
+    9px 13px;
+
+  border:
+    1px solid #d9d2c8;
+
+  background: transparent;
+
+  color: #514a42;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.search-examples button:hover {
+  border-color: #1d1c1a;
+
+  background: #1d1c1a;
+
+  color: #ffffff;
+}
+
+
+/* ==========================================
+   ESTADOS DEL BUSCADOR
+========================================== */
+
+.search-status,
+.search-error {
+  padding:
+    30px 0;
+
+  color: #756f67;
+
+  font-size: 13px;
+}
+
+
+.search-error {
+  color: #9a5c52;
+}
+
+
+/* ==========================================
+   RESULTADOS
+========================================== */
+
+.search-results {
+  padding-top: 29px;
+}
+
+
+.search-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 12px;
+
+  border-bottom:
+    1px solid #e1dcd4;
+}
+
+
+.search-results-heading span {
+  color: #8d8171;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.18em;
+}
+
+
+.search-results-heading small {
+  color: #9b948a;
+
+  font-size: 10px;
+}
+
+
+/* ==========================================
+   ITEM DE RESULTADO
+========================================== */
+
+.search-result {
+  display: grid;
+
+  grid-template-columns:
+    74px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding:
+    13px 0;
+
+  border-bottom:
+    1px solid #e5e0d8;
+
+  color: inherit;
+
+  text-decoration: none;
+
+  transition:
+    opacity 0.2s ease;
+}
+
+
+.search-result:hover {
+  opacity: 0.65;
+}
+
+
+/* ==========================================
+   IMAGEN RESULTADO
+========================================== */
+
+.search-result-image {
+  width: 74px;
+  height: 88px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #efede9;
+}
+
+
+.search-result-image img {
+  width: 100%;
+  height: 100%;
+
+  padding: 7px;
+
+  object-fit: contain;
+
+  mix-blend-mode: multiply;
+}
+
+
+.search-result-image span {
+  color: #9b8563;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 11px;
+
+  letter-spacing: 0.12em;
+}
+
+
+/* ==========================================
+   INFO RESULTADO
+========================================== */
+
+.search-result-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.search-result-info > span {
+  color: #9b8563;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.17em;
+
+  text-transform: uppercase;
+}
+
+
+.search-result-info strong {
+  overflow: hidden;
+
+  color: #1d1c1a;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 17px;
+
+  font-weight: 400;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.search-result-info small {
+  color: #8e877e;
+
+  font-size: 10px;
+
+  text-transform: capitalize;
+}
+
+
+.search-result-price {
+  color: #1d1c1a;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+
+/* ==========================================
+   VER TODO
+========================================== */
+
+.search-all-results {
+  display: inline-flex;
+
+  margin-top: 22px;
+
+  padding-bottom: 4px;
+
+  border-bottom:
+    1px solid #1d1c1a;
+
+  color: #1d1c1a;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.1em;
+
+  text-decoration: none;
+
+  text-transform: uppercase;
+}
+
+
+/* ==========================================
+   SIN RESULTADOS
+========================================== */
+
+.search-no-results {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  padding:
+    55px
+    20px
+    30px;
+
+  text-align: center;
+}
+
+
+.search-no-results svg {
+  margin-bottom: 15px;
+
+  color: #9b8563;
+}
+
+
+.search-no-results h3 {
+  margin:
+    0 0 8px;
+
+  color: #1d1c1a;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 20px;
+
+  font-weight: 400;
+}
+
+
+.search-no-results p {
+  margin: 0;
+
+  color: #8c857d;
+
+  font-size: 12px;
+}
+
+
+/* ==========================================
    TABLET / LAPTOP
 ========================================== */
 
-@media (max-width: 1200px) {
+@media (
+  max-width: 1200px
+) {
 
   .navbar {
-    padding: 0 28px;
+    padding:
+      0 28px;
 
     grid-template-columns:
       minmax(130px, 1fr)
@@ -377,17 +1015,21 @@
     column-gap: 20px;
   }
 
+
   .nav-menu {
     gap: 22px;
   }
+
 
   .nav-actions {
     gap: 11px;
   }
 
+
   .header-admin-link span {
     display: none;
   }
+
 
   .header-admin-link {
     padding: 7px;
@@ -400,7 +1042,9 @@
    TABLET
 ========================================== */
 
-@media (max-width: 950px) {
+@media (
+  max-width: 950px
+) {
 
   .navbar {
     display: flex;
@@ -417,13 +1061,16 @@
     row-gap: 20px;
   }
 
+
   .logo {
     order: 1;
   }
 
+
   .nav-actions {
     order: 2;
   }
+
 
   .nav-menu {
     order: 3;
@@ -445,7 +1092,9 @@
    MOBILE
 ========================================== */
 
-@media (max-width: 650px) {
+@media (
+  max-width: 650px
+) {
 
   .top-bar {
     gap: 12px;
@@ -504,6 +1153,58 @@
 
   .logout-button {
     font-size: 11px;
+  }
+
+
+  /* ======================================
+     BUSCADOR MOBILE
+  ====================================== */
+
+  .search-overlay {
+    padding:
+      20px 12px;
+  }
+
+
+  .search-panel {
+    padding:
+      25px
+      20px
+      30px;
+  }
+
+
+  .search-panel-header h2 {
+    font-size: 25px;
+  }
+
+
+  .search-input-wrapper input {
+    height: 54px;
+
+    font-size: 17px;
+  }
+
+
+  .search-result {
+    grid-template-columns:
+      58px
+      minmax(0, 1fr);
+
+    gap: 13px;
+  }
+
+
+  .search-result-image {
+    width: 58px;
+    height: 70px;
+  }
+
+
+  .search-result-price {
+    grid-column: 2;
+
+    margin-top: -5px;
   }
 
 }
