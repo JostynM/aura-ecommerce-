@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 
 from app.dependencies.auth import (
-    get_current_admin,
+    get_current_admin_viewer,
 )
 
 from app.models.order import Order
