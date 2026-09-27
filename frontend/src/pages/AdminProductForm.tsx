@@ -817,8 +817,10 @@ function AdminProductForm() {
   // ========================================
 
   if (
-    user.role !==
-    "admin"
+    (
+    user.role !== "admin" &&
+    user.role !== "demo_admin"
+  )
   ) {
 
     return (
