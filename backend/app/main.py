@@ -1,7 +1,10 @@
 import asyncio
+import os
+
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -25,14 +28,51 @@ from app.services.stock_service import expire_stock_reservations
 # RUTA BASE DEL BACKEND
 # ==========================================
 
-BACKEND_DIR = Path(__file__).resolve().parent.parent
+BACKEND_DIR = Path(
+    __file__
+).resolve().parent.parent
+
+
+# ==========================================
+# VARIABLES DE ENTORNO
+# ==========================================
+
+load_dotenv(
+    BACKEND_DIR / ".env"
+)
+
+FRONTEND_URL = os.getenv(
+    "FRONTEND_URL",
+    "http://localhost:5173",
+).rstrip("/")
+
+
+# ==========================================
+# CORS
+# ==========================================
+
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+if (
+    FRONTEND_URL
+    and FRONTEND_URL not in ALLOWED_ORIGINS
+):
+    ALLOWED_ORIGINS.append(
+        FRONTEND_URL
+    )
 
 
 # ==========================================
 # CARPETA DE ARCHIVOS SUBIDOS
 # ==========================================
 
-UPLOADS_DIR = BACKEND_DIR / "uploads"
+UPLOADS_DIR = (
+    BACKEND_DIR
+    / "uploads"
+)
 
 UPLOADS_DIR.mkdir(
     parents=True,
@@ -45,6 +85,7 @@ UPLOADS_DIR.mkdir(
 # ==========================================
 
 RESERVATION_CHECK_INTERVAL_SECONDS = 60
+
 EMAIL_OUTBOX_CHECK_INTERVAL_SECONDS = 10
 
 
@@ -61,7 +102,11 @@ def process_expired_reservations() -> int:
     db = SessionLocal()
 
     try:
-        expired_count = expire_stock_reservations(db)
+        expired_count = (
+            expire_stock_reservations(
+                db
+            )
+        )
 
         db.commit()
 
@@ -100,9 +145,11 @@ def process_pending_emails() -> dict[str, int]:
     db = SessionLocal()
 
     try:
-        result = process_email_outbox(
-            db=db,
-            batch_size=20,
+        result = (
+            process_email_outbox(
+                db=db,
+                batch_size=20,
+            )
         )
 
         if result["claimed"] > 0:
@@ -174,7 +221,7 @@ async def email_outbox_loop():
     """
     Revisa periódicamente PostgreSQL en busca
     de correos pendientes y los envía mediante
-    el servicio configurado en email_service.py.
+    el servicio configurado.
     """
 
     while True:
@@ -206,18 +253,25 @@ async def email_outbox_loop():
 # ==========================================
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(
+    app: FastAPI
+):
     print(
-        "AURA: iniciando procesos automáticos "
-        "de reservas y correos."
+        "AURA: iniciando procesos "
+        "automáticos de reservas "
+        "y correos."
     )
 
-    reservation_task = asyncio.create_task(
-        reservation_cleanup_loop()
+    reservation_task = (
+        asyncio.create_task(
+            reservation_cleanup_loop()
+        )
     )
 
-    email_task = asyncio.create_task(
-        email_outbox_loop()
+    email_task = (
+        asyncio.create_task(
+            email_outbox_loop()
+        )
     )
 
     try:
@@ -225,17 +279,22 @@ async def lifespan(app: FastAPI):
 
     finally:
         print(
-            "AURA: deteniendo procesos automáticos "
-            "de reservas y correos."
+            "AURA: deteniendo procesos "
+            "automáticos de reservas "
+            "y correos."
         )
 
         reservation_task.cancel()
         email_task.cancel()
 
-        with suppress(asyncio.CancelledError):
+        with suppress(
+            asyncio.CancelledError
+        ):
             await reservation_task
 
-        with suppress(asyncio.CancelledError):
+        with suppress(
+            asyncio.CancelledError
+        ):
             await email_task
 
 
@@ -245,22 +304,22 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="AURA API",
-    description="API del ecommerce de perfumes AURA",
+    description=(
+        "API del ecommerce "
+        "de perfumes AURA"
+    ),
     version="1.0.0",
     lifespan=lifespan,
 )
 
 
 # ==========================================
-# CORS
+# MIDDLEWARE CORS
 # ==========================================
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -274,7 +333,9 @@ app.add_middleware(
 app.mount(
     "/uploads",
     StaticFiles(
-        directory=str(UPLOADS_DIR)
+        directory=str(
+            UPLOADS_DIR
+        )
     ),
     name="uploads",
 )
@@ -284,15 +345,41 @@ app.mount(
 # ROUTERS
 # ==========================================
 
-app.include_router(auth_router)
-app.include_router(addresses_router)
-app.include_router(products_router)
-app.include_router(orders_router)
-app.include_router(users_router)
-app.include_router(reviews_router)
-app.include_router(payments_router)
-app.include_router(favorites_router)
-app.include_router(recommendations_router)
+app.include_router(
+    auth_router
+)
+
+app.include_router(
+    addresses_router
+)
+
+app.include_router(
+    products_router
+)
+
+app.include_router(
+    orders_router
+)
+
+app.include_router(
+    users_router
+)
+
+app.include_router(
+    reviews_router
+)
+
+app.include_router(
+    payments_router
+)
+
+app.include_router(
+    favorites_router
+)
+
+app.include_router(
+    recommendations_router
+)
 
 
 # ==========================================
@@ -302,7 +389,8 @@ app.include_router(recommendations_router)
 @app.get("/")
 def root():
     return {
-        "message": "AURA API funcionando correctamente"
+        "message":
+            "AURA API funcionando correctamente"
     }
 
 
@@ -314,12 +402,16 @@ def root():
 def database_test():
     with engine.connect() as connection:
         result = connection.execute(
-            text("SELECT 1")
+            text(
+                "SELECT 1"
+            )
         )
 
         value = result.scalar()
 
     return {
-        "database": "PostgreSQL conectado",
-        "result": value,
+        "database":
+            "PostgreSQL conectado",
+        "result":
+            value,
     }
