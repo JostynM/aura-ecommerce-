@@ -219,7 +219,7 @@ function AdminOrderDetail() {
     }
 
     if (
-      user?.role === "admin" &&
+      (user?.role === "admin" || user?.role === "demo_admin") &&
       token
     ) {
       void loadOrder();
@@ -329,7 +329,7 @@ function AdminOrderDetail() {
     );
   }
 
-  if (user.role !== "admin") {
+  if ((user.role !== "admin" && user.role !== "demo_admin")) {
     return (
       <Navigate
         to="/"
