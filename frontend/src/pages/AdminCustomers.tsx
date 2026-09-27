@@ -176,7 +176,7 @@ function AdminCustomers() {
 
     if (
       isAuthenticated &&
-      user?.role === "admin"
+      (user?.role === "admin" || user?.role === "demo_admin")
     ) {
 
       loadCustomers();
@@ -434,7 +434,7 @@ function AdminCustomers() {
   // ==========================================
 
   if (
-    user?.role !== "admin"
+    (user?.role !== "admin" && user?.role !== "demo_admin")
   ) {
 
     return (
