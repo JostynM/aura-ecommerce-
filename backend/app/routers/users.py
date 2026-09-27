@@ -36,7 +36,7 @@ router = APIRouter(
 )
 def get_admin_users(
     _current_admin: User = Depends(
-        get_current_admin
+        get_current_admin_viewer
     ),
     db: Session = Depends(get_db)
 ):
