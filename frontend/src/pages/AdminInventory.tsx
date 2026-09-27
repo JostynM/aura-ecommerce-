@@ -184,7 +184,7 @@ function AdminInventory() {
 
     if (
       isAuthenticated &&
-      user?.role === "admin"
+      (user?.role === "admin" || user?.role === "demo_admin")
     ) {
       loadProducts();
     }
@@ -389,7 +389,7 @@ function AdminInventory() {
   // ========================================
 
   if (
-    user?.role !== "admin"
+    (user?.role !== "admin" && user?.role !== "demo_admin")
   ) {
     return (
       <Navigate
