@@ -54,6 +54,8 @@ from app.dependencies.auth import (
 
     get_current_admin,
 
+    get_current_admin_viewer,
+
     get_current_user,
 
 )
