@@ -194,7 +194,7 @@ function AdminCustomerDetail() {
 
     if (
       token &&
-      user?.role === "admin"
+      (user?.role === "admin" || user?.role === "demo_admin")
     ) {
 
       loadCustomer();
@@ -249,7 +249,7 @@ function AdminCustomerDetail() {
   // ==========================================
 
   if (
-    user.role !== "admin"
+    (user.role !== "admin" && user.role !== "demo_admin")
   ) {
 
     return (
