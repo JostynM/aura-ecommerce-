@@ -89,7 +89,7 @@ function Admin() {
   // ==========================================
 
   useEffect(() => {
-    if (user?.role !== "admin" || !token) {
+    if ((user?.role !== "admin" && user?.role !== "demo_admin") || !token) {
       return;
     }
 
@@ -257,7 +257,7 @@ function Admin() {
     );
   }
 
-  if (user.role !== "admin") {
+  if ((user.role !== "admin" && user.role !== "demo_admin")) {
     return (
       <Navigate
         to="/"
