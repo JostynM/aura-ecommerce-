@@ -30,7 +30,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.dependencies.auth import get_current_admin
+from app.dependencies.auth import (\n    get_current_admin,\n    get_current_admin_viewer,\n)
 
 from app.models.product import Product
 from app.models.review import Review
@@ -1174,7 +1174,7 @@ def get_admin_products(
 
     _current_admin:
         User = Depends(
-            get_current_admin
+            get_current_admin_viewer
         ),
 
     db:
@@ -1211,7 +1211,7 @@ def get_admin_product(
 
     _current_admin:
         User = Depends(
-            get_current_admin
+            get_current_admin_viewer
         ),
 
     db:
