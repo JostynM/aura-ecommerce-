@@ -89,3 +89,28 @@ def get_current_admin(
         )
 
     return current_user
+
+
+def get_current_admin_viewer(
+    current_user: User = Depends(
+        get_current_user
+    )
+) -> User:
+    """
+    Permite consultar el panel tanto al administrador
+    real como al administrador de demostración.
+
+    Las operaciones de escritura deben continuar
+    utilizando get_current_admin.
+    """
+
+    if current_user.role not in {
+        "admin",
+        "demo_admin",
+    }:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para ver el panel administrativo"
+        )
+
+    return current_user
