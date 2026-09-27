@@ -601,8 +601,10 @@ function Header() {
 
                     {/* ADMIN */}
 
-                    {user.role ===
-                      "admin" && (
+                    {(
+                      user.role === "admin" ||
+                      user.role === "demo_admin"
+                    ) && (
 
                       <Link
                         to="/admin"
