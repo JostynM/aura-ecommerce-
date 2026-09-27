@@ -1362,7 +1362,7 @@ def get_admin_orders(
 
     _current_admin: User = Depends(
 
-        get_current_admin
+        get_current_admin_viewer
 
     ),
 
@@ -1674,7 +1674,7 @@ def get_admin_order_stats(
 
     _current_admin: User = Depends(
 
-        get_current_admin
+        get_current_admin_viewer
 
     ),
 
@@ -1962,7 +1962,7 @@ def get_admin_order(
 
     _current_admin: User = Depends(
 
-        get_current_admin
+        get_current_admin_viewer
 
     ),
 
