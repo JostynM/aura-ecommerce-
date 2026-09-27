@@ -163,7 +163,7 @@ function AdminOrders() {
   const ordersLoading =
     !authLoading &&
     isAuthenticated &&
-    user?.role === "admin" &&
+    (user?.role === "admin" || user?.role === "demo_admin") &&
     Boolean(token) &&
     !currentPageData &&
     !currentError;
@@ -172,7 +172,7 @@ function AdminOrders() {
     if (
       authLoading ||
       !isAuthenticated ||
-      user?.role !== "admin" ||
+      (user?.role !== "admin" && user?.role !== "demo_admin") ||
       !token
     ) {
       return;
@@ -339,7 +339,7 @@ function AdminOrders() {
     );
   }
 
-  if (user?.role !== "admin") {
+  if ((user?.role !== "admin" && user?.role !== "demo_admin")) {
     return (
       <Navigate
         to="/"
