@@ -4,6 +4,17 @@
 
 🔗 **Demo:** https://aura-ecommerce-phi.vercel.app
 
+## Cuentas de prueba
+
+Puedes probar AURA sin registrarte.
+
+| Tipo | Correo | Contraseña |
+| --- | --- | --- |
+| Cliente demo | `demo@example.com` | `AuraDemo2026!` |
+| Administrador demo | `admin.demo@example.com` | `AuraDemo2026!` |
+
+La cuenta de **administrador demo es de solo lectura**. Permite explorar el dashboard, inventario, pedidos y clientes, pero no puede modificar productos, cambiar estados ni realizar reembolsos.
+
 ## Funcionalidades
 
 - Registro, inicio de sesión y autenticación con JWT.
