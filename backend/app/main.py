@@ -20,6 +20,7 @@ from app.routers.products import router as products_router
 from app.routers.recommendations import router as recommendations_router
 from app.routers.reviews import router as reviews_router
 from app.routers.users import router as users_router
+from app.services.demo_accounts_service import ensure_demo_accounts
 from app.services.email_outbox_service import process_email_outbox
 from app.services.stock_service import expire_stock_reservations
 
@@ -180,6 +181,34 @@ def process_pending_emails() -> dict[str, int]:
 
 
 # ==========================================
+# PREPARAR CUENTAS DEMO
+# ==========================================
+
+def prepare_demo_accounts() -> None:
+    db = SessionLocal()
+
+    try:
+        ensure_demo_accounts(
+            db
+        )
+
+        print(
+            "AURA: cuentas demo listas."
+        )
+
+    except Exception as error:
+        db.rollback()
+
+        print(
+            "ERROR PREPARANDO CUENTAS DEMO:",
+            repr(error),
+        )
+
+    finally:
+        db.close()
+
+
+# ==========================================
 # LOOP AUTOMÁTICO DE RESERVAS
 # ==========================================
 
@@ -256,6 +285,10 @@ async def email_outbox_loop():
 async def lifespan(
     app: FastAPI
 ):
+    await asyncio.to_thread(
+        prepare_demo_accounts
+    )
+
     print(
         "AURA: iniciando procesos "
         "automáticos de reservas "
